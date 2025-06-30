@@ -55,12 +55,13 @@ export default class Preloader extends Phaser.Scene {
         this.load.audio('clinksound2', 'assets/Clink2.wav');
 
         this.load.tilemapTiledJSON('tilemapHome', 'assets/tilemapHome.json');
-        this.load.tilemapTiledJSON('tilemap1', 'assets/tilemap3.json')
+        this.load.tilemapTiledJSON('tilemap1', 'assets/tilemap1.json')
         this.load.tilemapTiledJSON('tilemap2', 'assets/tilemap2.json')
-        this.load.tilemapTiledJSON('tilemap4', 'assets/mapriseyaya.json')
+        this.load.tilemapTiledJSON('tilemap3', 'assets/tilemap3.json')
+        this.load.tilemapTiledJSON('tilemap4', 'assets/tilemap4.json')
         this.load.tilemapTiledJSON('tilemap5', 'assets/tilemap5.json')
         this.load.tilemapTiledJSON('tilemap6', 'assets/tilemap6.json')
-        this.load.tilemapTiledJSON('tilemap7', 'assets/tilemap7.json')
+        this.load.tilemapTiledJSON('tilemapYaya1', 'assets/tilemapYaya1.json')
 
         
         this.load.spritesheet('portal3', 'assets/greenPortal.png', {

@@ -42,15 +42,7 @@ export default class Home extends BaseGame {
     }
 
     setupPortals() {
-
         this.portals = this.physics.add.staticGroup();
-
-        const portal0 = this.portals.create(800, 400, 'portal0');
-        const portal02 = this.add.image(800, 400, 'portal0');
-        portal02.flipX = true;
-
-        //const portal1 = this.portals.create(2300, 2930, 'portal1');
-        const portal2 = this.portals.create(3860, 2430, 'door0').setScale(.25);
 
         if (!this.anims.get('portal3')) {
             this.anims.create({
@@ -61,40 +53,67 @@ export default class Home extends BaseGame {
             });
         }
 
-        const portal1 = this.portals.create(3200, 2650, 'portal3').setScale(.2).play('portal3').setTint(0xFF0000)
-        const portal3 = this.portals.create(3350, 2100, 'portal3').setScale(.2).play('portal3').setTint(0x00FF00);
-        const portal5 = this.portals.create(2050, 2050, 'portal3').setScale(.2).play('portal3').setTint(0x00FFFF);
-        const portal6 = this.portals.create(1070, 1860, 'portal3').setScale(.2).play('portal3').setTint(0x0000FF);
-        const portal7 = this.portals.create(3980, 3260, 'portal3').setScale(.2).play('portal3');
-        
-        this.shrinkCollision(portal0, 140, 140);
-        this.shrinkCollision(portal1, 140, 140);
-        this.shrinkCollision(portal2, 140, 140);
-        this.shrinkCollision(portal3, 140, 140);
-        this.shrinkCollision(portal5, 140, 140);
-        this.shrinkCollision(portal6, 140, 140);
-        this.shrinkCollision(portal7, 140, 140);
+        this.portalData = {
+            portal1: {
+                x: 3200,
+                y: 2650,
+                tex: 'portal3',
+                tint: 0xFF0000,
+                targetScene: 'Level1',
+            },
+            portal2: {
+                x: 3850,
+                y: 2400,
+                tex: 'portal3',
+                tint: 0xFFFF00,
+                targetScene: 'Level2',
+            },
+            portal3: {
+                x: 2050,
+                y: 2050,
+                tex: 'portal3',
+                tint: 0x00FFFF,
+                targetScene: 'Level3',
+            },
+            portal4: {
+                x: 1070,
+                y: 1860,
+                tex: 'portal3',
+                tint: 0x0000FF,
+                targetScene: 'Level4',
+            },
+            portal5: {
+                x: 3980,
+                y: 3260,
+                tex: 'portal3',
+                tint: 0xFF00FF,
+                targetScene: 'Level5',
+            },
+            portal6: {
+                x: 3142,
+                y: 1184,
+                tex: 'portal3',
+                tint: 0xFF00FF,
+                targetScene: 'Level6',
+            },
+            portalYaya1: {
+                x: 3350,
+                y: 2100,
+                tex: 'portal3',
+                tint: 0x00FF00,
+                targetScene: 'LevelYaya1',
+            },
+        }
 
-        const portalsToSpin = [
-            { sprite: portal0, angle: -360, duration: 1500 },
-            { sprite: portal02, angle: 360, duration: 1200 }
-        ];
-        portalsToSpin.forEach(({ sprite, angle, duration }) => {
-            this.tweens.add({
-                targets: sprite,
-                angle: angle,
-                duration: duration,
-                repeat: -1,
-            });
+        Object.entries(this.portalData).forEach(([key, data]) => {
+            const portal = this.portals.create(data.x, data.y, data.tex)
+            .setScale(.2)
+            .play(data.tex)
+            .setTint(data.tint);
+
+            portal.targetScene = data.targetScene;
+            this.shrinkCollision(portal, 140, 140);
         });
-
-        portal0.targetScene = 'Level1';
-        portal2.targetScene = 'Level2';
-        portal1.targetScene = 'Level3';
-        portal3.targetScene = 'Level4';
-        portal5.targetScene = 'Level5';
-        portal6.targetScene = 'Level6';
-        portal7.targetScene = 'Level7';
 
         this.physics.add.overlap(this.player, this.portals, (player, portal) => {
             if (portal.targetScene && this.scene.key !== portal.targetScene) {
@@ -116,24 +135,28 @@ export default class Home extends BaseGame {
         data.forEach(obj => {
             switch (obj.level) {
                 case 'Level2':
-                    x = 3860;
-                    y = 2430;
+                    x = this.portalData['portal2'].x;
+                    y = this.portalData['portal2'].y;
+                    break;
+                case 'Level3':
+                    x = this.portalData['portal3'].x;
+                    y = this.portalData['portal3'].y;
                     break;
                 case 'Level4':
-                    x = 3350;
-                    y = 2100;
+                    x = this.portalData['portal4'].x;
+                    y = this.portalData['portal4'].y;
                     break;
                 case 'Level5':
-                    x = 2050;
-                    y = 2050;
+                    x = this.portalData['portal5'].x;
+                    y = this.portalData['portal5'].y;
                     break;
                 case 'Level6':
-                    x = 1070;
-                    y = 1860;
+                    x = this.portalData['portal6'].x;
+                    y = this.portalData['portal6'].y;
                     break;
-                case 'Level7':
-                    x = 3980;
-                    y = 3260;
+                case 'LevelYaya1':
+                    x = this.portalData['portalYaya1'].x;
+                    y = this.portalData['portalYaya1'].y;
                     break;
             }
 

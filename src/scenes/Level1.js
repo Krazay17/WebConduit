@@ -1,78 +1,111 @@
-import BaseGame from './_basegame.js';
+import BaseGame from "./_basegame.js";
+
+/// <reference path="../types/phaser.d.ts" />
+
+// Tower climb level
 
 export default class Level1 extends BaseGame {
-  constructor() {
-    super('Level1');
-  }
+    constructor() {
+        super('Level1');
+    }
 
-  create() {
-    this.setupSky({ sky1: 'redsky0', sky2: false, sky3: false });
-    this.sky2 = this.add.image(600, 400, 'redsky1').setScale(1).setScrollFactor(.3);
-    this.sky3 = this.add.image(600, 400, 'redsky2').setScale(1).setScrollFactor(.6);
-    this.setupWorld(-1200, 0, 2400, 900);
-    this.setupMusic('music0');
-    this.setupPlayer(-1100, 300);
-    this.setupGroups();
-    this.setupCollisions();
+    create() {
+        this.setupSky({ sky2: false, sky3: false });
+        this.sky2 = this.add.image(1000, 900, 'purplesky1').setScale(1.1).setScrollFactor(.15);
+        this.sky3 = this.add.image(1200, 600, 'skybluestreaks').setScale(.8).setScrollFactor(.3);
+        this.setupWorld(0, 0, 6400, 12800);
+        this.setupPlayer(3200, 6200);
+        this.setupGroups();
+        this.setupTileMap('tilemap1');
+        this.setupCollisions();
+        this.setupMusic('music2');
+        this.enemyTimers();
 
 
-    // this.physics.add.collider(this.player, this.turrets, (player, turret) => {
-    //   this.player.touchWall()
-    // }, null, this);
+    }
 
-    // Spawns
-    const moveingPlatformPos = [
-      [-1100,], [-900, 150], [-400, 100], [-200,], [-150, 50], [100,], [300,], [700,], [900,], [1100,],
-      [-900, 300], [-600, 200], [-150, 300], [100, 200], [300, 100], [700, 450], [900, 200], [1100, 100],
-      [-900, 500], [-300, 350], [-100, 225], [300, 600], [600, 550], [1000, 500], [1100, 300],
-      [-1100, 400], [-900, 700], [-500, 800], [-300, 700], [-100, 700], [100, 800], [300, 850], [500, 700], [700, 700], [900, 700], [1100, 700],
-    ];
+    makeClimbingPlatforms() {
+        const length = 45;
+        for (let i = 4; i < length; i++) {
+            const yloc = i * 125;
+            const xloc1 = Phaser.Math.Between(-1000, -250);
+            const xloc2 = Phaser.Math.Between(-250, 250);
+            const xloc3 = Phaser.Math.Between(250, 1000);
+            const platform1 = this.walkableGroup.create(xloc1, yloc + Phaser.Math.Between(-20, 20), 'platform');
+            const platform2 = this.walkableGroup.create(xloc2, yloc + Phaser.Math.Between(-20, 20), 'platform');
+            const platform3 = this.walkableGroup.create(xloc3, yloc + Phaser.Math.Between(-20, 20), 'platform');
 
-    moveingPlatformPos.forEach(pos => this.walkableGroup.create(pos[0], pos[1], 'platform')
-      .setVelocityY(20));
+        }
+    }
 
-    this.time.addEvent({
-      delay: Phaser.Math.Between(2000, 5000),
-      callback: () => this.spawnManager.spawnCoin(Phaser.Math.Between(-1100, 1100), 0),
-      loop: true
-    });
+    lerp(start, end, t) {
+        return start + (end - start) * t;
+    }
 
-    this.spawnManager.spawnSunMan(1900, 0);
-    this.spawnManager.spawnSunMan(2000, 400);
-    this.time.addEvent({
-      delay: Phaser.Math.Between(2000, 10000),
-      loop: true,
-    });
+    checkPlayerY() {
+        if (!this.player) return;
+        const y = this.player.y;
+        const yd = Math.max(0, y / 12000);
 
-    this.spawnManager.spawnBullets(1900, 50, 8);
-    this.time.addEvent({
-      delay: 3000,
-      callback: () => this.spawnManager.spawnBullets(1900, 50, 8),
-      loop: true
-    });
+        this.batTimer.delay = this.lerp(25, 3000, yd);
+        this.sunManHealth = this.lerp(100, 3, yd);
+        this.sunTimer.delay = this.lerp(250, 6000, yd);
 
-    this.turrets = [this.spawnManager.spawnTurret(1400, 100)];
+        if (y > 11500) {
+            this.doSpawnSunMan = false;
+            return;
+        } else {
+            this.doSpawnSunMan = true;
+        }
+    }
 
-    this.turrets.forEach(turret => {
-      this.spawnManager.spawnFireballs(turret.body.x, turret.body.y + 40)
-    });
+    enemyTimers() {
 
-    this.time.addEvent({
-      delay: 1000,
-      callback: () => this.turrets.forEach(turret => {
-        if (turret.body) this.spawnManager.spawnFireballs(turret.body.x, turret.body.y + 40);
-      }),
-      loop: true
-    });
+        if (this.batTimer) { this.batTimer.remove(); this.batTimer = null; }
+        if (this.sunTimer) { this.sunTimer.remove(); this.sunTimer = null; }
 
-  }
+        this.batTimer = this.time.addEvent({
+            delay: 2000,
+            callback: () => {
+                const { x, y } = this.getSpawnPos();
+                const bat = this.spawnManager.spawnBat(x, y);
 
-  update(time, delta) {
-    super.update(time, delta);
-    this.walkableGroup.getChildren().forEach(platform => {
-      if (platform.body.y > this.physics.world.bounds.height)
-        platform.body.y = 0 - platform.body.height;
-    });
+                this.checkPlayerY();
+            },
+            loop: true
+        });
 
-  }
+        this.sunTimer = this.time.addEvent({
+            delay: 6000,
+            callback: () => {
+                if (!this.doSpawnSunMan) return;
+                const { x, y } = this.getSpawnPos();
+                const sunMan = this.spawnManager.spawnSunMan(x, y, null, this.sunManHealth);
+
+                this.checkPlayerY();
+            },
+            loop: true
+        });
+
+        this.events.on('shutdown', () => {
+            if (this.batTimer) { this.batTimer.remove(); this.batTimer = null; }
+            if (this.sunTimer) { this.sunTimer.remove(); this.sunTimer = null; }
+        });
+
+    }
+
+    getSpawnPos() {
+        const left = this.bounds.left;
+        const right = this.bounds.right;
+
+        const spawnLeft = Phaser.Math.Between(0, 1) === 0;
+
+        const x = spawnLeft
+            ? left + Phaser.Math.Between(500, 1000)
+            : right - Phaser.Math.Between(500, 1000);
+
+        const y = this.player.y + Phaser.Math.Between(-650, -850)
+
+        return { x, y, spawnLeft };
+    }
 }

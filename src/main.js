@@ -11,7 +11,7 @@ import Level3 from './scenes/Level3.js'
 import Level4 from './scenes/Level4.js'
 import Level5 from './scenes/Level5.js'
 import Level6 from './scenes/Level6.js'
-import Level7 from './scenes/Level7.js'
+import LevelYaya1 from './scenes/LevelYaya1.js'
 
 /// <reference path="../types/phaser.d.ts" />
 
@@ -40,7 +40,7 @@ const config = {
     dom: {
       createContainer: true,
     },
-    scene: [Boot, Preloader, Home, Level1, Level2, Level3, Level4, Level5, Level6, Level7,
+    scene: [Boot, Preloader, Home, Level1, Level2, Level3, Level4, Level5, Level6, LevelYaya1,
       PlayerUI, Inventory, EscMenu],
 };
 

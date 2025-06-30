@@ -8,7 +8,7 @@ export default class Level5 extends BaseGame {
 
     create() {
         this.setupSky({ sky1: 'redsky0' });
-        this.setupWorld(0, 0, 6400, 6400);
+        this.setupWorld(0, 0, 3168, 4768);
         this.setupPlayer();
         this.setupGroups();
         this.setupTileMap('tilemap5');
