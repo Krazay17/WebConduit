@@ -54,6 +54,7 @@ export default class Home extends BaseGame {
         }
 
         this.portalData = {
+            // Tower climb Enemies
             portal1: {
                 x: 3200,
                 y: 2650,
@@ -61,13 +62,15 @@ export default class Home extends BaseGame {
                 tint: 0xFF0000,
                 targetScene: 'Level1',
             },
+            // First race map, back and forth lava jumps
             portal2: {
                 x: 3850,
                 y: 2400,
                 tex: 'portal3',
-                tint: 0xFFFF00,
+                tint: 0xFFBB00,
                 targetScene: 'Level2',
             },
+            // Lava triangles
             portal3: {
                 x: 2050,
                 y: 2050,
@@ -75,6 +78,7 @@ export default class Home extends BaseGame {
                 tint: 0x00FFFF,
                 targetScene: 'Level3',
             },
+            // Blue coin lava slam
             portal4: {
                 x: 1070,
                 y: 1860,
@@ -82,13 +86,15 @@ export default class Home extends BaseGame {
                 tint: 0x0000FF,
                 targetScene: 'Level4',
             },
+            // Tutorial
             portal5: {
                 x: 3980,
                 y: 3260,
                 tex: 'portal3',
-                tint: 0xFF00FF,
+                tint: 0xFFFFFF,
                 targetScene: 'Level5',
             },
+            // Dont know yet New map
             portal6: {
                 x: 3142,
                 y: 1184,
@@ -96,6 +102,7 @@ export default class Home extends BaseGame {
                 tint: 0xFF00FF,
                 targetScene: 'Level6',
             },
+            // Yaya map
             portalYaya1: {
                 x: 3350,
                 y: 2100,
