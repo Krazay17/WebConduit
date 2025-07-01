@@ -34,7 +34,7 @@ export default class NetworkManager extends Phaser.Events.EventEmitter {
     this.voiceChat = new VoiceChatManager(
       this.socket,
       () => null,
-      (id) => this.otherPlayers[id]
+      (id) => this.otherPlayers[id.replace(/^['"]+|['"]+$/g, '')]
     );
     if (this.voiceChat) {
       setInterval(() => {
