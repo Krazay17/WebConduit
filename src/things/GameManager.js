@@ -1,4 +1,4 @@
-const CURRENT_VERSION = 0.108;
+const CURRENT_VERSION = 0.109;
 
 export default {
     version: CURRENT_VERSION,
@@ -9,7 +9,7 @@ export default {
     upgrades: {},
     stats: { healthMax: 25, health: 25 },
     weapons: { left: 'shurikan', right: 'sword', aura: 'zap' },
-    volume: { master: 1, music: 1 },
+    volume: { master: 1, music: 1, voice: 1 },
     collectedItems: [],
     flags: {
         seenIntro: false,
@@ -46,7 +46,7 @@ export default {
                 this.reset({
                     keep: {
                         name: parsed.name,
-                        volume: parsed.volume,
+                        //volume: parsed.volume,
                         flags: parsed.flags,
                         weapons: parsed.weapons,
                         power: parsed.power,
@@ -66,7 +66,7 @@ export default {
             this.upgrades = parsed.upgrades ?? {};
             this.stats = parsed.stats ?? { healthMax: 25, health: 25 };
             this.weapons = parsed.weapons ?? { left: 'shurikan', right: 'sword', aura: 'zap' };
-            this.volume = parsed.volume ?? { master: 1, music: 1 };
+            this.volume = parsed.volume ?? { master: 1, music: 1, voice: 1 };
             this.collectedItems = parsed.collectedItems ?? [];
             this.flags = parsed.flags ?? {};
             this.useLastLocation = parsed.useLastLocation ?? false;
@@ -84,7 +84,7 @@ export default {
         this.money = keep.money ?? 0;
         this.stats = keep.stats ?? { healthMax: 25, health: 25 };
         this.weapons = keep.weapons ?? { left: 'shurikan', right: 'sword', aura: 'zap' };
-        this.volume = keep.volume ?? { master: 1, music: 1 };
+        this.volume = keep.volume ?? { master: 1, music: 1, voice: 1 };
         this.collectedItems = keep.collectedItems ?? [];
         this.flags = keep.flags ?? {
             seenIntro: false,

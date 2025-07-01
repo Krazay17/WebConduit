@@ -1,3 +1,5 @@
+import GameManager from "./GameManager";
+
 export default class VoiceChatManager {
   constructor(socket, getPlayerPosition, getRemotePlayerById) {
     this.socket = socket;
@@ -7,26 +9,41 @@ export default class VoiceChatManager {
     this.peerConnections = {};
     this.remoteAudioElements = {};
     this.localStream = null;
+    this.modifiedStream = null;
 
     this.maxDistance = 800;
-    this.voiceVolume = 1;
 
-    this._initMic();
-    this._setupSocketHandlers();
+    this._initMic().then(() => this._setupSocketHandlers());
   }
 
   async _initMic() {
     try {
+      this.audioContext = new AudioContext();
       this.localStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+
+      const source = this.audioContext.createMediaStreamSource(this.localStream);
+      this.gainNode = this.audioContext.createGain();
+
+      source.connect(this.gainNode);
+
+      const dest = this.audioContext.createMediaStreamDestination();
+      this.gainNode.connect(dest);
+
+      this.modifiedStream = dest.stream;
+
+      // 🔔 Let others know we're ready to talk
       this.socket.emit('join-voice');
     } catch (e) {
-      console.error('Mic access failed:', e);
+      console.error('❌ Failed to access mic:', e);
     }
   }
 
   _setupSocketHandlers() {
     this.socket.on('user-joined', async (id) => {
-      if (!this.localStream) return;
+      if (!this.modifiedStream) {
+        console.warn(`Mic not ready yet for user-joined: ${id}`);
+        return;
+      }
 
       const pc = this._createPeerConnection(id);
       this.peerConnections[id] = pc;
@@ -64,9 +81,11 @@ export default class VoiceChatManager {
   _createPeerConnection(id) {
     const pc = new RTCPeerConnection();
 
-    this.localStream.getTracks().forEach(track => {
-      pc.addTrack(track, this.localStream);
-    });
+    if (this.modifiedStream) {
+      this.modifiedStream.getTracks().forEach(track => {
+        pc.addTrack(track, this.modifiedStream);
+      });
+    }
 
     pc.onicecandidate = (event) => {
       if (event.candidate) {
@@ -88,17 +107,28 @@ export default class VoiceChatManager {
     return pc;
   }
 
+  setMicVolume(value) {
+    if (this.gainNode) {
+      this.gainNode.gain.value = Phaser.Math.Clamp(value, 0, 1);
+    }
+  }
+
   updateVolumes() {
     const selfPos = this.getPlayerPosition();
     if (!selfPos) return;
 
     for (const [id, audio] of Object.entries(this.remoteAudioElements)) {
       const remote = this.getRemotePlayerById(id);
-      console.log(remote);
-      if (!remote) continue;
+
+      if (!remote) {
+        console.warn(`🔇 Remote player not found: ${id}`);
+        continue;
+      }
 
       const dist = Phaser.Math.Distance.Between(selfPos.x, selfPos.y, remote.x, remote.y);
-      audio.volume = dist > this.maxDistance ? 0 : (1 - dist / this.maxDistance) * this.voiceVolume;
+      audio.volume = dist > this.maxDistance
+        ? 0
+        : (1 - dist / this.maxDistance) * GameManager.volume.voice;
     }
   }
 
@@ -107,6 +137,7 @@ export default class VoiceChatManager {
       this.peerConnections[id].close();
       delete this.peerConnections[id];
     }
+
     if (this.remoteAudioElements[id]) {
       this.remoteAudioElements[id].remove();
       delete this.remoteAudioElements[id];
@@ -114,15 +145,13 @@ export default class VoiceChatManager {
   }
 
   destroy() {
-    for (const id in this.peerConnections) {
-      this._removePeer(id);
-    }
+    Object.keys(this.peerConnections).forEach(id => this._removePeer(id));
 
     if (this.localStream) {
-      this.localStream.getTracks().forEach(track => track.stop());
+      this.localStream.getTracks().forEach(t => t.stop());
     }
 
-    // Do NOT disconnect the socket — it's owned by the main app
+    // Don’t disconnect the socket — owned by NetworkManager
   }
 
   setPlayerGetter(getterFn) {

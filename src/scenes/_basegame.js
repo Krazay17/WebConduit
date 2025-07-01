@@ -19,10 +19,9 @@ export default class BaseGame extends Phaser.Scene {
 
   update(time, delta) {
     if (this.player && this.playerSpawned) this.player.handleInput(time, delta);
-    if (this.network.voiceChat) {
-
-      this.network.voiceChat.updateVolumes();
-    };
+    // if (this.network.voiceChat) {
+    //   this.network.voiceChat.updateVolumes();
+    // };
 
     // if (this.network) {
     //   this.network.socket.emit('playerMove', {

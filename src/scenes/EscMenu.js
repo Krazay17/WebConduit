@@ -63,6 +63,14 @@ export default class EscMenu extends Phaser.Scene {
         handle2.name = 'voice';
         this.slider2 = { track2, handle2 };
 
+        // Slider track and handle
+        const sliderText3 = this.add.text(400, 540, 'mic');
+        const track3 = this.add.rectangle(600, 550, 200, 10, 0xffffff).setOrigin(0.5);
+        const handle3 = this.add.circle(600, 550, 10, 0xff0000).setInteractive();
+        this.input.setDraggable(handle3);
+        handle3.name = 'mic';
+        this.slider3 = { track3, handle3 };
+
         const donate = this.add.text(300, 25,
             'Made by: Josh Massarella\nDonate to help me make more games!', {
             fontSize: '24px',
@@ -140,7 +148,11 @@ export default class EscMenu extends Phaser.Scene {
                 GameManager.volume.master = percent;
                 GameManager.save();
             } else if(gameObject.name === 'voice') {
-                this.network.voiceChat.voiceVolume = percent;
+                GameManager.volume.voice = percent;
+                this.network.voiceChat.updateVolumes();
+                GameManager.save();
+            } else if(gameObject.name === 'mic') {
+                this.network.voiceChat.setMicVolume(percent);
             }
         });
 
@@ -163,9 +175,9 @@ export default class EscMenu extends Phaser.Scene {
         const maxX1 = this.slider1.track1.x + this.slider1.track1.width / 2;
         this.slider1.handle1.x = Phaser.Math.Linear(minX1, maxX1, volume.music);
 
-        // const minX2 = this.slider2.track2.x - this.slider2.track2.width / 2;
-        // const maxX2 = this.slider2.track2.x + this.slider2.track2.width / 2;
-        // this.slider2.handle2.x = Phaser.Math.Linear(minX2, maxX2, volume.music);
+        const minX2 = this.slider2.track2.x - this.slider2.track2.width / 2;
+        const maxX2 = this.slider2.track2.x + this.slider2.track2.width / 2;
+        this.slider2.handle2.x = Phaser.Math.Linear(minX2, maxX2, volume.voice);
     }
 
     openNameInput() {

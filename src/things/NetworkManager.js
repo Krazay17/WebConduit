@@ -36,6 +36,12 @@ export default class NetworkManager extends Phaser.Events.EventEmitter {
       () => null,
       (id) => this.otherPlayers[id]
     );
+    if (this.voiceChat) {
+      setInterval(() => {
+      this.voiceChat.updateVolumes();
+
+      }, 200);
+    };
 
     // On connection
     this.socket.on('connect', () => {
