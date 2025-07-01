@@ -1,5 +1,4 @@
 import BaseGame from './_basegame.js'
-import Breakable from '../things/Breakable.js';
 import GameManager from '../things/GameManager.js';
 import ScoreBoard from '../things/scoreBoard.js';
 
@@ -141,6 +140,9 @@ export default class Home extends BaseGame {
 
         data.forEach(obj => {
             switch (obj.level) {
+                case 'Home':
+                    x = 5200;
+                    y = 250;
                 case 'Level2':
                     x = this.portalData['portal2'].x;
                     y = this.portalData['portal2'].y;
@@ -167,9 +169,9 @@ export default class Home extends BaseGame {
                     break;
             }
 
-            // 🔥 Always destroy and recreate
+            // recreate scoreboard
             if (this.scoreBoard[obj.level]) {
-                this.scoreBoard[obj.level].destroy();  // removes all children too
+                this.scoreBoard[obj.level].destroy();
             }
 
             const board = new ScoreBoard(this, x + 100, y - 125, obj.scores);

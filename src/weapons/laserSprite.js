@@ -48,31 +48,39 @@ export default class LaserSprite extends Phaser.GameObjects.TileSprite {
         this.setVisible(true);
     }
 
-    boxTrace() {
-        const RectRay = this.polygonRay();
+boxTrace() {
+    const origin = this.getWorldPoint();
+    const direction = this.getForwardVector(this.length);
+    const ray = new Phaser.Geom.Line(origin.x, origin.y, origin.x + direction.x, origin.y + direction.y);
 
-        // this.scene.graphics = this.scene.add.graphics();
-        // this.scene.graphics.clear();
-        // this.scene.graphics.lineStyle(2, 0xff0000);
-        // this.scene.graphics.lineStyle(1, 0x00ff00);
-        // this.scene.graphics.strokeLineShape(ray);
+    const playerBounds = Phaser.Geom.Rectangle.Inflate(this.player?.getBounds(), -15, -15);
+    if (!playerBounds) return;
 
-        const bounds = this.player?.getBounds();
-        const closestPoint = getClosestPointOnRect(bounds, this.getWorldPoint());
-        const toTarget = closestPoint.clone().subtract(this.getWorldPoint());
-        const distanceToTarget = toTarget.length();
+    // Check if the player is in front of the laser
+    const toPlayer = new Phaser.Math.Vector2(this.player.x - origin.x, this.player.y - origin.y);
+    if (toPlayer.dot(direction) < 0) return; // Behind the laser
 
-        if (distanceToTarget > 200) return;
+    // Ensure player is within max range
+    const closestPoint = getClosestPointOnRect(playerBounds, origin);
+    const distanceToTarget = Phaser.Math.Distance.BetweenPoints(origin, closestPoint);
+    if (distanceToTarget > this.length) return;
 
-        if (Phaser.Geom.Intersects.RectangleToRectangle(bounds, RectRay)) {
-            const hitRec = Phaser.Geom.Rectangle.Intersection(bounds, RectRay);
-            const hit = { x: hitRec.centerX, y: hitRec.centerY };
-            //this[handler]?.(target, true, hit);
-            this.player.hitLaser(hit);
-            // this.scene.graphics.fillStyle(0x00ff00, 0.5);
-            // this.scene.graphics.fillRectShape(target.getBounds());
-        }
+    // Check actual intersection (only returns true/false)
+    const didHit = Phaser.Geom.Intersects.LineToRectangle(ray, playerBounds);
+    if (didHit) {
+        this.player.hitLaser(closestPoint); // Or maybe use `this.player.x/y`
+        console.log('HIT', closestPoint);
+
+        // Debug
+        // const gfx = this.scene.add.graphics();
+        // gfx.lineStyle(2, 0xff0000);
+        // gfx.strokeLineShape(ray);
+        // gfx.fillStyle(0x00ff00, 0.5);
+        // gfx.fillPoint(closestPoint.x, closestPoint.y, 4);
     }
+}
+
+
 
     flicker() {
         // if (this.flickerTimer) {
@@ -96,33 +104,6 @@ export default class LaserSprite extends Phaser.GameObjects.TileSprite {
                 }
             }
         })
-    }
-
-    polygonRay() {
-        const start = new Phaser.Math.Vector2(this.x, this.y);
-        const end = start.clone().add(this.getForwardVector(this.length))
-        const dirX = this.getForwardVector(this.length).x;
-        const dirY = this.getForwardVector(this.length).y;
-
-        // Create perpendicular vector to the direction
-        const perp = new Phaser.Math.Vector2(-dirY, dirX).normalize().scale(1);
-
-        // Build a rectangle as a polygon from the start point
-        const p1 = start.clone().add(perp);
-        const p2 = end.clone().add(perp);
-        const p3 = end.clone().subtract(perp);
-        const p4 = start.clone().subtract(perp);
-
-        const rayPoly = new Phaser.Geom.Polygon([p1, p2, p3, p4]);
-        const rayRect = Phaser.Geom.Polygon.GetAABB(rayPoly);
-        // Phaser.Geom.Rectangle.Inflate(rayRect, 1, 1)
-
-        //Debug draw
-        // const graphics = this.scene.add.graphics();
-        // graphics.lineStyle(1, 0xffff00);
-        // graphics.strokePoints(rayPoly.points, true);
-
-        return rayRect;
     }
 
     getForwardVector(length = 100) {
