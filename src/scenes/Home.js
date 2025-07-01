@@ -143,6 +143,7 @@ export default class Home extends BaseGame {
                 case 'Home':
                     x = 5200;
                     y = 250;
+                    break;
                 case 'Level2':
                     x = this.portalData['portal2'].x;
                     y = this.portalData['portal2'].y;
