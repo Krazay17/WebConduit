@@ -276,7 +276,7 @@
                         {
                          "name":"power",
                          "type":"int",
-                         "value":1200
+                         "value":1050
                         }],
                  "rotation":321.743,
                  "type":"",
