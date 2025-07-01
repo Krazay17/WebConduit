@@ -19,6 +19,10 @@ export default class BaseGame extends Phaser.Scene {
 
   update(time, delta) {
     if (this.player && this.playerSpawned) this.player.handleInput(time, delta);
+    if (this.network.voiceChat) {
+
+      this.network.voiceChat.updateVolumes();
+    };
 
     // if (this.network) {
     //   this.network.socket.emit('playerMove', {
@@ -102,13 +106,19 @@ export default class BaseGame extends Phaser.Scene {
     const locationY = GameManager.useLastLocation ? GameManager.location.y : y;
 
     this.player = new Player(this, locationX, locationY);
-    if(this.spawnManager) {
+    if (this.spawnManager) {
       this.spawnManager.player = this.player;
     }
     if (GameManager.useLastLocation) {
       this.playerSpawned = true;
     }
     this.cameras.main.startFollow(this.player, false, .05, .05);
+
+    if(this.network.voiceChat){
+    this.network.voiceChat.setPlayerGetter(() => {
+      return {x: this.player.x, y: this.player.y};
+    });
+  }
 
 
     if (!this.scene.isActive('Inventory')) {

@@ -189,7 +189,7 @@ io.on('connection', (socket) => {
         highScores[level] = {};
       }
       if (!highScores[level][player]) {
-        highScores[level][player] = { time:parsedTime };
+        highScores[level][player] = { time: parsedTime };
         await saveHighScores(); // Save only if it's a new best
       } else if (parsedTime < highScores[level][player].time) {
         console.log(`[highScore] ${player} on ${level}: ${parsedTime}`);
@@ -201,6 +201,18 @@ io.on('connection', (socket) => {
 
     io.emit('highScoreUpdate', getScores());
   });
+
+  socket.on('signal', ({ to, data }) => {
+    io.to(to).emit('signal', { from: socket.id, data });
+    console.log('voice signal');
+  });
+
+  socket.on('join-voice', () => {
+    socket.broadcast.emit('user-joined', socket.id);
+    console.log('voice join');
+  });
+
+
 });
 
 // Auto-kick inactive players

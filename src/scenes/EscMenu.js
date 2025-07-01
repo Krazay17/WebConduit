@@ -40,17 +40,28 @@ export default class EscMenu extends Phaser.Scene {
         })
 
         // Slider track and handle
+        const sliderText = this.add.text(400, 390, 'master');
         const track = this.add.rectangle(600, 400, 200, 10, 0xffffff).setOrigin(0.5);
         const handle = this.add.circle(600, 400, 10, 0xff0000).setInteractive();
         this.input.setDraggable(handle);
+        handle.name = 'master';
         this.slider = { track, handle };
 
         // Slider track and handle
+        const sliderText1 = this.add.text(400, 440, 'music');
         const track1 = this.add.rectangle(600, 450, 200, 10, 0xffffff).setOrigin(0.5);
         const handle1 = this.add.circle(600, 450, 10, 0xff0000).setInteractive();
         this.input.setDraggable(handle1);
         handle1.name = 'music';
         this.slider1 = { track1, handle1 };
+        
+        // Slider track and handle
+        const sliderText2 = this.add.text(400, 490, 'voice');
+        const track2 = this.add.rectangle(600, 500, 200, 10, 0xffffff).setOrigin(0.5);
+        const handle2 = this.add.circle(600, 500, 10, 0xff0000).setInteractive();
+        this.input.setDraggable(handle2);
+        handle2.name = 'voice';
+        this.slider2 = { track2, handle2 };
 
         const donate = this.add.text(300, 25,
             'Made by: Josh Massarella\nDonate to help me make more games!', {
@@ -123,11 +134,13 @@ export default class EscMenu extends Phaser.Scene {
                 SoundUtil.currentMusic.volume = percent;
                 GameManager.volume.music = percent
                 GameManager.save();
-            } else {
+            } else if (gameObject.name === 'master'){
                 this.sound.volume = percent;
 
                 GameManager.volume.master = percent;
                 GameManager.save();
+            } else if(gameObject.name === 'voice') {
+                this.network.voiceChat.voiceVolume = percent;
             }
         });
 
@@ -149,6 +162,10 @@ export default class EscMenu extends Phaser.Scene {
         const minX1 = this.slider1.track1.x - this.slider1.track1.width / 2;
         const maxX1 = this.slider1.track1.x + this.slider1.track1.width / 2;
         this.slider1.handle1.x = Phaser.Math.Linear(minX1, maxX1, volume.music);
+
+        // const minX2 = this.slider2.track2.x - this.slider2.track2.width / 2;
+        // const maxX2 = this.slider2.track2.x + this.slider2.track2.width / 2;
+        // this.slider2.handle2.x = Phaser.Math.Linear(minX2, maxX2, volume.music);
     }
 
     openNameInput() {

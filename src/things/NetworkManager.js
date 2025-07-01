@@ -2,6 +2,7 @@ import io from 'https://cdn.socket.io/4.7.2/socket.io.esm.min.js';
 import GhostPlayer from './GhostPlayer.js';
 import GameManager from './GameManager.js';
 import PlayerUI from '../scenes/playerUI.js';
+import VoiceChatManager from './VoiceChatManager.js';
 
 export default class NetworkManager extends Phaser.Events.EventEmitter {
   static instance;
@@ -20,12 +21,21 @@ export default class NetworkManager extends Phaser.Events.EventEmitter {
         ? 'http://localhost:3000'
         : 'wss://webconduit.onrender.com';
 
+
+    //this.scene.events.on('shutdown', () => this.voiceChat.destroy());
+
     this.socket = io(serverURL, {
       reconnection: true,
       reconnectionAttempts: 10,
       reconnectionDelay: 1000,
       reconnectionDelayMax: 5000,
     });
+
+    this.voiceChat = new VoiceChatManager(
+      this.socket,
+      () => null,
+      (id) => this.otherPlayers[id]
+    );
 
     // On connection
     this.socket.on('connect', () => {
@@ -158,9 +168,7 @@ export default class NetworkManager extends Phaser.Events.EventEmitter {
     });
 
     this.socket.on('highScoreUpdate', (data) => {
-      console.log('highscore data: ', data);
       this.scene.updateScoreBoard(data);
-      console.log(this.scene);
     });
 
     this.socket.on('enemyStateUpdate', (data) => {
@@ -195,7 +203,6 @@ export default class NetworkManager extends Phaser.Events.EventEmitter {
     if (this.otherPlayers[id]) {
       this.otherPlayers[id].destroy();
     }
-    console.log(data);
 
     const ghost = new GhostPlayer(this.scene, id, data);
     this.otherPlayers[id] = ghost;
