@@ -31,15 +31,17 @@ export default class NetworkManager extends Phaser.Events.EventEmitter {
       reconnectionDelayMax: 5000,
     });
 
+    const normalizeId = (id) => String(id).replace(/^['"]+|['"]+$/g, '').trim();
+
     this.voiceChat = new VoiceChatManager(
       this.socket,
       () => null,
-      (id) => this.otherPlayers[id.replace(/^['"]+|['"]+$/g, '')]
+      (id) => this.otherPlayers[normalizeId(id)]
     );
+
     if (this.voiceChat) {
       setInterval(() => {
-      this.voiceChat.updateVolumes();
-
+        this.voiceChat.updateVolumes();
       }, 200);
     };
 

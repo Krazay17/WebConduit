@@ -79,7 +79,10 @@ export default class VoiceChatManager {
   }
 
   _createPeerConnection(id) {
-    const pc = new RTCPeerConnection();
+    const pc = new RTCPeerConnection({
+      iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
+    });
+
 
     if (this.modifiedStream) {
       this.modifiedStream.getTracks().forEach(track => {
