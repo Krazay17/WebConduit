@@ -22,12 +22,15 @@ export default class VoiceChatManager {
       this.localStream = await navigator.mediaDevices.getUserMedia({ audio: true });
 
       const source = this.audioContext.createMediaStreamSource(this.localStream);
+
       this.gainNode = this.audioContext.createGain();
-
-      source.connect(this.gainNode);
-
+      this.compressor = this.audioContext.createDynamicsCompressor();
       const dest = this.audioContext.createMediaStreamDestination();
-      this.gainNode.connect(dest);
+
+      source
+        .connect(this.gainNode)
+        .connect(this.compressor)
+        .connect(dest);
 
       this.modifiedStream = dest.stream;
 
@@ -73,9 +76,10 @@ export default class VoiceChatManager {
       }
     });
 
-    this.socket.on('user-left', (id) => {
+    this.socket.on('playerLeft', (id) => {
       this._removePeer(id);
     });
+
   }
 
   _createPeerConnection(id) {
@@ -96,16 +100,32 @@ export default class VoiceChatManager {
       }
     };
 
-    pc.ontrack = (event) => {
-      const [stream] = event.streams;
-      const audio = document.createElement('audio');
-      audio.srcObject = stream;
-      audio.autoplay = true;
-      audio.volume = 0;
-      document.body.appendChild(audio);
+pc.ontrack = (event) => {
+  const [stream] = event.streams;
 
-      this.remoteAudioElements[id] = audio;
-    };
+  // 🎤 Create media source from the remote stream
+  const source = this.audioContext.createMediaStreamSource(stream);
+
+  // 🔊 Gain node for per-player volume
+  const gain = this.audioContext.createGain();
+
+  // 🧠 Panner node for spatial audio
+  const panner = this.audioContext.createPanner();
+  panner.panningModel = 'HRTF'; // more realistic sound falloff
+  panner.distanceModel = 'linear';
+  panner.maxDistance = this.maxDistance || 800;
+  panner.rolloffFactor = 1; // how quickly volume drops with distance
+  panner.refDistance = 1;
+
+  // 🎚️ Connect the audio chain: source → panner → gain → destination
+  source.connect(panner);
+  panner.connect(gain);
+  gain.connect(this.audioContext.destination);
+
+  // 📦 Save for updates later
+  this.remoteAudioElements[id] = { source, panner, gain };
+};
+
 
     return pc;
   }
@@ -116,24 +136,45 @@ export default class VoiceChatManager {
     }
   }
 
-  updateVolumes() {
-    const selfPos = this.getPlayerPosition();
-    if (!selfPos) return;
-
-    for (const [id, audio] of Object.entries(this.remoteAudioElements)) {
-      const remote = this.getRemotePlayerById(id);
-
-      if (!remote) {
-        console.warn(`🔇 Remote player not found: ${id}`);
-        continue;
-      }
-
-      const dist = Phaser.Math.Distance.Between(selfPos.x, selfPos.y, remote.x, remote.y);
-      audio.volume = dist > this.maxDistance
-        ? 0
-        : (1 - dist / this.maxDistance) * GameManager.volume.voice;
+  setPan(valueX, valueY) {
+    if (this.panNode) {
+      this.panNode.positionX.value = Phaser.Math.Clamp(valueX, -1, 1);
+      this.panNode.positionY.value = Phaser.Math.Clamp(valueY, -1, 1);
     }
   }
+
+  setCompression({ threshold = -50, ratio = 12 } = {}) {
+    if (this.compressor) {
+      this.compressor.threshold.value = threshold;
+      this.compressor.ratio.value = ratio;
+    }
+  }
+
+updateVolumes() {
+  const selfPos = this.getPlayerPosition();
+  if (!selfPos) return;
+
+  for (const [id, audioNodes] of Object.entries(this.remoteAudioElements)) {
+    const remote = this.getRemotePlayerById(id);
+    if (!remote) continue;
+
+    const { x: sx, y: sy } = selfPos;
+    const { x: rx, y: ry } = remote;
+
+    const dist = Phaser.Math.Distance.Between(sx, sy, rx, ry);
+
+    // Update gain (volume falloff)
+    const volume = dist > this.maxDistance
+      ? 0
+      : (1 - dist / this.maxDistance) * GameManager.volume.voice;
+
+    audioNodes.gain.gain.value = Phaser.Math.Clamp(volume, 0, 1);
+
+    // Update panner 3D position
+    audioNodes.panner.setPosition(rx, ry, 0); // 2D game, so z = 0
+  }
+}
+
 
   _removePeer(id) {
     if (this.peerConnections[id]) {
