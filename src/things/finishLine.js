@@ -4,7 +4,7 @@ import Pickup from "./Pickup";
 export default class FinishLine extends Pickup {
     constructor(scene, x, y, obj) {
         super(scene, x, y, 'finishline');
-
+        this.scene.finishLine = this;
     }
 
     playerCollide() {

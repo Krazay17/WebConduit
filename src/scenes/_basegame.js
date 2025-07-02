@@ -4,6 +4,7 @@ import GameManager from '../things/GameManager.js';
 import SpawnManager from '../things/_spawnmanager.js';
 import WeaponGroup from '../weapons/WeaponGroup.js';
 import SoundUtil from '../things/soundUtils.js';
+import ScoreBoard from '../things/scoreBoard.js';
 
 export default class BaseGame extends Phaser.Scene {
   constructor(key) {
@@ -463,8 +464,32 @@ export default class BaseGame extends Phaser.Scene {
     })
   }
 
+
   updateScoreBoard(data) {
+    if (!this.scoreBoard) {
+      this.scoreBoard = {};
+    }
 
+    if (!data) return;
+
+    data.forEach(obj => {
+      switch (obj.level) {
+        case this.key:
+          let x = this.finishLine?.x ?? 0;
+          let y = this.finishLine?.y ?? 0;
+          // recreate scoreboard
+          if (this.scoreBoard[obj.level]) {
+            this.scoreBoard[obj.level].destroy();
+          }
+
+          const board = new ScoreBoard(this, x + 135, y - 125, obj.scores);
+          this.add.existing(board);
+          this.scoreBoard[obj.level] = board;
+          console.log('Scoreboard updated for level:', obj.level);
+          break;
+        default:
+          break;
+      }
+    })
   }
-
 }
