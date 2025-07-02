@@ -30,7 +30,24 @@ export default class BaseGame extends Phaser.Scene {
     //   });
     // }
   }
+  _ensureMediaElementPlayback(audioContext) {
+    if (audioContext.state !== 'running') {
+      return;
+    }
 
+    const silentAudio = new Audio('assets/Whip1.wav');
+    silentAudio.volume = 0.001;
+    silentAudio.preload = 'auto';
+
+    silentAudio.play().then(() => {
+      console.log('Silent audio played to unlock media elements.');
+      silentAudio.pause();
+      silentAudio.src = '';
+      silentAudio.load();
+    }).catch(e => {
+      console.warn('Silent audio play failed:', e);
+    });
+  }
   setupWorld(xleft = -1600, ytop = 0, width = 6400, height = 6400) {
     this.physics.world.setBounds(xleft, ytop, width, height);
     this.bounds = this.physics.world.bounds;
@@ -38,6 +55,28 @@ export default class BaseGame extends Phaser.Scene {
 
     this.network = new NetworkManager(this);
     this.spawnManager = new SpawnManager(this)
+
+
+    document.body.addEventListener('click', (event) => {
+      if (!this.network.voiceChat || !this.network.voiceChat.audioContext) {
+        return;
+      }
+
+      const audioContext = this.network.voiceChat.audioContext;
+
+      if (audioContext.state === 'suspended') {
+        audioContext.resume().then(() => {
+          console.log('AudioContext resumed.');
+          this._ensureMediaElementPlayback(audioContext);
+        }).catch(e => {
+          console.error('Failed to resume AudioContext:', e);
+        });
+      } else {
+        console.log('AudioContext already running.');
+        this._ensureMediaElementPlayback(audioContext);
+      }
+    }, { once: true });
+
 
     this.network.refreshScene(this);
 
@@ -113,11 +152,11 @@ export default class BaseGame extends Phaser.Scene {
     }
     this.cameras.main.startFollow(this.player, false, .05, .05);
 
-    if(this.network.voiceChat){
-    this.network.voiceChat.setPlayerGetter(() => {
-      return {x: this.player.x, y: this.player.y};
-    });
-  }
+    if (this.network.voiceChat) {
+      this.network.voiceChat.setPlayerGetter(() => {
+        return { x: this.player.x, y: this.player.y };
+      });
+    }
 
 
     if (!this.scene.isActive('Inventory')) {

@@ -204,14 +204,12 @@ io.on('connection', (socket) => {
 
   socket.on('signal', ({ to, data }) => {
     io.to(to).emit('signal', { from: socket.id, data });
-    console.log('voice signal');
   });
 
   socket.on('join-voice', () => {
     socket.broadcast.emit('user-joined', socket.id);
     console.log('voice join');
   });
-
 
 });
 

@@ -1,3 +1,4 @@
+import { mapRangeClamped } from "../myFunctions.js";
 import GameManager from "../things/GameManager.js";
 import NetworkManager from "../things/NetworkManager.js";
 import SoundUtil from "../things/soundUtils.js";
@@ -152,6 +153,7 @@ export default class EscMenu extends Phaser.Scene {
                 this.network.voiceChat.updateVolumes();
                 GameManager.save();
             } else if(gameObject.name === 'mic') {
+                const value = mapRangeClamped(percent, 0, 1, -3, 3);
                 this.network.voiceChat.setMicVolume(percent);
             }
         });

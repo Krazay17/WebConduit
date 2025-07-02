@@ -11,7 +11,7 @@ export default class VoiceChatManager {
     this.localStream = null;
     this.modifiedStream = null;
 
-    this.maxDistance = 800;
+    this.maxDistance = 1100;
 
     this._initMic().then(() => this._setupSocketHandlers());
   }
@@ -22,15 +22,12 @@ export default class VoiceChatManager {
       this.localStream = await navigator.mediaDevices.getUserMedia({ audio: true });
 
       const source = this.audioContext.createMediaStreamSource(this.localStream);
-
       this.gainNode = this.audioContext.createGain();
-      this.compressor = this.audioContext.createDynamicsCompressor();
-      const dest = this.audioContext.createMediaStreamDestination();
 
-      source
-        .connect(this.gainNode)
-        .connect(this.compressor)
-        .connect(dest);
+      source.connect(this.gainNode);
+
+      const dest = this.audioContext.createMediaStreamDestination();
+      this.gainNode.connect(dest);
 
       this.modifiedStream = dest.stream;
 
@@ -78,8 +75,8 @@ export default class VoiceChatManager {
 
     this.socket.on('playerLeft', (id) => {
       this._removePeer(id);
+      console.log(`👤 Player left: ${id}`);
     });
-
   }
 
   _createPeerConnection(id) {
@@ -100,32 +97,16 @@ export default class VoiceChatManager {
       }
     };
 
-pc.ontrack = (event) => {
-  const [stream] = event.streams;
+    pc.ontrack = (event) => {
+      const [stream] = event.streams;
+      const audio = document.createElement('audio');
+      audio.srcObject = stream;
+      audio.autoplay = true;
+      audio.volume = 0;
+      document.body.appendChild(audio);
 
-  // 🎤 Create media source from the remote stream
-  const source = this.audioContext.createMediaStreamSource(stream);
-
-  // 🔊 Gain node for per-player volume
-  const gain = this.audioContext.createGain();
-
-  // 🧠 Panner node for spatial audio
-  const panner = this.audioContext.createPanner();
-  panner.panningModel = 'HRTF'; // more realistic sound falloff
-  panner.distanceModel = 'linear';
-  panner.maxDistance = this.maxDistance || 800;
-  panner.rolloffFactor = 1; // how quickly volume drops with distance
-  panner.refDistance = 1;
-
-  // 🎚️ Connect the audio chain: source → panner → gain → destination
-  source.connect(panner);
-  panner.connect(gain);
-  gain.connect(this.audioContext.destination);
-
-  // 📦 Save for updates later
-  this.remoteAudioElements[id] = { source, panner, gain };
-};
-
+      this.remoteAudioElements[id] = audio;
+    };
 
     return pc;
   }
@@ -136,45 +117,25 @@ pc.ontrack = (event) => {
     }
   }
 
-  setPan(valueX, valueY) {
-    if (this.panNode) {
-      this.panNode.positionX.value = Phaser.Math.Clamp(valueX, -1, 1);
-      this.panNode.positionY.value = Phaser.Math.Clamp(valueY, -1, 1);
+  updateVolumes() {
+    const selfPos = this.getPlayerPosition();
+    if (!selfPos) return;
+
+    for (const [id, audio] of Object.entries(this.remoteAudioElements)) {
+      const remote = this.getRemotePlayerById(id);
+
+      if (!remote) {
+        console.warn(`🔇 Remote player not found: ${id}`);
+        this._removePeer(id); // <-- Actively remove them here too
+        continue;
+      }
+
+      const dist = Phaser.Math.Distance.Between(selfPos.x, selfPos.y, remote.x, remote.y);
+      audio.volume = dist > this.maxDistance
+        ? 0
+        : (1 - dist / this.maxDistance) * GameManager.volume.voice;
     }
   }
-
-  setCompression({ threshold = -50, ratio = 12 } = {}) {
-    if (this.compressor) {
-      this.compressor.threshold.value = threshold;
-      this.compressor.ratio.value = ratio;
-    }
-  }
-
-updateVolumes() {
-  const selfPos = this.getPlayerPosition();
-  if (!selfPos) return;
-
-  for (const [id, audioNodes] of Object.entries(this.remoteAudioElements)) {
-    const remote = this.getRemotePlayerById(id);
-    if (!remote) continue;
-
-    const { x: sx, y: sy } = selfPos;
-    const { x: rx, y: ry } = remote;
-
-    const dist = Phaser.Math.Distance.Between(sx, sy, rx, ry);
-
-    // Update gain (volume falloff)
-    const volume = dist > this.maxDistance
-      ? 0
-      : (1 - dist / this.maxDistance) * GameManager.volume.voice;
-
-    audioNodes.gain.gain.value = Phaser.Math.Clamp(volume, 0, 1);
-
-    // Update panner 3D position
-    audioNodes.panner.setPosition(rx, ry, 0); // 2D game, so z = 0
-  }
-}
-
 
   _removePeer(id) {
     if (this.peerConnections[id]) {
@@ -182,11 +143,17 @@ updateVolumes() {
       delete this.peerConnections[id];
     }
 
-    if (this.remoteAudioElements[id]) {
-      this.remoteAudioElements[id].remove();
+    const audio = this.remoteAudioElements[id];
+    if (audio) {
+      try {
+        audio.remove(); // DOM remove
+      } catch (e) {
+        console.warn(`Failed to remove audio for ${id}`, e);
+      }
       delete this.remoteAudioElements[id];
     }
   }
+
 
   destroy() {
     Object.keys(this.peerConnections).forEach(id => this._removePeer(id));

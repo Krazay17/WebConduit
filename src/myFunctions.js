@@ -15,3 +15,20 @@ export function changeCollision(object, x, y, xOffset = 0, yOffset = 0) {
         ((object.height - y) / 2) + yOffset
     );
 }
+
+export function lerp(start, end, t) {
+    return start + (end - start) * t;
+}
+
+export function mapRangeClamped(value, inMin, inMax, outMin, outMax) {
+    if (inMin === inMax) return outMin; // Avoid divide by zero
+
+    // Normalize input range to 0–1
+    let t = (value - inMin) / (inMax - inMin);
+
+    // Clamp the normalized value
+    t = Math.max(0, Math.min(1, t));
+
+    // Remap to output range
+    return outMin + (outMax - outMin) * t;
+}
