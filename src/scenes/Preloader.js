@@ -40,6 +40,7 @@ export default class Preloader extends Phaser.Scene {
         this.load.image('portal0', 'assets/Portal1.png');
         this.load.image('portal1', 'assets/Portal2.png');
         this.load.image('largeplatform', 'assets/LargePlatform.webp');
+        this.load.image('devilMan', 'assets/DevilMan.png');
         this.load.image('devilTable', 'assets/DevilTable.png');
         this.load.image('potion', 'assets/Potion.png');
 

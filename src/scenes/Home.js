@@ -32,6 +32,7 @@ export default class Home extends BaseGame {
         // largePlatform.refreshBody();
 
         this.setupPortals();
+        this.setupShop();
 
         this.network.socket.emit('highScoreRequest');
     }
@@ -193,4 +194,12 @@ export default class Home extends BaseGame {
         });
     }
 
+    setupShop() {
+        this.add.image(2230, 3225, 'devilMan').setScale(.15);
+        this.add.image(2260, 3280, 'devilTable').setScale(.3);
+        this.add.image(2360, 3240, 'potion').setScale(.19).setTint(0x00FF00);
+        this.add.image(2500, 3200, 'potion').setScale(.16);
+        this.add.image(2150, 3240, 'potion').setScale(.22);
+        this.add.image(2050, 3230, 'potion').setScale(.20).setTint(0x00FFFF);
+    }
 }
