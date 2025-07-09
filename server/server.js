@@ -56,7 +56,7 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: [
-      "https://krazay17.github.io",
+      "https://conduit.bar",
       "http://localhost:5173",
       "http://10.0.0.194:5173",
     ],
