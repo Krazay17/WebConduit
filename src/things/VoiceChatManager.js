@@ -13,12 +13,19 @@ export default class VoiceChatManager {
 
     this.maxDistance = 1100;
 
-    this._initMic().then(() => this._setupSocketHandlers());
+    //this._initMic().then(() => this._setupSocketHandlers());
   }
 
   async _initMic() {
+
     try {
       this.audioContext = new AudioContext();
+
+      // 🔑 Resume the context after user gesture
+      if (this.audioContext.state === 'suspended') {
+        await this.audioContext.resume();
+      }
+
       this.localStream = await navigator.mediaDevices.getUserMedia({ audio: true });
 
       const source = this.audioContext.createMediaStreamSource(this.localStream);
@@ -33,6 +40,9 @@ export default class VoiceChatManager {
 
       // 🔔 Let others know we're ready to talk
       this.socket.emit('join-voice');
+
+      this._setupSocketHandlers()
+
     } catch (e) {
       console.error('❌ Failed to access mic:', e);
     }

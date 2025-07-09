@@ -57,26 +57,31 @@ export default class BaseGame extends Phaser.Scene {
     this.network = new NetworkManager(this);
     this.spawnManager = new SpawnManager(this)
 
+    this.input.once('pointerdown', () => {
+      this.network.voiceChat._initMic();
+    });
 
-    document.body.addEventListener('click', (event) => {
-      if (!this.network.voiceChat || !this.network.voiceChat.audioContext) {
-        return;
-      }
 
-      const audioContext = this.network.voiceChat.audioContext;
 
-      if (audioContext.state === 'suspended') {
-        audioContext.resume().then(() => {
-          console.log('AudioContext resumed.');
-          this._ensureMediaElementPlayback(audioContext);
-        }).catch(e => {
-          console.error('Failed to resume AudioContext:', e);
-        });
-      } else {
-        console.log('AudioContext already running.');
-        this._ensureMediaElementPlayback(audioContext);
-      }
-    }, { once: true });
+    // document.body.addEventListener('click', (event) => {
+    //   if (!this.network.voiceChat || !this.network.voiceChat.audioContext) {
+    //     return;
+    //   }
+
+    //   const audioContext = this.network.voiceChat.audioContext;
+
+    //   if (audioContext.state === 'suspended') {
+    //     audioContext.resume().then(() => {
+    //       console.log('AudioContext resumed.');
+    //       this._ensureMediaElementPlayback(audioContext);
+    //     }).catch(e => {
+    //       console.error('Failed to resume AudioContext:', e);
+    //     });
+    //   } else {
+    //     console.log('AudioContext already running.');
+    //     this._ensureMediaElementPlayback(audioContext);
+    //   }
+    // }, { once: true });
 
 
     this.network.refreshScene(this);
