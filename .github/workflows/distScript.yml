@@ -39,6 +39,8 @@ jobs:
         run: npm ci
       - name: Build
         run: npm run build
+      - name: Add CNAME
+        run: echo 'www.conduit.bar' > dist/CNAME
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
