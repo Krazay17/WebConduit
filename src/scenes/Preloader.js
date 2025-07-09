@@ -42,6 +42,8 @@ export default class Preloader extends Phaser.Scene {
         this.load.image('portal1', 'assets/Portal2.png');
         this.load.image('largeplatform', 'assets/LargePlatform.webp');
         this.load.image('redsky0', 'assets/RedSky0.webp');
+        this.load.image('DevilTable', 'assets/DevilTable.png');
+        this.load.image('Potion', 'assets/Potion.png');
 
         this.load.audio('music0', 'assets/music0.mp3');
         this.load.audio('music1', 'assets/music1.mp3');
