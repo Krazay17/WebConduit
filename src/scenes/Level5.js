@@ -1,5 +1,6 @@
 import BaseGame from "./_basegame";
 
+// tutorial
 export default class Level5 extends BaseGame {
     constructor() {
         super('Level5');
@@ -13,6 +14,6 @@ export default class Level5 extends BaseGame {
         this.setupGroups();
         this.setupTileMap('tilemap5');
         this.setupCollisions();
-        this.setupMusic();
+        this.setupMusic('music1');
     }
 }

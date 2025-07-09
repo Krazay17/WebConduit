@@ -140,9 +140,10 @@ export default class EscMenu extends Phaser.Scene {
             const percent = (dragX - minX) / (maxX - minX);
 
             if (gameObject.name === 'music') {
-                SoundUtil.currentMusic.volume = percent;
                 GameManager.volume.music = percent
                 GameManager.save();
+                if(!SoundUtil.currentMusic) return;
+                SoundUtil.currentMusic.volume = percent;
             } else if (gameObject.name === 'master'){
                 this.sound.volume = percent;
 

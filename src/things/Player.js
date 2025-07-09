@@ -324,7 +324,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
     handleInput(time, delta) {
         if (!this.body || !this.body.velocity) return;
-        if(this.chatting) {
+        if (this.chatting) {
             this.setState('idle');
             this.states[this.currentState].update(delta, {}, time);
         }
@@ -1139,6 +1139,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     TakeDamage(x, y, damage = 1, stunDuration = 300) {
         if (this.iFrame) return false;
         if (this.hitCD) return false;
+        if (!this.alive) return false;
 
         this.hitCD = true;
         this.scene.time.addEvent({

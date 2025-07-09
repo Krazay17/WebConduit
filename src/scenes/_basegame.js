@@ -31,24 +31,24 @@ export default class BaseGame extends Phaser.Scene {
     //   });
     // }
   }
-  _ensureMediaElementPlayback(audioContext) {
-    if (audioContext.state !== 'running') {
-      return;
-    }
+  // _ensureMediaElementPlayback(audioContext) {
+  //   if (audioContext.state !== 'running') {
+  //     return;
+  //   }
 
-    const silentAudio = new Audio('assets/Whip1.wav');
-    silentAudio.volume = 0.001;
-    silentAudio.preload = 'auto';
+  //   const silentAudio = new Audio('assets/Whip1.wav');
+  //   silentAudio.volume = 0.001;
+  //   silentAudio.preload = 'auto';
 
-    silentAudio.play().then(() => {
-      console.log('Silent audio played to unlock media elements.');
-      silentAudio.pause();
-      silentAudio.src = '';
-      silentAudio.load();
-    }).catch(e => {
-      console.warn('Silent audio play failed:', e);
-    });
-  }
+  //   silentAudio.play().then(() => {
+  //     console.log('Silent audio played to unlock media elements.');
+  //     silentAudio.pause();
+  //     silentAudio.src = '';
+  //     silentAudio.load();
+  //   }).catch(e => {
+  //     console.warn('Silent audio play failed:', e);
+  //   });
+  // }
   setupWorld(xleft = -1600, ytop = 0, width = 6400, height = 6400) {
     this.physics.world.setBounds(xleft, ytop, width, height);
     this.bounds = this.physics.world.bounds;
@@ -58,25 +58,25 @@ export default class BaseGame extends Phaser.Scene {
     this.spawnManager = new SpawnManager(this)
 
 
-    document.body.addEventListener('click', (event) => {
-      if (!this.network.voiceChat || !this.network.voiceChat.audioContext) {
-        return;
-      }
+    // document.body.addEventListener('click', (event) => {
+    //   if (!this.network.voiceChat || !this.network.voiceChat.audioContext) {
+    //     return;
+    //   }
 
-      const audioContext = this.network.voiceChat.audioContext;
+    //   const audioContext = this.network.voiceChat.audioContext;
 
-      if (audioContext.state === 'suspended') {
-        audioContext.resume().then(() => {
-          console.log('AudioContext resumed.');
-          this._ensureMediaElementPlayback(audioContext);
-        }).catch(e => {
-          console.error('Failed to resume AudioContext:', e);
-        });
-      } else {
-        console.log('AudioContext already running.');
-        this._ensureMediaElementPlayback(audioContext);
-      }
-    }, { once: true });
+    //   if (audioContext.state === 'suspended') {
+    //     audioContext.resume().then(() => {
+    //       console.log('AudioContext resumed.');
+    //       this._ensureMediaElementPlayback(audioContext);
+    //     }).catch(e => {
+    //       console.error('Failed to resume AudioContext:', e);
+    //     });
+    //   } else {
+    //     console.log('AudioContext already running.');
+    //     this._ensureMediaElementPlayback(audioContext);
+    //   }
+    // }, { once: true });
 
 
     this.network.refreshScene(this);
@@ -333,7 +333,7 @@ export default class BaseGame extends Phaser.Scene {
     }
   }
 
-  setupMusic(key = 'music1') {
+  setupMusic(key) {
     const shutdownHandler = () => {
     }
 
@@ -342,10 +342,16 @@ export default class BaseGame extends Phaser.Scene {
     this.sound.pauseOnBlur = false;
     this.sfx = {};
 
-    this.events.once('shutdown', () => {
-      SoundUtil.savePosition();
+    this.events.on('shutdown', () => {
+      for (const key in this.sfx) {
+        this.sfx[key].forEach(sound => {
+          sound.stop();
+          sound.destroy();
+        });
+      }
       this.sfx = {};
     });
+
   }
 
   setupPlatforms(platformPos = [[0, 800]]) {

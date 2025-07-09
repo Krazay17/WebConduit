@@ -2,13 +2,23 @@ import GameManager from "./GameManager.js";
 
 const lastPlayTimes = {};
 const MIN_INTERVAL = 33; // ms per sound ID
+let sfxPool = {};
 
 export default class SoundUtil {
     static currentMusic = null;
     static currentKey = '';
     static storedTime = 0;
 
-    static setup(scene, key = 'music1', volume = 1) {
+
+    static setup(scene, key, volume = 1) {
+        if (!key) {
+            if (this.currentMusic) {
+                this.storedTime = this.currentMusic.seek;
+                this.currentMusic.stop();
+                this.currentMusic.destroy();
+            }
+            return;
+        }
         // Check if same music is already playing
         const existingMusic = scene.game.sound.get(key);
 
@@ -42,6 +52,7 @@ export default class SoundUtil {
             this.storedTime = this.currentMusic.seek;
         }
     }
+
 }
 
 
@@ -55,14 +66,14 @@ export function playHitSound(scene, soundKey, options = {}) {
     if (now - lastTime > (options.cooldown || MIN_INTERVAL)) {
         lastPlayTimes[soundKey] = now;
 
-        if (!scene.sfx[soundKey]) {
-            scene.sfx[soundKey] = [];
+        if (!sfxPool[soundKey]) {
+            sfxPool[soundKey] = [];
             for (let i = 0; i < (options.poolSize || 6); i++) {
-                scene.sfx[soundKey].push(scene.sound.add(soundKey));
+                sfxPool[soundKey].push(scene.sound.add(soundKey));
             }
         }
 
-        const pool = scene.sfx[soundKey];
+        const pool = sfxPool[soundKey];
         const sound = pool.find(s => !s.isPlaying) || pool[0]; // grab idle sound or first one
 
         sound.play({
@@ -82,14 +93,14 @@ export function playSound(scene, soundKey, options = {}) {
     if (now - lastTime > (options.cooldown || MIN_INTERVAL)) {
         lastPlayTimes[soundKey] = now;
 
-        if (!scene.sfx[soundKey]) {
-            scene.sfx[soundKey] = [];
+        if (!sfxPool[soundKey]) {
+            sfxPool[soundKey] = [];
             for (let i = 0; i < (options.poolSize || 6); i++) {
-                scene.sfx[soundKey].push(scene.sound.add(soundKey));
+                sfxPool[soundKey].push(scene.sound.add(soundKey));
             }
         }
 
-        const pool = scene.sfx[soundKey];
+        const pool = sfxPool[soundKey];
         const sound = pool.find(s => !s.isPlaying) || pool[0]; // grab idle sound or first one
 
         sound.play({
