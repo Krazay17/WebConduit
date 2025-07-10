@@ -203,9 +203,9 @@ export default class Home extends BaseGame {
                 repeat: -1,
                 frames: [
                     {frame: 0, duration: 5000},
-                    {frame: 1, duration: 550},
+                    {frame: 1, duration: 450},
                     {frame: 0, duration: 4000},
-                    {frame: 1, duration: 550},
+                    {frame: 1, duration: 500},
                     {frame: 0, duration: 3000},
                     {frame: 3, duration: 2000},
                 ],

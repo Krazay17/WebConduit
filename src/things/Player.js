@@ -277,6 +277,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         // this.scene.setupRaceTimer();
         // this.spectatePlayer(false);
         // this.scene.physics?.resume();
+        this.leftWeapon.release();
+        this.rightWeapon.release();
         this.setVelocity(0, 0);
         GameManager.useLastLocation = false;
         GameManager.stats.health = 25;

@@ -55,6 +55,11 @@ export default class VoiceChatManager {
         return;
       }
 
+      if (this.peerConnections[id]) {
+        console.warn(`⚠️ Already connected to ${id}, skipping`);
+        return;
+      }
+
       const pc = this._createPeerConnection(id);
       this.peerConnections[id] = pc;
 
@@ -66,6 +71,7 @@ export default class VoiceChatManager {
 
     this.socket.on('signal', async ({ from, data }) => {
       let pc = this.peerConnections[from];
+      
       if (!pc) {
         pc = this._createPeerConnection(from);
         this.peerConnections[from] = pc;

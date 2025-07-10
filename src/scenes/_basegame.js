@@ -58,7 +58,11 @@ export default class BaseGame extends Phaser.Scene {
     this.spawnManager = new SpawnManager(this)
 
     this.input.once('pointerdown', () => {
-      this.network.voiceChat._initMic();
+      if (!this.network.voiceChat.audioContext) {
+        console.log(this.network.voiceChat.audioContext)
+
+        this.network.voiceChat._initMic();
+      }
     });
 
 
