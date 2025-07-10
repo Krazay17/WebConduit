@@ -18,31 +18,65 @@ import Level7 from './scenes/Leve7.js'
 
 
 const config = {
-    type: Phaser.AUTO,
-    width: window.innerWidth,
-    height: window.innerHeight,
-    backgroundColor: '#000000',
-    scale: {
-      mode: Phaser.Scale.RESIZE,
-      autoCenter: Phaser.Scale.CENTER_BOTH
-    },
-    physics: {
-      default: 'arcade',
-      arcade: {
-        gravity: {y: 720, x: 0},
-        timescale: 1,
-        // fps: 60,
-        // fixedStep: true,
-        tileBias: 55,
-        debug: false,
-      }
-    },
-    parent: 'body',
-    dom: {
-      createContainer: true,
-    },
-    scene: [Boot, Preloader, Home, Level1, Level2, Level3, Level4, Level5, Level6, Level7, LevelYaya1,
-      PlayerUI, Inventory, EscMenu],
+  type: Phaser.AUTO,
+  width: window.innerWidth,
+  height: window.innerHeight,
+  backgroundColor: '#000000',
+  scale: {
+    mode: Phaser.Scale.RESIZE,
+    autoCenter: Phaser.Scale.CENTER_BOTH
+  },
+  physics: {
+    default: 'arcade',
+    arcade: {
+      gravity: { y: 720, x: 0 },
+      timescale: 1,
+      // fps: 60,
+      // fixedStep: true,
+      tileBias: 55,
+      debug: false,
+    }
+  },
+  parent: 'conduit-game',
+  input: {
+    mouse: {
+      wheel: true,
+      preventDefaultWheel: false,
+    }
+  },
+  dom: {
+    createContainer: true,
+  },
+
+  scene: [Boot, Preloader, Home, Level1, Level2, Level3, Level4, Level5, Level6, Level7, LevelYaya1,
+    PlayerUI, Inventory, EscMenu],
 };
 
 let game = new Phaser.Game(config);
+
+const resizeGame = () => {
+  const width = window.innerWidth;
+  const height = window.innerHeight;
+  game.scale.resize(width, height);
+};
+
+resizeGame(); // Initial call just in case
+
+// A. Use ResizeObserver for layout-triggered changes
+if ('ResizeObserver' in window) {
+  const ro = new ResizeObserver(() => {
+    resizeGame();
+  });
+  ro.observe(document.body);
+}
+
+// B. Fallback: also monitor window resize (catches maximize/minimize)
+window.addEventListener('resize', () => {
+  setTimeout(resizeGame, 50); // delay helps when toggling F12
+});
+
+window.addEventListener('keydown', function (e) {
+  if (e.code === 'Space' && e.target === document.body) {
+    e.preventDefault(); // Prevent page from scrolling
+  }
+});

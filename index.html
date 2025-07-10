@@ -17,11 +17,38 @@
   <meta property="og:type" content="website">
   <link rel="icon" type="image/x-icon" href="/assets/AuraIco.ico">
   <style>
-    body {
+    html, body {
       margin: 0;
       padding: 0;
-      overflow: hidden;
-      background-color: rgb(16, 138, 0);
+      height: 100%;
+      scroll-behavior: smooth;
+      overflow-y: scroll;
+      background-color: darkgreen;
+    }
+
+    html {
+      scrollbar-width: none;
+    }
+
+    body::-webkit-scrollbar {
+      display: none;
+    }
+
+    section {
+      height: 100vh;
+      scroll-snap-align: start;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #game-section {
+      background-color: chartreuse;
+    }
+
+    #conduit-game {
+      width: 100%;
+      height: 100%;
     }
 
     canvas {
@@ -45,14 +72,26 @@
 
 <body>
 
-<h1 class="visually-hidden">Conduit - Fast-Paced Indie 2D Platformer Game with AFK Farming and Online Racing</h1>
-<p class="visually-hidden">
-    Conduit is a high-speed 2D platformer that combines deep movement mechanics with AFK farming, 
-    massive enemy hordes, challenging boss fights, online racing, and character progression. 
-    Slash your way through waves of enemies, upgrade your abilities, and compete on the leaderboards in this solo-developed indie action platformer.
-</p>
+  <section id="game-section">
+    <div id="conduit-game"></div>
+  </section>
+
+  <section id="info-section">
+    <div style="color: white; font-size: 2rem;">
+      <p>Chat.</p>
+    </div>
+  </section>
+
+  <h1 class="visually-hidden">Conduit - Fast-Paced Indie 2D Platformer Game with AFK Farming and Online Racing</h1>
+  <p class="visually-hidden">
+    Conduit is a high-speed 2D platformer that combines deep movement mechanics with AFK farming,
+    massive enemy hordes, challenging boss fights, online racing, and character progression.
+    Slash your way through waves of enemies, upgrade your abilities, and compete on the leaderboards in this
+    solo-developed indie action platformer.
+  </p>
 
   <script type="module" src="/src/main.js"></script>
   <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
 </body>
+
 </html>

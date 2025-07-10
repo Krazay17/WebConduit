@@ -86,22 +86,23 @@ export default class BaseGame extends Phaser.Scene {
 
     this.network.refreshScene(this);
 
-    this.input.on('wheel', (wheel) => {
-      if (!this.zoom) this.zoom = 1;
-      // Step 1: Adjust zoom
-      this.zoom -= wheel.deltaY / 1000;
+    // Scroll wheel to zoom
+    // this.input.on('wheel', (wheel) => {
+    //   if (!this.zoom) this.zoom = 1;
+    //   // Step 1: Adjust zoom
+    //   this.zoom -= wheel.deltaY / 1000;
 
-      // Step 2: Clamp
-      this.zoom = Phaser.Math.Clamp(this.zoom, 0.6, 3);
+    //   // Step 2: Clamp
+    //   this.zoom = Phaser.Math.Clamp(this.zoom, 0.6, 3);
 
-      // Step 3: Snap to nearest 0.2
-      this.zoom = Phaser.Math.Snap.To(this.zoom, 0.1);
+    //   // Step 3: Snap to nearest 0.2
+    //   this.zoom = Phaser.Math.Snap.To(this.zoom, 0.1);
 
 
-      this.sky1.setScale(1 / this.zoom);
-      this.cameras.main.setZoom(this.zoom)
-      //this.resizeBackgroundToFill();
-    })
+    //   this.sky1.setScale(1 / this.zoom);
+    //   this.cameras.main.setZoom(this.zoom)
+    //   //this.resizeBackgroundToFill();
+    // })
 
 
     window.addEventListener('beforeunload', () => {
@@ -143,6 +144,7 @@ export default class BaseGame extends Phaser.Scene {
     const width = gameSize.width;
     const height = gameSize.height;
     this.sky1.setPosition(width / 2, height / 2);
+    this.sky1.setDisplaySize(this.scale.width, this.scale.height);
   }
 
   setupPlayer(x = 111, y = 111) {
