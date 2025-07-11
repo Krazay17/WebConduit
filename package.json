@@ -20,7 +20,6 @@
   },
   "homepage": "https://github.com/Krazay17/conduit#readme",
   "dependencies": {
-    "express": "^5.1.0",
     "phaser": "^3.90.0",
     "socket.io": "^4.8.1",
     "socket.io-client": "^4.8.1"
