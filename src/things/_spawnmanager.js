@@ -10,6 +10,7 @@ import { getProperty } from "../myFunctions.js";
 import Portal from "./portal.js";
 import FinishLine from "./finishLine.js";
 import LaserSprite from "../weapons/laserSprite.js";
+import CardPickup from "./cardPickup.js";
 
 export default class SpawnManager {
     static instance;
@@ -260,5 +261,10 @@ export default class SpawnManager {
             fontSize: '20px',
             color: '#FFFFFF',
         }).setScrollFactor(1);
+    }
+
+    spawnCard(x, y, obj) {
+        const card = new CardPickup(this.scene, x, y);
+        this.itemGroup.add(card);
     }
 }

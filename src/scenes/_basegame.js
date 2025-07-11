@@ -5,6 +5,7 @@ import SpawnManager from '../things/_spawnmanager.js';
 import WeaponGroup from '../weapons/WeaponGroup.js';
 import SoundUtil from '../things/soundUtils.js';
 import ScoreBoard from '../things/scoreBoard.js';
+import { setupIconGrid } from '../domStuff/IconGrid.js';
 
 export default class BaseGame extends Phaser.Scene {
   constructor(key) {
@@ -59,8 +60,6 @@ export default class BaseGame extends Phaser.Scene {
 
     this.input.once('pointerdown', () => {
       if (!this.network.voiceChat.audioContext) {
-        console.log(this.network.voiceChat.audioContext)
-
         this.network.voiceChat._initMic();
       }
     });
@@ -151,6 +150,26 @@ export default class BaseGame extends Phaser.Scene {
     this.sky1.setDisplaySize(this.scale.width, this.scale.height);
   }
 
+  setupCards() {
+    const clickIcon = (icon, imgElement) => {
+      this.player.updateMoney(icon.money);
+
+      // Remove the clicked card by index
+      const index = GameManager.cards.indexOf(icon);
+      if (index !== -1) {
+        GameManager.cards.splice(index, 1);
+        GameManager.save();
+      }
+
+      imgElement.remove(); // Remove DOM element
+    };
+
+    const icons = GameManager.cards;
+
+    this.iconGrid = setupIconGrid('icon-grid', icons, clickIcon, this);
+  }
+
+
   setupPlayer(x = 111, y = 111) {
     const locationX = GameManager.useLastLocation ? GameManager.location.x : x;
     const locationY = GameManager.useLastLocation ? GameManager.location.y : y;
@@ -163,6 +182,8 @@ export default class BaseGame extends Phaser.Scene {
       this.playerSpawned = true;
     }
     this.cameras.main.startFollow(this.player, false, .05, .05);
+
+    this.setupCards();
 
     if (this.network.voiceChat) {
       this.network.voiceChat.setPlayerGetter(() => {

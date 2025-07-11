@@ -113,7 +113,11 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         });
         this.scene.input.keyboard.on('keydown-F', () => {
             if (GameManager.flags.devmode && !this.chatting) {
-                this.updateMoney(500000);
+                //this.updateMoney(500000);
+                GameManager.cards.push(
+                    { src: 'assets/CardSapling.png', title: 'Sapling', money: 50 },
+                )
+                this.scene.setupCards();
             }
         });
 
@@ -139,6 +143,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.scene.input.keyboard.on('keydown-T', () => {
             if (this.scene.scene.key !== 'Home' && this.body.blocked.down && !this.chatting || !this.alive) {
                 GameManager.useLastLocation = false;
+                GameManager.save();
                 this.scene.scene.start('Home')
             }
         });

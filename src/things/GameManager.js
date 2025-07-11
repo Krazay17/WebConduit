@@ -1,4 +1,4 @@
-const CURRENT_VERSION = 0.109;
+const CURRENT_VERSION = 0.110;
 
 export default {
     version: CURRENT_VERSION,
@@ -11,6 +11,7 @@ export default {
     weapons: { left: 'shurikan', right: 'sword', aura: 'zap' },
     volume: { master: 1, music: 1, voice: 1 },
     collectedItems: [],
+    cards: [],
     flags: {
         seenIntro: false,
         devmode: false,
@@ -29,6 +30,7 @@ export default {
             weapons: this.weapons,
             volume: this.volume,
             collectedItems: this.collectedItems,
+            cards: this.cards,
             flags: this.flags,
             useLastLocation: this.useLastLocation,
         };
@@ -50,6 +52,7 @@ export default {
                         flags: parsed.flags,
                         weapons: parsed.weapons,
                         power: parsed.power,
+                        //cards: parsed.cards,
 
                     }
                 });
@@ -68,6 +71,7 @@ export default {
             this.weapons = parsed.weapons ?? { left: 'shurikan', right: 'sword', aura: 'zap' };
             this.volume = parsed.volume ?? { master: 1, music: 1, voice: 1 };
             this.collectedItems = parsed.collectedItems ?? [];
+            this.cards = parsed.cards ?? [];
             this.flags = parsed.flags ?? {};
             this.useLastLocation = parsed.useLastLocation ?? false;
         }
@@ -86,6 +90,7 @@ export default {
         this.weapons = keep.weapons ?? { left: 'shurikan', right: 'sword', aura: 'zap' };
         this.volume = keep.volume ?? { master: 1, music: 1, voice: 1 };
         this.collectedItems = keep.collectedItems ?? [];
+        this.cards = keep.cards ?? [];
         this.flags = keep.flags ?? {
             seenIntro: false,
             devmode: false,
