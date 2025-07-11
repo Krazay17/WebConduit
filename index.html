@@ -22,8 +22,8 @@
       margin: 0;
       padding: 0;
       height: 100%;
-      /* scroll-behavior: smooth;
-      scroll-snap-type: Y proximity; */
+      scroll-behavior: smooth;
+      scroll-snap-type: Y proximity;
       overflow-y: scroll;
       background-color: darkgreen;
     }
@@ -87,7 +87,11 @@
     }
 
     #icon-section {
-      height: 50%;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      scroll-snap-align: start;
+      flex-direction: column;
       box-sizing: border-box;
       background-color: black;
     }
@@ -167,12 +171,6 @@
 
   <section id="game-section">
     <div id="conduit-game"></div>
-  </section>
-
-  <section id="chat-section">
-    <div id="chat-content">
-      <p>Chat.</p>
-    </div>
   </section>
 
   <section id="icon-section">
