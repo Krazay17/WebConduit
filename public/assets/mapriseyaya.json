@@ -3278,6 +3278,18 @@
                  "width":0,
                  "x":4144,
                  "y":573
+                }, 
+                {
+                 "height":0,
+                 "id":36,
+                 "name":"spawnCard",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":4802,
+                 "y":14364
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -4244,7 +4256,7 @@
          "y":0
         }],
  "nextlayerid":9,
- "nextobjectid":36,
+ "nextobjectid":37,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",

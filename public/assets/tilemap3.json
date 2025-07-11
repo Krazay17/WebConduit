@@ -1478,24 +1478,6 @@
                 }, 
                 {
                  "height":0,
-                 "id":128,
-                 "name":"spawnCoin",
-                 "point":true,
-                 "properties":[
-                        {
-                         "name":"float",
-                         "type":"bool",
-                         "value":true
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":672.727,
-                 "y":1603.03
-                }, 
-                {
-                 "height":0,
                  "id":129,
                  "name":"spawnCoin",
                  "point":true,
@@ -1809,6 +1791,42 @@
                  "width":0,
                  "x":4001.06,
                  "y":1955.3
+                }, 
+                {
+                 "height":0,
+                 "id":154,
+                 "name":"spawnCard",
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"float",
+                         "type":"bool",
+                         "value":false
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":609.090909090909,
+                 "y":3484.84848484848
+                }, 
+                {
+                 "height":0,
+                 "id":155,
+                 "name":"spawnCard",
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"float",
+                         "type":"bool",
+                         "value":false
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":671.393939393939,
+                 "y":1603.15151515152
                 }],
          "opacity":1,
          "properties":[
@@ -2262,7 +2280,7 @@
          "y":0
         }],
  "nextlayerid":7,
- "nextobjectid":154,
+ "nextobjectid":156,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",

@@ -512,7 +512,7 @@
                 {
                  "height":0,
                  "id":185,
-                 "name":"spawnRandomCard",
+                 "name":"spawnCard",
                  "point":true,
                  "rotation":0,
                  "type":"",
@@ -523,75 +523,134 @@
                 }, 
                 {
                  "height":0,
-                 "id":186,
-                 "name":"spawnRandomCard",
+                 "id":192,
+                 "name":"spawnCard",
                  "point":true,
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":5012,
-                 "y":3818
+                 "x":4848,
+                 "y":3774
                 }, 
                 {
                  "height":0,
-                 "id":187,
-                 "name":"spawnRandomCard",
+                 "id":193,
+                 "name":"spawnCard",
                  "point":true,
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":5322,
-                 "y":3824
+                 "x":4982,
+                 "y":3802
                 }, 
                 {
                  "height":0,
-                 "id":188,
-                 "name":"spawnRandomCard",
+                 "id":194,
+                 "name":"spawnCard",
                  "point":true,
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":5534,
-                 "y":3816
+                 "x":5160,
+                 "y":3788
                 }, 
                 {
                  "height":0,
-                 "id":189,
-                 "name":"spawnRandomCard",
+                 "id":195,
+                 "name":"spawnCard",
                  "point":true,
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":5742,
-                 "y":3820
+                 "x":5364,
+                 "y":3800
                 }, 
                 {
                  "height":0,
-                 "id":190,
-                 "name":"spawnRandomCard",
+                 "id":196,
+                 "name":"spawnCard",
                  "point":true,
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":5942,
-                 "y":3832
+                 "x":5506,
+                 "y":3794
                 }, 
                 {
                  "height":0,
-                 "id":191,
-                 "name":"spawnRandomCard",
+                 "id":197,
+                 "name":"spawnCard",
                  "point":true,
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":6108,
-                 "y":3840
+                 "x":5720,
+                 "y":3808
+                }, 
+                {
+                 "height":0,
+                 "id":198,
+                 "name":"spawnCard",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":5842,
+                 "y":3802
+                }, 
+                {
+                 "height":0,
+                 "id":199,
+                 "name":"spawnCard",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":5968,
+                 "y":3802
+                }, 
+                {
+                 "height":0,
+                 "id":200,
+                 "name":"spawnCard",
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"icon",
+                         "type":"string",
+                         "value":"CardCrystal"
+                        }, 
+                        {
+                         "name":"value",
+                         "type":"int",
+                         "value":70
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":3820,
+                 "y":3878
+                }, 
+                {
+                 "height":0,
+                 "id":201,
+                 "name":"spawnCard",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":5608,
+                 "y":276
                 }],
          "opacity":1,
          "properties":[
@@ -1256,7 +1315,7 @@
          "y":0
         }],
  "nextlayerid":7,
- "nextobjectid":192,
+ "nextobjectid":202,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",

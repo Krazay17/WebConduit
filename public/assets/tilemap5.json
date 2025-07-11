@@ -805,6 +805,24 @@
                  "width":258,
                  "x":1487,
                  "y":239
+                }, 
+                {
+                 "height":0,
+                 "id":270,
+                 "name":"spawnCard",
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"float",
+                         "type":"bool",
+                         "value":true
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":1865.21212121212,
+                 "y":638.30303030303
                 }],
          "opacity":1,
          "properties":[
@@ -1319,7 +1337,7 @@
          "y":0
         }],
  "nextlayerid":7,
- "nextobjectid":270,
+ "nextobjectid":272,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",

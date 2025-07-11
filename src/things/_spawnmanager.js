@@ -264,21 +264,11 @@ export default class SpawnManager {
     }
 
     spawnCard(x, y, obj) {
-        const card = new CardPickup(this.scene, x, y);
+        const props = getProperty(obj);
+        const card = new CardPickup(this.scene, x, y, props?.icon || null, props?.value || null);
         this.itemGroup.add(card);
-    }
-
-    spawnRandomCard(x, y) {
-        const cardTypes = [
-            { type: 'CardSapling', min: 1, max: 50 },
-            { type: 'CardCrystal', min: 50, max: 200 },
-            { type: 'CardFireball', min: 200, max: 500 },
-        ];
-        const chosenType = Phaser.Utils.Array.GetRandom(cardTypes);
-        const range = Phaser.Math.Between(chosenType.min, chosenType.max);
-        
-        const card = new CardPickup(this.scene, x, y, chosenType.type, range);
-
-        this.itemGroup.add(card);
+        if (props?.float) {
+            card.body.allowGravity = false;
+        }
     }
 }
