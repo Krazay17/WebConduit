@@ -24,6 +24,8 @@ export default class CardPickup extends Pickup {
         this.setDepth(99);
     }
 
+    hit() {}
+    
     playerCollide(player) {
         GameManager.cards.push(
             { src: getCardPath(this.icon), title: this.icon.replace('Card', ''), money: this.value },
