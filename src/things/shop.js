@@ -25,12 +25,34 @@ export default class Shop extends Phaser.GameObjects.Container {
             scene.anims.create({
                 key: 'devilGamba',
                 defaultTextureKey: 'devilMan',
+                duration: 3000,
                 frames: [
-                    { frame: 3, duration: 500 },
-                    { frame: 0, duration: 100 },
-                    { frame: 3, duration: 500 },
-                    { frame: 0, duration: 100 },
-                    { frame: 3, duration: 500 },
+                    { frame: 4 },
+                    { frame: 5 },
+                    { frame: 6 },
+                    { frame: 7 },
+                    { frame: 8 },
+                    { frame: 7 },
+                    { frame: 6 },
+                    { frame: 5 },
+                    { frame: 7 },
+                    { frame: 8 },
+                    { frame: 7 },
+                    { frame: 6 },
+                    { frame: 7 },
+                    { frame: 6 },
+                    { frame: 5 },
+                    { frame: 7 },
+                    { frame: 8 },
+                    { frame: 7 },
+                    { frame: 7 },
+                    { frame: 8 },
+                    { frame: 7 },
+                    { frame: 6 },
+                    { frame: 7 },
+                    { frame: 6 },
+                    { frame: 5 },
+                    { frame: 9 },
                 ],
             })
         }
@@ -70,18 +92,19 @@ export default class Shop extends Phaser.GameObjects.Container {
             return;
         }
         this.isInteractable = false;
-        this.scene.time.delayedCall(1000, () => {
+        this.scene.time.delayedCall(4000, () => {
             this.isInteractable = true;
         });
+
         player.updateMoney(-100);
 
         this.shopKeep.play('devilGamba');
         this.shopKeep.once('animationcomplete', () => {
-            this.scene.spawnManager.spawnCard(2360, 3220);
+            this.scene.spawnManager.spawnCard(2310, 3120);
             this.shopKeep.play('devilMan');
         });
 
-        playSound(this.scene, 'shopInteract');
+        playSound(this.scene, 'shopInteract', { detune: 0});
         this.scene.network.socket.emit('shopInteract', {
         })
     }
