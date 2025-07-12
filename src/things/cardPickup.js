@@ -50,15 +50,30 @@ function getCardPath(id) {
 }
 
 function getCard(cardType) {
+
     const cardTypes = [
-        { type: 'CardSapling', min: 1, max: 50 },
-        { type: 'CardTorch', min: 50, max: 100 },
-        { type: 'CardCrystal', min: 100, max: 200 },
-        { type: 'CardFireball', min: 200, max: 500 },
+        { type: 'CardSapling', weight: 100, min: 1, max: 50 },
+        { type: 'CardTorch', weight: 75, min: 50, max: 100 },
+        { type: 'CardCrystal', weight: 70, min: 100, max: 200 },
+        { type: 'CardFireball', weight: 50, min: 200, max: 500 },
+        { type: 'CardFalcion', weight: 1, min: 2000, max: 3000 },
     ];
     if (cardType) {
         return cardTypes.find(card => card.type === cardType);
     } else {
-        return cardTypes[Math.floor(Math.random() * cardTypes.length)];
+        return getWeightedRandomCard(cardTypes);
+        //return cardTypes[Math.floor(Math.random() * cardTypes.length)];
+    }
+}
+
+function getWeightedRandomCard(cards) {
+    const totalWeight = cards.reduce((sum, card) => sum + card.weight, 0);
+    let random = Math.random() * totalWeight;
+
+    for (let card of cards) {
+        if (random < card.weight) {
+            return card;
+        }
+        random -= card.weight;
     }
 }
