@@ -34,7 +34,7 @@ const config = {
       // fps: 60,
       // fixedStep: true,
       tileBias: 55,
-      debug: false,
+      debug: true,
     }
   },
   parent: 'conduit-game',

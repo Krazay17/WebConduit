@@ -111,7 +111,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                 // scene.cameras.main.setOffset
             }
         });
-        this.scene.input.keyboard.on('keydown-F', () => {
+        this.scene.input.keyboard.on('keydown-G', () => {
             if (GameManager.flags.devmode && !this.chatting) {
                 //this.updateMoney(500000);
                 GameManager.cards.push(
@@ -119,6 +119,16 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                 )
                 this.scene.setupCards();
             }
+        });
+        this.scene.input.keyboard.on('keydown-F', () => {
+            if (this.chatting || !this.scene || !this.alive) return;
+            if (!this.scene.interactGroup) return;
+            this.scene.interactGroup.forEach((interact) => {
+                if (interact && interact.isInteractable && Phaser.Math.Distance.Between(this.x, this.y, interact.x, interact.y) < 150) {
+                    interact.interact(this);
+                    return;
+                }
+            });
         });
 
         this.spectateIndex = 0;
@@ -1217,6 +1227,10 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         GameManager.save();
         this.playerUI.scoreText.text = 'Source: ' + GameManager.power.money + '\n' + this.rankSystem.getRank(GameManager.power.money);
         this.network.socket.emit('playerLevel', GameManager.power);
+    }
+
+    getMoney() {
+        return GameManager.power.money;
     }
 
     setupAnimation() {

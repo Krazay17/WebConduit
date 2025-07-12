@@ -1,6 +1,7 @@
 import BaseGame from './_basegame.js'
 import GameManager from '../things/GameManager.js';
 import ScoreBoard from '../things/scoreBoard.js';
+import Shop from '../things/shop.js';
 
 export default class Home extends BaseGame {
     constructor() {
@@ -195,30 +196,7 @@ export default class Home extends BaseGame {
     }
 
     setupShop() {
-        const devil = this.add.sprite(2230, 3200, 'devilMan').setScale(.15).setScrollFactor(.992);
-        if(!this.anims.get('devilMan')) {
-            this.anims.create({
-                key: 'devilMan',
-                defaultTextureKey: 'devilMan',
-                repeat: -1,
-                frames: [
-                    {frame: 0, duration: 5000},
-                    {frame: 1, duration: 450},
-                    {frame: 0, duration: 4000},
-                    {frame: 1, duration: 500},
-                    {frame: 0, duration: 3000},
-                    {frame: 3, duration: 2000},
-                ],
-            })
-        }
-        devil.anims.play('devilMan');
-
-        this.add.image(2260, 3265, 'devilTable').setScale(.3).setScrollFactor(.995);
-        this.add.image(2360, 3220, 'potion').setScale(.19).setScrollFactor(.995)
-        .setTint(0x00FF00);
-        this.add.image(2500, 3190, 'potion').setScale(.16).setScrollFactor(.995);
-        this.add.image(2150, 3230, 'potion').setScale(.22).setScrollFactor(.995);
-        this.add.image(2050, 3220, 'potion').setScale(.20).setScrollFactor(.995)
-        .setTint(0x00FFFF);
+        this.shop = new Shop(this, 2230, 3200);
+        this.add.existing(this.shop);
     }
 }
