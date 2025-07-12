@@ -52,11 +52,12 @@ function getCardPath(id) {
 function getCard(cardType) {
 
     const cardTypes = [
-        { type: 'CardSapling', weight: 100, min: 1, max: 50 },
-        { type: 'CardTorch', weight: 75, min: 50, max: 100 },
-        { type: 'CardCrystal', weight: 70, min: 100, max: 200 },
-        { type: 'CardFireball', weight: 50, min: 200, max: 500 },
-        { type: 'CardFalcion', weight: 1, min: 2000, max: 3000 },
+        { type: 'CardSapling', weight: 1000, min: 1, max: 50 },
+        { type: 'CardTorch', weight: 750, min: 50, max: 100 },
+        { type: 'CardCrystal', weight: 700, min: 100, max: 200 },
+        { type: 'CardFireball', weight: 500, min: 200, max: 500 },
+        { type: 'CardFalcion', weight: 50, min: 2000, max: 3000 },
+        { type: 'CardScythe', weight: 1, min: 999999, max: 999999 },
     ];
     if (cardType) {
         return cardTypes.find(card => card.type === cardType);
