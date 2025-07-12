@@ -45,6 +45,7 @@ export default class Preloader extends Phaser.Scene {
         this.load.image('CardSapling', 'assets/CardSapling.png');
         this.load.image('CardCrystal', 'assets/CardCrystal.png');
         this.load.image('CardFireball', 'assets/CardFireball.png');
+        this.load.image('CardTorch', 'assets/CardTorch.png');
 
         this.load.audio('music0', 'assets/music0.mp3');
         this.load.audio('music1', 'assets/music1.mp3');

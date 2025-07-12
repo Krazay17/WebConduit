@@ -52,7 +52,8 @@ function getCardPath(id) {
 function getCard(cardType) {
     const cardTypes = [
         { type: 'CardSapling', min: 1, max: 50 },
-        { type: 'CardCrystal', min: 50, max: 200 },
+        { type: 'CardTorch', min: 50, max: 100 },
+        { type: 'CardCrystal', min: 100, max: 200 },
         { type: 'CardFireball', min: 200, max: 500 },
     ];
     if (cardType) {
