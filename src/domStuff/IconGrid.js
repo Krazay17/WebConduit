@@ -5,34 +5,7 @@ export function setupIconGrid(containerId, icons, onClickHandler) {
 
     container.innerHTML = ''; // clear existing content
 
-    // const iconSection = document.getElementById('icon-section');
-    // const iconGrid = document.getElementById('icon-grid');
-
-    // iconGrid.addEventListener('wheel', (e) => {
-    //     const sectionRect = iconSection.getBoundingClientRect();
-
-    //     const isFullyVisible =
-    //         sectionRect.top <= 0 &&
-    //         sectionRect.bottom >= window.innerHeight;
-
-    //     const canScrollDown =
-    //         iconGrid.scrollTop + iconGrid.clientHeight < iconGrid.scrollHeight;
-    //     const canScrollUp = iconGrid.scrollTop > 0;
-
-    //     // Determine scroll direction
-    //     const scrollDown = e.deltaY > 0;
-    //     const scrollUp = e.deltaY < 0;
-
-    //     if (!isFullyVisible) {
-    //         // Let page scroll if section not fully visible or grid can't scroll in that direction
-    //         return;
-    //     }
-
-    //     // Otherwise, allow the grid to scroll and stop the page from scrolling
-    //     e.stopPropagation();
-    // }, { passive: false });
-
-const iconsReverse = [...icons].reverse(); // Reverse the icons array
+    const iconsReverse = [...icons].reverse(); // Reverse the icons array
     iconsReverse.forEach(icon => {
         const wrapper = document.createElement('div');
         wrapper.classList.add('card');
