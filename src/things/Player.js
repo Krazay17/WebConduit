@@ -56,6 +56,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.stunned = false;
         this.iFrame = false;
         this.hitCD = false;
+        this.spawnBuffer = true;
 
         // this.playerUI;
         // if (!this.scene.scene.isActive('EscMenu')) {
@@ -163,6 +164,10 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             }
         });
 
+        this.scene.time.delayedCall(400, () => {
+            this.spawnBuffer = false;
+        })
+
 
         this.setupStates();
         this.resetJump();
@@ -188,7 +193,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                 this.rightWeapon.fire(pointer);
             }
 
-            if (this.y > this.scene.physics.world.bounds.height + this.body.height + 150 && this.alive) {
+            if (this.y > this.scene.physics.world.bounds.height + this.body.height + 150 && this.alive && !this.spawnBuffer) {
                 this.Died();
             }
         }
