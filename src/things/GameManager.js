@@ -1,4 +1,4 @@
-const CURRENT_VERSION = 0.110;
+const CURRENT_VERSION = 0.111;
 
 export default {
     version: CURRENT_VERSION,
@@ -48,7 +48,7 @@ export default {
                 this.reset({
                     keep: {
                         name: parsed.name,
-                        //volume: parsed.volume,
+                        volume: parsed.volume,
                         flags: parsed.flags,
                         weapons: parsed.weapons,
                         power: parsed.power,

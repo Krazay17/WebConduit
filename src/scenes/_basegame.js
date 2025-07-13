@@ -64,20 +64,7 @@ export default class BaseGame extends Phaser.Scene {
       }
     });
 
-    this.cardSetupTimer = null;
 
-        const releaseUnlockedCards = () => {
-      const unlockedCards = GameManager.cards.filter(icon => !icon.locked);
-      unlockedCards.forEach(icon => {
-        this.player.updateMoney(icon.money);
-      });
-      // Remove all unlocked cards
-      GameManager.cards = GameManager.cards.filter(icon => icon.locked);
-      GameManager.save();
-      this.setupCards(); // Refresh the icon grid
-    }
-
-    this.releaseButton = setupReleaseButton(releaseUnlockedCards);
 
     // document.body.addEventListener('click', (event) => {
     //   if (!this.network.voiceChat || !this.network.voiceChat.audioContext) {
@@ -165,7 +152,7 @@ export default class BaseGame extends Phaser.Scene {
 
   setupCards() {
     const clickIcon = (icon, imgElement) => {
-      if(icon.locked) return;
+      if (icon.locked) return;
       this.player.updateMoney(icon.money);
 
       // Remove the clicked card by index
@@ -196,7 +183,19 @@ export default class BaseGame extends Phaser.Scene {
     }
     this.cameras.main.startFollow(this.player, false, .05, .05);
 
+    this.cardSetupTimer = null;
     this.setupCards();
+    const releaseUnlockedCards = () => {
+      const unlockedCards = GameManager.cards.filter(icon => !icon.locked);
+      unlockedCards.forEach(icon => {
+        this.player.updateMoney(icon.money);
+      });
+      // Remove all unlocked cards
+      GameManager.cards = GameManager.cards.filter(icon => icon.locked);
+      GameManager.save();
+      this.setupCards(); // Refresh the icon grid
+    }
+    this.releaseButton = setupReleaseButton(releaseUnlockedCards);
 
     if (this.network.voiceChat) {
       this.network.voiceChat.setPlayerGetter(() => {

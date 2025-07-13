@@ -1,5 +1,6 @@
 import Pickup from "./Pickup";
 import GameManager from "./GameManager";
+import { addCard } from "../domStuff/IconGrid";
 
 export default class CardPickup extends Pickup {
     constructor(scene, x, y, card, value) {
@@ -17,6 +18,12 @@ export default class CardPickup extends Pickup {
         if (!this.value) {
             this.value = Phaser.Math.Between(card.min, card.max);
         }
+        this.card = {
+            src: getCardPath(this.icon),
+            title: this.icon.replace('Card', ''),
+            money: this.value,
+            locked: false, // Initially not locked
+        };
 
         this.spin = scene.add.tween({
             targets: this,
@@ -34,29 +41,40 @@ export default class CardPickup extends Pickup {
 
     hit() { }
 
-playerCollide(player) {
-    GameManager.cards.push({
-        src: getCardPath(this.icon),
-        title: this.icon.replace('Card', ''),
-        money: this.value,
-    });
+    playerCollide(player) {
+        const clickCard = (icon) => {
+            if (icon.locked) return;
+            const savePlayer = player;
+            savePlayer.updateMoney(icon.money);
 
-    this.playPickupSound();
+            // Remove the clicked card by index
+            const index = GameManager.cards.indexOf(icon);
+            if (index !== -1) {
+                GameManager.cards.splice(index, 1);
+                GameManager.save();
+            }
+        }
+        GameManager.cards.push(this.card);
+        GameManager.save();
+        addCard(this.card, clickCard)
 
-    // Cancel existing delayed card setup if one exists
-    if (this.scene.cardSetupTimer?.remove) {
-        this.scene.cardSetupTimer.remove();
+        this.playPickupSound();
+
+        // Cancel existing delayed card setup if one exists
+        if (this.scene.cardSetupTimer?.remove) {
+            this.scene.cardSetupTimer.remove();
+        }
+
+
+        const scene = this.scene;
+
+        // scene.cardSetupTimer = scene.time.delayedCall(50, () => {
+        //     scene.setupCards();
+        //     scene.cardSetupTimer = null; // clean up reference
+        // });
+
+        this.destroy();
     }
-
-    const scene = this.scene;
-    // Schedule new one
-    scene.cardSetupTimer = scene.time.delayedCall(50, () => {
-        scene.setupCards();
-        scene.cardSetupTimer = null; // clean up reference
-    });
-
-    this.destroy();
-}
 
 }
 

@@ -113,11 +113,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         });
         this.scene.input.keyboard.on('keydown-G', () => {
             if (GameManager.flags.devmode && !this.chatting) {
-                //this.updateMoney(500000);
-                GameManager.cards.push(
-                    { src: 'assets/CardSapling.png', title: 'Sapling', money: 50 },
-                )
-                this.scene.setupCards();
+                this.updateMoney(500000);
             }
         });
         this.scene.input.keyboard.on('keydown-F', () => {
