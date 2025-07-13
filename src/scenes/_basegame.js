@@ -5,7 +5,7 @@ import SpawnManager from '../things/_spawnmanager.js';
 import WeaponGroup from '../weapons/WeaponGroup.js';
 import SoundUtil from '../things/soundUtils.js';
 import ScoreBoard from '../things/scoreBoard.js';
-import { setupIconGrid } from '../domStuff/IconGrid.js';
+import { setupIconGrid, setupReleaseButton } from '../domStuff/IconGrid.js';
 
 export default class BaseGame extends Phaser.Scene {
   constructor(key) {
@@ -66,7 +66,18 @@ export default class BaseGame extends Phaser.Scene {
 
     this.cardSetupTimer = null;
 
+        const releaseUnlockedCards = () => {
+      const unlockedCards = GameManager.cards.filter(icon => !icon.locked);
+      unlockedCards.forEach(icon => {
+        this.player.updateMoney(icon.money);
+      });
+      // Remove all unlocked cards
+      GameManager.cards = GameManager.cards.filter(icon => icon.locked);
+      GameManager.save();
+      this.setupCards(); // Refresh the icon grid
+    }
 
+    this.releaseButton = setupReleaseButton(releaseUnlockedCards);
 
     // document.body.addEventListener('click', (event) => {
     //   if (!this.network.voiceChat || !this.network.voiceChat.audioContext) {
@@ -154,6 +165,7 @@ export default class BaseGame extends Phaser.Scene {
 
   setupCards() {
     const clickIcon = (icon, imgElement) => {
+      if(icon.locked) return;
       this.player.updateMoney(icon.money);
 
       // Remove the clicked card by index
@@ -162,9 +174,8 @@ export default class BaseGame extends Phaser.Scene {
         GameManager.cards.splice(index, 1);
         GameManager.save();
       }
-
-      imgElement.remove(); // Remove DOM element
     };
+
 
     const icons = GameManager.cards;
 

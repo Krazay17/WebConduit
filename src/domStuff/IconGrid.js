@@ -16,14 +16,35 @@ export function setupIconGrid(containerId, icons, onClickHandler) {
         img.alt = icon.title ?? '';
         img.title = icon.title ?? '';
         img.money = icon.money ?? 1;
+        img.style.outline = icon.locked ? '2px solid red' : ''; // Add red border if locked
 
         const label = document.createElement('div');
         label.classList.add('card-label');
         label.textContent = icon.money ?? '';
 
-        wrapper.appendChild(img);
-        wrapper.appendChild(label);
+        let holdTimer;
+        wrapper.onmousedown = (e) => {
+            if (e.button !== 0) return; // Only handle left mouse button
+            holdTimer = setTimeout(() => {
+                icon.locked = !icon.locked; // Lock the icon
+                if(icon.locked) {
+                img.style.outline = '2px solid red'; // Change border to red
+                } else {
+                img.style.outline = ''; // Remove border
+                }
+            }, 800);
+        };
+
+        wrapper.addEventListener('mouseup', () => {
+            clearTimeout(holdTimer);
+        });
+
+        wrapper.addEventListener('mouseleave', () => {
+            clearTimeout(holdTimer);
+        });
+
         wrapper.addEventListener('click', () => {
+            if (icon.locked) return; // Ignore clicks on locked icons
             onClickHandler(icon, img);
             wrapper.remove(); // remove whole card container
             //add  white border to the icon
@@ -34,8 +55,18 @@ export function setupIconGrid(containerId, icons, onClickHandler) {
             // img.style.transform = 'scale(1.1)'; // slightly enlarge the icon
         });
 
+        wrapper.appendChild(img);
+        wrapper.appendChild(label);
         container.appendChild(wrapper);
     });
 
     return container;
+}
+
+export function setupReleaseButton(onClickHandler) {
+    const button = document.getElementById('clear-cards-btn');
+    button .addEventListener('click', () => {
+        onClickHandler();
+    });
+    return document.getElementById('clear-cards-btn');
 }

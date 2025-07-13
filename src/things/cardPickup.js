@@ -67,12 +67,12 @@ function getCardPath(id) {
 function getCard(cardType) {
 
     const cardTypes = [
-        { type: 'CardSapling', rarity: 1, weight: 2000, min: 1, max: 50 },
-        { type: 'CardTorch', rarity: 2, weight: 1000, min: 50, max: 100 },
+        { type: 'CardSapling', rarity: 1, weight: 2500, min: 1, max: 50 },
+        { type: 'CardTorch', rarity: 2, weight: 1500, min: 50, max: 100 },
         { type: 'CardCrystal', rarity: 3, weight: 500, min: 100, max: 200 },
-        { type: 'CardFireball', rarity: 4, weight: 250, min: 200, max: 500 },
+        { type: 'CardFireball', rarity: 4, weight: 200, min: 200, max: 500 },
         { type: 'CardFalcion', rarity: 5, weight: 10, min: 2000, max: 3000 },
-        { type: 'CardScythe', rarity: 6, weight: 1, min: 999999, max: 999999 },
+        { type: 'CardScythe', rarity: 6, weight: 1, min: 99999, max: 99999 },
     ];
     if (cardType) {
         return cardTypes.find(card => card.type === cardType);

@@ -22,47 +22,8 @@
       margin: 0;
       padding: 0;
       height: 100%;
-      /* scroll-behavior: smooth;
-      scroll-snap-type: Y proximity; */
       overflow-y: scroll;
       background-color: darkgreen;
-    }
-
-    html {
-      scrollbar-width: none;
-    }
-
-    body::-webkit-scrollbar {
-      display: none;
-    }
-
-    section {
-      height: 100vh;
-      scroll-snap-align: end;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    #game-section {
-      position: sticky !important;
-      z-index: 0 !important;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background-color: chartreuse;
-    }
-
-    #conduit-game {
-      position: sticky !important;
-      z-index: 0 !important;
-      width: 100%;
-      height: 100%;
-    }
-
-    canvas {
-      display: block;
-      margin: auto;
     }
 
     .visually-hidden {
@@ -77,19 +38,47 @@
       border: 0;
     }
 
-    #chat-section {
+    html {
+      scrollbar-width: none;
+    }
+
+    body::-webkit-scrollbar {
+      display: none;
+    }
+
+    section {
+      scroll-snap-align: end;
+      width: 100%;
+    }
+
+    #game-section {
+      position: sticky !important;
+      z-index: 0 !important;
+      top: 0;
+      height: 100vh;
+      background-color: chartreuse;
+    }
+
+    #conduit-game {
+      width: 100%;
+      height: 100%;
+      justify-content: center;
+      align-items: center;
       position: relative;
-      height: 50%;
-      padding: 1rem;
-      box-sizing: border-box;
-      background: #340079b0;
-      z-index: 2;
+      overflow: hidden;
     }
 
     #icon-section {
-      height: max-content;
-      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
       background-color: black;
+      height: max-content;
+    }
+
+    canvas {
+      display: block;
+      margin: auto;
     }
 
     #icon-grid {
@@ -97,19 +86,13 @@
       grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
       gap: 1.5rem;
       padding: 2%;
-      box-sizing: border-box;
-      width: 100%;
       background: #111111b0;
       z-index: 2;
+      scrollbar-width: none;
     }
 
     #icon-grid::-webkit-scrollbar {
       width: 0;
-    }
-
-    #icon-grid {
-      scrollbar-width: none;
-      /* Firefox */
     }
 
     .icon-grid:active {
@@ -121,6 +104,7 @@
       height: 100%;
       object-fit: cover;
       cursor: pointer;
+      box-sizing: border-box;
       transition: transform 0.2s ease;
     }
 
@@ -131,7 +115,7 @@
       height: 128px;
       border: 2px solid transparent;
       border-radius: 4px;
-      overflow: hidden;
+      overflow: visible;
       transition: transform 0.2s ease;
       transform-origin: center;
       /* scale from center */
@@ -158,6 +142,27 @@
       pointer-events: none;
       /* let clicks pass through to icon */
     }
+
+    #icon-toolbar {
+      position:relative;
+      width: 100%;
+      background: #222;
+      text-align: center;
+    }
+
+    #clear-cards-btn {
+      padding: 0.4rem 0.8rem;
+      font-size: 1rem;
+      background-color: crimson;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    #clear-cards-btn:hover {
+      background-color: darkred;
+    }
   </style>
 </head>
 
@@ -168,6 +173,9 @@
   </section>
 
   <section id="icon-section">
+    <div id="icon-toolbar">
+      <button id="clear-cards-btn">Release unlocked cards</button>
+    </div>
     <div id="icon-grid" class="icon-grid"></div>
   </section>
 
