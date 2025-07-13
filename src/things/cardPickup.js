@@ -56,7 +56,7 @@ function getCard(cardType) {
         { type: 'CardTorch', weight: 750, min: 50, max: 100 },
         { type: 'CardCrystal', weight: 700, min: 100, max: 200 },
         { type: 'CardFireball', weight: 500, min: 200, max: 500 },
-        { type: 'CardFalcion', weight: 50, min: 2000, max: 3000 },
+        { type: 'CardFalcion', weight: 10, min: 2000, max: 3000 },
         { type: 'CardScythe', weight: 1, min: 999999, max: 999999 },
     ];
     if (cardType) {

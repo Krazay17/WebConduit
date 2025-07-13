@@ -57,6 +57,8 @@ export default class Shop extends Phaser.GameObjects.Container {
             })
         }
 
+        this.gambleSound = scene.sound.add('clinksound2');
+
         scene.interactGroup.push(this);
         this.isInteractable = true;
         this.setupShopKeeper();
@@ -91,12 +93,14 @@ export default class Shop extends Phaser.GameObjects.Container {
             //this.scene.showMessage('You need 100 source.');
             return;
         }
-        this.isInteractable = false;
-        this.scene.time.delayedCall(4000, () => {
-            this.isInteractable = true;
-        });
-
+        
         player.updateMoney(-100);
+
+        if(this.shopKeep.anims.getProgress()) {
+            this.scene.spawnManager.spawnCard(2310, 3120);
+        }
+
+
 
         this.shopKeep.play('devilGamba');
         this.shopKeep.once('animationcomplete', () => {
