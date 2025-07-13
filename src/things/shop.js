@@ -57,7 +57,7 @@ export default class Shop extends Phaser.GameObjects.Container {
             })
         }
 
-        this.gambleSound = scene.sound.add('clinksound2');
+        this.gambleSound = scene.sound.add('shopInteract');
 
         scene.interactGroup.push(this);
         this.isInteractable = true;
@@ -93,22 +93,27 @@ export default class Shop extends Phaser.GameObjects.Container {
             //this.scene.showMessage('You need 100 source.');
             return;
         }
-        
         player.updateMoney(-100);
 
-        if(this.shopKeep.anims.getProgress()) {
+        this.shopKeep.play('devilGamba');
+        const animTime = this.shopKeep.anims.currentAnim ? this.shopKeep.anims.currentAnim.duration : 0;
+
+        this.scene.time.removeEvent(this.spawnCardAfterAnim);
+        this.spawnCardAfterAnim = this.scene.time.delayedCall(animTime, () => {
+            this.scene.spawnManager.spawnCard(2310, 3120);
+        });
+
+        if (this.gambleTime > Date.now()) {
             this.scene.spawnManager.spawnCard(2310, 3120);
         }
+        this.gambleTime = Date.now() + animTime;
 
-
-
-        this.shopKeep.play('devilGamba');
         this.shopKeep.once('animationcomplete', () => {
-            this.scene.spawnManager.spawnCard(2310, 3120);
             this.shopKeep.play('devilMan');
         });
 
-        playSound(this.scene, 'shopInteract', { detune: 0});
+        this.gambleSound.play();
+
         this.scene.network.socket.emit('shopInteract', {
         })
     }

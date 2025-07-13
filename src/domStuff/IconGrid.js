@@ -26,6 +26,12 @@ export function setupIconGrid(containerId, icons, onClickHandler) {
         wrapper.addEventListener('click', () => {
             onClickHandler(icon, img);
             wrapper.remove(); // remove whole card container
+            //add  white border to the icon
+            // img.style.border = '2px solid white';
+            // img.style.borderRadius = '5px';
+            // img.style.boxShadow = '0 0 10px rgba(255, 255, 255, 0.5)';
+            // img.style.transition = 'all 0.3s ease';
+            // img.style.transform = 'scale(1.1)'; // slightly enlarge the icon
         });
 
         container.appendChild(wrapper);

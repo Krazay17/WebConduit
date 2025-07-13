@@ -264,6 +264,19 @@ export default class SpawnManager {
     }
 
     spawnCard(x, y, obj) {
+        // const props = getProperty(obj);
+        // let card = this.batGroup.getFirst(false);
+
+        // if (card && card.activate(x, y,  props?.icon || null, props?.value || null)) {
+        //     card.init();
+        //     return card;
+        // }
+        // // Create new if no usable bat
+        // card = new CardPickup(this.scene, x, y,  props?.icon || null, props?.value || null);
+        // this.cardGroup.add(card);
+        // card.init();
+        // return card;
+
         const props = getProperty(obj);
         const card = new CardPickup(this.scene, x, y, props?.icon || null, props?.value || null);
         this.itemGroup.add(card);

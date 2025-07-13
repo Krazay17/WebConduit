@@ -64,6 +64,8 @@ export default class BaseGame extends Phaser.Scene {
       }
     });
 
+    this.cardSetupTimer = null;
+
 
 
     // document.body.addEventListener('click', (event) => {

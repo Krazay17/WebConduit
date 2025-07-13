@@ -20,7 +20,6 @@ export default class CardPickup extends Pickup {
 
         this.spin = scene.add.tween({
             targets: this,
-            // shrink width then flip to look like a card spinning
             scaleX: 0,
             duration: 200,
             ease: 'Sine.easeInOut',
@@ -35,14 +34,30 @@ export default class CardPickup extends Pickup {
 
     hit() { }
 
-    playerCollide(player) {
-        GameManager.cards.push(
-            { src: getCardPath(this.icon), title: this.icon.replace('Card', ''), money: this.value },
-        )
-        this.scene.setupCards();
-        this.playPickupSound();
-        this.destroy();
+playerCollide(player) {
+    GameManager.cards.push({
+        src: getCardPath(this.icon),
+        title: this.icon.replace('Card', ''),
+        money: this.value,
+    });
+
+    this.playPickupSound();
+
+    // Cancel existing delayed card setup if one exists
+    if (this.scene.cardSetupTimer?.remove) {
+        this.scene.cardSetupTimer.remove();
     }
+
+    const scene = this.scene;
+    // Schedule new one
+    scene.cardSetupTimer = scene.time.delayedCall(50, () => {
+        scene.setupCards();
+        scene.cardSetupTimer = null; // clean up reference
+    });
+
+    this.destroy();
+}
+
 }
 
 function getCardPath(id) {
@@ -52,18 +67,17 @@ function getCardPath(id) {
 function getCard(cardType) {
 
     const cardTypes = [
-        { type: 'CardSapling', weight: 1000, min: 1, max: 50 },
-        { type: 'CardTorch', weight: 750, min: 50, max: 100 },
-        { type: 'CardCrystal', weight: 700, min: 100, max: 200 },
-        { type: 'CardFireball', weight: 500, min: 200, max: 500 },
-        { type: 'CardFalcion', weight: 10, min: 2000, max: 3000 },
-        { type: 'CardScythe', weight: 1, min: 999999, max: 999999 },
+        { type: 'CardSapling', rarity: 1, weight: 2000, min: 1, max: 50 },
+        { type: 'CardTorch', rarity: 2, weight: 1000, min: 50, max: 100 },
+        { type: 'CardCrystal', rarity: 3, weight: 500, min: 100, max: 200 },
+        { type: 'CardFireball', rarity: 4, weight: 250, min: 200, max: 500 },
+        { type: 'CardFalcion', rarity: 5, weight: 10, min: 2000, max: 3000 },
+        { type: 'CardScythe', rarity: 6, weight: 1, min: 999999, max: 999999 },
     ];
     if (cardType) {
         return cardTypes.find(card => card.type === cardType);
     } else {
         return getWeightedRandomCard(cardTypes);
-        //return cardTypes[Math.floor(Math.random() * cardTypes.length)];
     }
 }
 
