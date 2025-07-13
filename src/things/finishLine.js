@@ -16,8 +16,19 @@ export default class FinishLine extends Pickup {
         delete this.scene.raceTimer;
         this.setTint(0x00FF00);
 
+        this.scene.time.addEvent({
+            delay: 200,
+            repeat: 6,
+            callback: () => {
+                this.scene.spawnManager.spawnCard(this.x, this.y - 100);
+            },
+            callbackScope: this.scene,
+
+        })
+        this.scene.spawnManager.spawnCard();
+
         this.scene.network.socket.emit('highScoreRequest', { level, time, player })
     }
 
-    hit() {}
+    hit() { }
 }

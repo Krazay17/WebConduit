@@ -991,8 +991,80 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":1641.33333333333,
-                 "y":3429.33333333333
+                 "x":1641.33,
+                 "y":3429.33
+                }, 
+                {
+                 "height":0,
+                 "id":346,
+                 "name":"spawnCard",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":460,
+                 "y":5504
+                }, 
+                {
+                 "height":0,
+                 "id":347,
+                 "name":"spawnCard",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":1384,
+                 "y":5668
+                }, 
+                {
+                 "height":0,
+                 "id":348,
+                 "name":"spawnCard",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":532,
+                 "y":6332
+                }, 
+                {
+                 "height":0,
+                 "id":349,
+                 "name":"spawnCard",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":1172,
+                 "y":7040
+                }, 
+                {
+                 "height":0,
+                 "id":350,
+                 "name":"spawnCard",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":2140,
+                 "y":3404
+                }, 
+                {
+                 "height":0,
+                 "id":351,
+                 "name":"spawnCard",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":2788,
+                 "y":3404
                 }],
          "opacity":1,
          "properties":[
@@ -1807,7 +1879,7 @@
          "y":0
         }],
  "nextlayerid":7,
- "nextobjectid":346,
+ "nextobjectid":352,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.11.2",

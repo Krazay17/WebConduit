@@ -7,8 +7,8 @@ export function setupIconGrid(containerId, icons, onClickHandler) {
 
     container.innerHTML = ''; // clear existing content
 
-    const iconsReverse = [...icons].reverse(); // Reverse the icons array
-    iconsReverse.forEach(icon => {
+    //const iconsReverse = [...icons].reverse(); // Reverse the icons array
+    icons.forEach(icon => {
         addCard(icon, onClickHandler)
     });
     return container;
