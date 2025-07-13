@@ -70,6 +70,7 @@ export function addCard(icon, onClickHandler) {
 export function setupReleaseButton(onClickHandler) {
     const button = document.getElementById('clear-cards-btn');
     button.addEventListener('click', () => {
+        button.blur();
         onClickHandler();
     });
     return document.getElementById('clear-cards-btn');

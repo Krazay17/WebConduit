@@ -64,6 +64,8 @@ export default class Shop extends Phaser.GameObjects.Container {
         this.setupShopKeeper();
         this.setupBar();
         this.setupCollisionZone();
+
+        this.gambleCost = 100;
     }
 
     setupCollisionZone() {
@@ -89,11 +91,11 @@ export default class Shop extends Phaser.GameObjects.Container {
 
     interact(player) {
         console.log('interact with shop');
-        if (player.getMoney() < 100) {
+        if (player.getMoney() < this.gambleCost) {
             //this.scene.showMessage('You need 100 source.');
             return;
         }
-        player.updateMoney(-100);
+        player.updateMoney(-this.gambleCost);
 
         this.shopKeep.play('devilGamba');
         const animTime = this.shopKeep.anims.currentAnim ? this.shopKeep.anims.currentAnim.duration : 0;

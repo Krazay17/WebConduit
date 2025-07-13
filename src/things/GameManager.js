@@ -46,7 +46,7 @@ export default {
                 console.warn('Save version mismatch. Resetting progress.');
 
                 if (parsed.name.text === 'Yaya') {
-                    this.reset();
+                    this.clear();
                 } else {
                     this.reset({
                         keep: {
