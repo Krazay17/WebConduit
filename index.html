@@ -144,10 +144,12 @@
     }
 
     #icon-toolbar {
-      position:relative;
+      position: relative;
+      display: flex;;
       width: 100%;
       background: #222;
-      text-align: center;
+      align-items: center;
+      justify-content: space-between;
     }
 
     #clear-cards-btn {
@@ -163,6 +165,12 @@
     #clear-cards-btn:hover {
       background-color: darkred;
     }
+
+    #iconToolbar-text {
+      font-size: 1rem;
+      color: white;
+      background-color: #333;
+    }
   </style>
 </head>
 
@@ -174,6 +182,8 @@
 
   <section id="icon-section">
     <div id="icon-toolbar">
+      <span id="iconToolbar-text">Click and hold to lock card</span>
+
       <button id="clear-cards-btn">Release unlocked cards</button>
     </div>
     <div id="icon-grid" class="icon-grid"></div>
