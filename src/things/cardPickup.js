@@ -16,7 +16,7 @@ export default class CardPickup extends Pickup {
         this.icon = card.type;
         this.value = value;
         this.pickupSound = card.sound ? card.sound : 'pickup';
-        if(this.pickupSound !== 'pickup') this.detune = 0;
+        if(this.pickupSound !== 'pickup' && this.pickupSound !== 'pickup3') this.detune = 0;
 
         if (!this.value) {
             this.value = Phaser.Math.Between(card.min, card.max);
@@ -68,13 +68,7 @@ export default class CardPickup extends Pickup {
             this.scene.cardSetupTimer.remove();
         }
 
-
         const scene = this.scene;
-
-        // scene.cardSetupTimer = scene.time.delayedCall(50, () => {
-        //     scene.setupCards();
-        //     scene.cardSetupTimer = null; // clean up reference
-        // });
 
         this.destroy();
     }
