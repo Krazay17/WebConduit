@@ -34,6 +34,7 @@ export default class Home extends BaseGame {
 
         this.setupPortals();
         this.setupShop();
+        this.spawnBonusCard();
 
         this.network.socket.emit('highScoreRequest');
     }
@@ -123,9 +124,9 @@ export default class Home extends BaseGame {
 
         Object.entries(this.portalData).forEach(([key, data]) => {
             const portal = this.portals.create(data.x, data.y, data.tex)
-            .setScale(.2)
-            .play(data.tex)
-            .setTint(data.tint);
+                .setScale(.2)
+                .play(data.tex)
+                .setTint(data.tint);
 
             portal.targetScene = data.targetScene;
             this.shrinkCollision(portal, 140, 140);
@@ -195,8 +196,21 @@ export default class Home extends BaseGame {
         });
     }
 
-    setupShop() {
-        this.shop = new Shop(this, 2230, 3200);
-        this.add.existing(this.shop);
+    spawnBonusCard() {
+        if (this.player && !GameManager.flags.bonusCard) {
+            const bonusCard = this.spawnManager.spawnCard(2900, 3100, null, 'CardScythe', 66600);
+            const originalCollide = bonusCard.playerCollide.bind(bonusCard);
+
+            bonusCard.playerCollide = function(player) {
+                GameManager.flags.bonusCard = true;
+                GameManager.save();
+                return originalCollide(player);
+            }
+        }
     }
-}
+
+        setupShop() {
+            this.shop = new Shop(this, 2230, 3200);
+            this.add.existing(this.shop);
+        }
+    }

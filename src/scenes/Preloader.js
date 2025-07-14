@@ -59,9 +59,18 @@ export default class Preloader extends Phaser.Scene {
         this.load.audio('shurikanthrow', 'assets/Whip1.wav');
         this.load.audio('shurikanhit', 'assets/shurikan.wav');
         this.load.audio('pickup', 'assets/SuccessBeep.wav');
+        this.load.audio('pickup2', 'assets/pickup2.wav');
+        this.load.audio('pickup3', 'assets/pickup3.wav');
+        this.load.audio('pickup4', 'assets/pickup4.wav');
+        this.load.audio('pickup5', 'assets/pickup5.wav');
+        this.load.audio('pickup6', 'assets/pickup6.wav');
+        this.load.audio('pickup7', 'assets/pickup7.wav');
+        this.load.audio('pickup8', 'assets/pickup8.wav');
         this.load.audio('clinksound', 'assets/Clink1.wav');
         this.load.audio('clinksound2', 'assets/Clink2.wav');
         this.load.audio('shopInteract', 'assets/shopInteract.wav');
+        this.load.audio('shopInteractFinish', 'assets/shopInteractFinish.wav');
+        this.load.audio('shopInteractStart', 'assets/shopInteractStart.wav');
 
         this.load.tilemapTiledJSON('tilemapHome', 'assets/tilemapHome.json');
         this.load.tilemapTiledJSON('tilemap1', 'assets/tilemap1.json')

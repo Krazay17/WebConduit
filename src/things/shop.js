@@ -58,6 +58,8 @@ export default class Shop extends Phaser.GameObjects.Container {
         }
 
         this.gambleSound = scene.sound.add('shopInteract');
+        this.gambleSoundStart = scene.sound.add('shopInteractStart');
+        this.gambleSoundFinish = scene.sound.add('shopInteractFinish');
 
         scene.interactGroup.push(this);
         this.isInteractable = true;
@@ -108,13 +110,17 @@ export default class Shop extends Phaser.GameObjects.Container {
         if (this.gambleTime > Date.now()) {
             this.scene.spawnManager.spawnCard(2310, 3120);
         }
+
+        if (!this.gambleSoundTime || this.gambleSoundTime < Date.now()) {
+            this.gambleSound.play();
+        this.gambleSoundTime = Date.now() + 25;
+        }
+
         this.gambleTime = Date.now() + animTime;
 
         this.shopKeep.once('animationcomplete', () => {
             this.shopKeep.play('devilMan');
         });
-
-        this.gambleSound.play();
 
         this.scene.network.socket.emit('shopInteract', {
         })

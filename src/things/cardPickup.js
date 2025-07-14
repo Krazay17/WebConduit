@@ -1,6 +1,7 @@
 import Pickup from "./Pickup";
 import GameManager from "./GameManager";
 import { addCard } from "../domStuff/IconGrid";
+import { playSound } from "./soundUtils";
 
 export default class CardPickup extends Pickup {
     constructor(scene, x, y, card, value) {
@@ -14,7 +15,8 @@ export default class CardPickup extends Pickup {
         this.setOrigin(0.5, 0.5);
         this.icon = card.type;
         this.value = value;
-        this.pickupSound = card.sound? card.sound : 'pickup';
+        this.pickupSound = card.sound ? card.sound : 'pickup';
+        if(this.pickupSound !== 'pickup') this.detune = 0;
 
         if (!this.value) {
             this.value = Phaser.Math.Between(card.min, card.max);
@@ -59,7 +61,7 @@ export default class CardPickup extends Pickup {
         GameManager.save();
         addCard(this.card, clickCard)
 
-        this.playPickupSound();
+        playSound(this.scene, this.pickupSound, {detune: this.detune});
 
         // Cancel existing delayed card setup if one exists
         if (this.scene.cardSetupTimer?.remove) {
@@ -86,17 +88,18 @@ function getCardPath(id) {
 function getCard(cardType) {
 
     const cardTypes = [
-        { type: 'CardSapling', rarity: 1, weight: 3000, min: 1, max: 25 },
-        { type: 'CardTorch', rarity: 2, weight: 2500, min: 25, max: 50 },
-        { type: 'CardCrystal', rarity: 3, weight: 1000, min: 50, max: 200 },
-        { type: 'CardFireball', rarity: 4, weight: 500, min: 200, max: 500 },
-        { type: 'CardFalcion', rarity: 5, weight: 25, min: 1000, max: 5000 },
-        { type: 'CardPistol', rarity: 5, weight: 15, min: 2000, max: 5000 },
-        { type: 'CardScytheYang', rarity: 6, weight: 2, min: 25000, max: 50000 },
-        { type: 'CardScythe', rarity: 7, weight: 1, min: 99999, max: 99999 },
+        { type: 'CardSapling', rarity: 1, weight: 3000, min: 1, max: 25, sound: 'pickup' },
+        { type: 'CardTorch', rarity: 2, weight: 2500, min: 25, max: 50, sound: 'pickup' },
+        { type: 'CardCrystal', rarity: 3, weight: 1000, min: 50, max: 200, sound: 'pickup' },
+        { type: 'CardFireball', rarity: 4, weight: 500, min: 200, max: 500, sound: 'pickup' },
+        { type: 'CardFalcion', rarity: 5, weight: 50, min: 1000, max: 5000, sound: 'pickup2' },
+        { type: 'CardPistol', rarity: 5, weight: 25, min: 2000, max: 5000, sound: 'pickup2' },
+        { type: 'CardScytheYang', rarity: 6, weight: 2, min: 25000, max: 50000, sound: 'pickup6' },
+        { type: 'CardScythe', rarity: 7, weight: 1, min: 66666, max: 66666, sound: 'pickup7' },
     ];
     if (cardType) {
-        return cardTypes.find(card => card.type === cardType);
+        const match = cardTypes.find(card => card.type === cardType);
+        return match || getWeightedRandomCard(cardTypes);
     } else {
         return getWeightedRandomCard(cardTypes);
     }

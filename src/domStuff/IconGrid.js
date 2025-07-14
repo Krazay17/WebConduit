@@ -31,6 +31,35 @@ export function addCard(icon, onClickHandler) {
 
     let holdTimer;
     let justUnlocked = false;
+
+
+    let draggedCard = null;
+
+    wrapper.addEventListener('dragstart', (e) => {
+        draggedCard = wrapper;
+        e.dataTransfer.effectAllowed = 'move';
+        setTimeout(() => wrapper.style.display = 'none', 0); // hide original
+    });
+
+    wrapper.addEventListener('dragend', () => {
+        draggedCard.style.display = 'block';
+        draggedCard = null;
+    });
+
+    wrapper.addEventListener('dragover', (e) => {
+        e.preventDefault(); // necessary to allow dropping
+        e.dataTransfer.dropEffect = 'move';
+    });
+
+    wrapper.addEventListener('drop', (e) => {
+        e.preventDefault();
+        if (draggedCard && draggedCard !== wrapper) {
+            const parent = wrapper.parentNode;
+            parent.insertBefore(draggedCard, wrapper);
+        }
+    });
+
+
     wrapper.onmousedown = (e) => {
         if (e.button !== 0) return; // Only handle left mouse button
         holdTimer = setTimeout(() => {
@@ -44,7 +73,8 @@ export function addCard(icon, onClickHandler) {
         }, 800);
     };
 
-    wrapper.addEventListener('mouseup', () => {
+    wrapper.addEventListener('mouseup', (e) => {
+        if(e.button !== 0) return;
         clearTimeout(holdTimer);
         if (icon.locked) return; // Ignore clicks on locked icons
         if (justUnlocked) {
@@ -62,7 +92,7 @@ export function addCard(icon, onClickHandler) {
 
     wrapper.appendChild(img);
     wrapper.appendChild(label);
-    iconGrid.prepend(wrapper);
+    iconGrid.appendChild(wrapper);
 }
 
 

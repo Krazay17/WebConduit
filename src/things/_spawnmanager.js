@@ -38,6 +38,7 @@ export default class SpawnManager {
         this.bulletGroup = this.scene.physics.add.group({ allowGravity: false });
         this.softBulletGroup = this.scene.physics.add.group({ allowGravity: false });
         this.itemGroup = this.scene.physics.add.group();
+        this.cardGroup = this.scene.physics.add.group();
         this.staticItemGroup = this.scene.physics.add.group({ allowGravity: false, immovable: true });
 
         scene.physics.add.collider(this.sunmanGroup, this.sunmanGroup);
@@ -51,6 +52,7 @@ export default class SpawnManager {
             { group: this.bulletGroup, handler: 'bulletHit', zap: false, walls: false },
             { group: this.softBulletGroup, handler: 'bulletHit', zap: false, walls: false },
             { group: this.itemGroup, handler: 'itemHit', zap: false, walls: true },
+            { group: this.cardGroup, handler: 'itemHit', zap: false, walls: true },
             { group: this.staticItemGroup, handler: 'itemHit', zap: false, walls: false }
         ];
     }
@@ -263,7 +265,7 @@ export default class SpawnManager {
         }).setScrollFactor(1);
     }
 
-    spawnCard(x, y, obj) {
+    spawnCard(x, y, obj, type = null, value = null) {
         // const props = getProperty(obj);
         // let card = this.batGroup.getFirst(false);
 
@@ -276,12 +278,19 @@ export default class SpawnManager {
         // this.cardGroup.add(card);
         // card.init();
         // return card;
-
         const props = getProperty(obj);
-        const card = new CardPickup(this.scene, x, y, props?.icon || null, props?.value || null);
-        this.itemGroup.add(card);
+        const card = new CardPickup(this.scene, x, y, props?.type || type || null, props?.value || value || null);
+        this.cardGroup.add(card);
         if (props?.float) {
             card.body.allowGravity = false;
         }
+
+        if(this.cardGroup.getChildren().length > 100) {
+            const oldestCard = this.cardGroup.getFirst(true);
+            oldestCard?.playerCollide?.(this.player);
+            this.cardGroup.remove(oldestCard, true, true);
+        }
+
+        return card;
     }
 }

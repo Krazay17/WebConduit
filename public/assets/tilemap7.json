@@ -1047,6 +1047,12 @@
                  "id":350,
                  "name":"spawnCard",
                  "point":true,
+                 "properties":[
+                        {
+                         "name":"float",
+                         "type":"bool",
+                         "value":true
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -1059,6 +1065,12 @@
                  "id":351,
                  "name":"spawnCard",
                  "point":true,
+                 "properties":[
+                        {
+                         "name":"float",
+                         "type":"bool",
+                         "value":true
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
