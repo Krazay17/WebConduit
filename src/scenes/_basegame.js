@@ -187,9 +187,11 @@ export default class BaseGame extends Phaser.Scene {
     this.setupCards();
     const releaseUnlockedCards = () => {
       const unlockedCards = GameManager.cards.filter(icon => !icon.locked);
+      let totalMoney = 0;
       unlockedCards.forEach(icon => {
-        this.player.updateMoney(icon.money);
+        totalMoney += icon.money;
       });
+        this.player.updateMoney(totalMoney);
       // Remove all unlocked cards
       GameManager.cards = GameManager.cards.filter(icon => icon.locked);
       GameManager.save();
