@@ -16,7 +16,7 @@ export default class CardPickup extends Pickup {
         this.icon = card.type;
         this.value = value;
         this.pickupSound = card.sound ? card.sound : 'pickup';
-        if(this.pickupSound !== 'pickup' && this.pickupSound !== 'pickup3') this.detune = 0;
+        if(this.pickupSound !== 'pickup' || this.pickupSound !== 'pickup3') this.detune = 0;
 
         if (!this.value) {
             this.value = Phaser.Math.Between(card.min, card.max);
@@ -82,14 +82,14 @@ function getCardPath(id) {
 function getCard(cardType) {
 
     const cardTypes = [
-        { type: 'CardSapling', rarity: 1, weight: 3000, min: 1, max: 25, sound: 'pickup' },
-        { type: 'CardTorch', rarity: 2, weight: 2500, min: 25, max: 50, sound: 'pickup' },
-        { type: 'CardCrystal', rarity: 3, weight: 1000, min: 50, max: 200, sound: 'pickup' },
-        { type: 'CardFireball', rarity: 4, weight: 500, min: 200, max: 500, sound: 'pickup' },
-        { type: 'CardFalcion', rarity: 5, weight: 50, min: 1000, max: 5000, sound: 'pickup2' },
-        { type: 'CardPistol', rarity: 5, weight: 25, min: 2000, max: 5000, sound: 'pickup2' },
-        { type: 'CardScytheYang', rarity: 6, weight: 2, min: 25000, max: 50000, sound: 'pickup6' },
-        { type: 'CardScythe', rarity: 7, weight: 1, min: 66666, max: 66666, sound: 'pickup7' },
+        { type: 'CardSapling', rarity: 1, weight: 3500, min: 1, max: 50, sound: 'pickup' },
+        { type: 'CardTorch', rarity: 2, weight: 2500, min: 50, max: 100, sound: 'pickup' },
+        { type: 'CardCrystal', rarity: 3, weight: 1000, min: 100, max: 200, sound: 'pickup' },
+        { type: 'CardFireball', rarity: 4, weight: 750, min: 200, max: 500, sound: 'pickup' },
+        { type: 'CardFalcion', rarity: 5, weight: 300, min: 500, max: 1000, sound: 'pickup2' },
+        { type: 'CardPistol', rarity: 6, weight: 100, min: 1000, max: 2000, sound: 'pickup2' },
+        { type: 'CardScytheYang', rarity: 7, weight: 10, min: 11111, max: 33333, sound: 'pickup6' },
+        { type: 'CardScythe', rarity: 8, weight: 5, min: 66666, max: 66666, sound: 'pickup7' },
     ];
     if (cardType) {
         const match = cardTypes.find(card => card.type === cardType);

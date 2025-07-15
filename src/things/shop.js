@@ -67,7 +67,7 @@ export default class Shop extends Phaser.GameObjects.Container {
         this.setupBar();
         this.setupCollisionZone();
 
-        this.gambleCost = 100;
+        this.gambleCost = 200;
     }
 
     setupCollisionZone() {
