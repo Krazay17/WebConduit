@@ -205,6 +205,11 @@ export default class NetworkManager extends Phaser.Events.EventEmitter {
       }
     });
 
+    this.socket.on('spawnCardUpdate', ({ id, cardData }) => {
+      const player = this.otherPlayers[id];
+      this.scene.spawnManager.spawnCard(cardData);
+    });
+
   }
 
   addOtherPlayer(id, data) {

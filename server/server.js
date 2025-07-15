@@ -211,6 +211,12 @@ io.on('connection', (socket) => {
     console.log('voice join');
   });
 
+  socket.on('spawnCardRequest', (cardData) => {
+    if (players[socket.id]) {
+      socket.broadcast.emit('spawnCardUpdate', { id: socket.id, cardData });
+    }
+  })
+
 });
 
 // Auto-kick inactive players

@@ -1,4 +1,4 @@
-const CURRENT_VERSION = 0.116;
+const CURRENT_VERSION = 0.117;
 
 export default {
     version: CURRENT_VERSION,
@@ -45,21 +45,17 @@ export default {
             if (parsed.version !== CURRENT_VERSION) {
                 console.warn('Save version mismatch. Resetting progress.');
 
-                if (parsed.name.text === 'Yaya') {
-                    this.clear();
-                } else {
-                    this.reset({
-                        keep: {
-                            name: parsed.name,
-                            volume: parsed.volume,
-                            weapons: parsed.weapons,
-                            power: parsed.power,
-                            cards: parsed.cards,
-                            //flags: parsed.flags,
+                this.reset({
+                    keep: {
+                        name: parsed.name,
+                        volume: parsed.volume,
+                        weapons: parsed.weapons,
+                        power: parsed.power,
+                        cards: parsed.cards,
+                        flags: parsed.flags,
 
-                        }
-                    });
-                }
+                    }
+                });
 
                 return;
             }
