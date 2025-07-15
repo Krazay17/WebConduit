@@ -82,6 +82,7 @@ function getCardPath(id) {
 function getCard(cardType) {
 
     const cardTypes = [
+        { type: 'CardDaily', rarity: 1, weight: 0, min: 1, max: 50, sound: 'pickup' },
         { type: 'CardSapling', rarity: 1, weight: 3500, min: 1, max: 50, sound: 'pickup' },
         { type: 'CardTorch', rarity: 2, weight: 2500, min: 50, max: 100, sound: 'pickup' },
         { type: 'CardCrystal', rarity: 3, weight: 1000, min: 100, max: 200, sound: 'pickup' },

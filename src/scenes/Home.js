@@ -197,20 +197,38 @@ export default class Home extends BaseGame {
     }
 
     spawnBonusCard() {
-        if (this.player && !GameManager.flags.bonusCard) {
-            const bonusCard = this.spawnManager.spawnCard(2900, 3100, null, 'CardScythe', 66600);
+        if (!this.player) return;
+        const claimedToday = GameManager.flags.bonusCard >= startOfToday();
+
+        if (!claimedToday) {
+            const bonusCard = this.spawnManager.spawnCard(
+                2900, 3100, null, 'CardDaily', 100000
+            );
+
+            // Cache “real” collision
             const originalCollide = bonusCard.playerCollide.bind(bonusCard);
 
-            bonusCard.playerCollide = function(player) {
-                GameManager.flags.bonusCard = true;
+            bonusCard.playerCollide = (player) => {
+                // Stamp *this* midnight so “today” is locked in even if
+                // the player crosses midnight before you can save.
+                GameManager.flags.bonusCard = startOfToday();
                 GameManager.save();
+
                 return originalCollide(player);
-            }
+            };
         }
     }
 
-        setupShop() {
-            this.shop = new Shop(this, 2230, 3200);
-            this.add.existing(this.shop);
-        }
+
+    setupShop() {
+        this.shop = new Shop(this, 2230, 3200);
+        this.add.existing(this.shop);
     }
+}
+
+// Milliseconds since epoch for local midnight at the start of *today*
+function startOfToday() {
+    const d = new Date();      // now, local time
+    d.setHours(0, 0, 0, 0);    // hard-reset to 00:00:00.000
+    return d.getTime();        // ↩︎ ms since 1970-01-01 UTC
+}

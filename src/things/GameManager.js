@@ -1,4 +1,4 @@
-const CURRENT_VERSION = 0.115;
+const CURRENT_VERSION = 0.116;
 
 export default {
     version: CURRENT_VERSION,
@@ -55,7 +55,7 @@ export default {
                             weapons: parsed.weapons,
                             power: parsed.power,
                             cards: parsed.cards,
-                            flags: parsed.flags,
+                            //flags: parsed.flags,
 
                         }
                     });
