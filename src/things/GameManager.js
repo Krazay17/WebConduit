@@ -52,7 +52,7 @@ export default {
                         weapons: parsed.weapons,
                         power: parsed.power,
                         cards: parsed.cards,
-                        flags: parsed.flags,
+                        //flags: parsed.flags,
 
                     }
                 });
