@@ -211,11 +211,23 @@ io.on('connection', (socket) => {
     console.log('voice join');
   });
 
+  socket.on('pvpDamageRequest', (data) => {
+    if (players[socket.id]) {
+      //socket.broadcast.emit('pvpDamageUpdate', { id: socket.id, data });
+      // send damage to id
+      const targetSocket = io.sockets.sockets.get(data.id);
+      if (targetSocket) {
+        targetSocket.emit('pvpDamageUpdate', { id: socket.id, data });
+      }
+      console.log('pvpDamageRequest', data);
+    }
+  });
+
   socket.on('spawnCardRequest', (cardData) => {
     if (players[socket.id]) {
       socket.broadcast.emit('spawnCardUpdate', { id: socket.id, cardData });
     }
-  })
+  });
 
 });
 

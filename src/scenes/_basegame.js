@@ -5,7 +5,7 @@ import SpawnManager from '../things/_spawnmanager.js';
 import WeaponGroup from '../weapons/WeaponGroup.js';
 import SoundUtil from '../things/soundUtils.js';
 import ScoreBoard from '../things/scoreBoard.js';
-import { setupIconGrid, setupReleaseButton } from '../domStuff/IconGrid.js';
+import { setupIconGrid, setupReleaseButton, setupSortButton } from '../domStuff/IconGrid.js';
 
 export default class BaseGame extends Phaser.Scene {
   constructor(key) {
@@ -87,7 +87,6 @@ export default class BaseGame extends Phaser.Scene {
     // }, { once: true });
 
 
-    this.network.refreshScene(this);
 
     // Scroll wheel to zoom
     // this.input.on('wheel', (wheel) => {
@@ -191,13 +190,20 @@ export default class BaseGame extends Phaser.Scene {
       unlockedCards.forEach(icon => {
         totalMoney += icon.money;
       });
-        this.player.updateMoney(totalMoney);
+      this.player.updateMoney(totalMoney);
       // Remove all unlocked cards
       GameManager.cards = GameManager.cards.filter(icon => icon.locked);
       GameManager.save();
       this.setupCards(); // Refresh the icon grid
     }
     this.releaseButton = setupReleaseButton(releaseUnlockedCards);
+
+    const sortCards = () => {
+      GameManager.cards.sort((a, b) => b.money - a.money);
+      this.setupCards(); // Refresh the icon grid
+    };
+    this.sortButton = setupSortButton(sortCards);
+
 
     if (this.network.voiceChat) {
       this.network.voiceChat.setPlayerGetter(() => {
@@ -357,6 +363,9 @@ export default class BaseGame extends Phaser.Scene {
     }
 
     this.weaponWalkableCollider = this.physics.add.collider(this.weaponGroup, this.walkableGroup);
+
+    
+    this.network.refreshScene(this);
   }
 
   clearCollisions() {

@@ -1,3 +1,4 @@
+import { changeCollision } from "../myFunctions.js";
 import AuraSprite from "../weapons/auraSprite.js";
 import ShurikanProjectile from "../weapons/shurikanProjectile.js";
 import RankSystem from "./RankSystem.js";
@@ -30,6 +31,13 @@ export default class GhostPlayer extends Phaser.GameObjects.Container {
 
     // Add the container itself to the scene's display list
     scene.add.existing(this);
+
+    if(scene.spawnManager.pvpGroup) {
+      scene.spawnManager.pvpGroup.add(this);
+    }
+
+    changeCollision(this, 40, 90, 0, 0);
+    
     this.setDepth(8);
 
     this.createVisuals();
@@ -87,6 +95,12 @@ export default class GhostPlayer extends Phaser.GameObjects.Container {
     this.add(this.healthBar);
   }
 
+  TakeDamage(x, y, damage = 1, stunDuration = 300) {
+    const id = this.id;
+    const data = {x, y, damage, stunDuration, id};
+    this.scene.network.socket.emit('pvpDamageRequest', (data));
+    console.log(data);
+  }
 
   lerpPosition(delta) {
     if (!this.sprite) return;
@@ -391,7 +405,7 @@ export default class GhostPlayer extends Phaser.GameObjects.Container {
     // });
 
 
-    const shurikan = new ShurikanProjectile(this.scene, start.x, start.y, this.scene.player, null, 0, 1, 3);
+    const shurikan = new ShurikanProjectile(this.scene, start.x, start.y, this.scene.player, null, 0, 1, 3, true);
     shurikan.setVelocity(velocity.x, velocity.y);
     shurikan.setAlpha(.5);
   }

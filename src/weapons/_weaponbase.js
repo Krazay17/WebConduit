@@ -189,10 +189,10 @@ export default class WeaponBase {
     platformHit(plat) {
     }
 
-    enemyHit(target, stagger, location) {
+    enemyHit(target, stunDuration = 300) {
         if (!this.canHit(target)) return;
 
-        if (target.TakeDamage(this.player, this.damage(), stagger ? this.getKnockBack(target) : null)) {
+        if (target.TakeDamage(this.getKnockBack(target).x, this.getKnockBack(target).y, this.damage(), stunDuration)) {
             playHitSound(this.scene, this.hitSoundId);
         }
     }

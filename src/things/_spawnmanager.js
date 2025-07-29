@@ -40,6 +40,7 @@ export default class SpawnManager {
         this.itemGroup = this.scene.physics.add.group();
         this.cardGroup = this.scene.physics.add.group();
         this.staticItemGroup = this.scene.physics.add.group({ allowGravity: false, immovable: true });
+        this.pvpGroup = this.scene.physics.add.group({ allowGravity: false, immovable: true });
 
         scene.physics.add.collider(this.sunmanGroup, this.sunmanGroup);
     }
@@ -53,7 +54,8 @@ export default class SpawnManager {
             { group: this.softBulletGroup, handler: 'bulletHit', zap: false, walls: false },
             { group: this.itemGroup, handler: 'itemHit', zap: false, walls: true },
             { group: this.cardGroup, handler: 'itemHit', zap: false, walls: true },
-            { group: this.staticItemGroup, handler: 'itemHit', zap: false, walls: false }
+            { group: this.staticItemGroup, handler: 'itemHit', zap: false, walls: false },
+            { group: this.pvpGroup, handler: 'enemyHit', zap: false, walls: false },
         ];
     }
 
@@ -70,7 +72,6 @@ export default class SpawnManager {
         bat.init();
         return bat;
     }
-
 
     spawnSunMan(x, y, obj, health = 3, isRemote = false, id = null) {
         let sunMan = this.sunmanGroup.getFirstDead(false);

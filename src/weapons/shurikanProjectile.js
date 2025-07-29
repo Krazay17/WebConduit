@@ -2,13 +2,14 @@ import { playHitSound } from "../things/soundUtils.js";
 import WeaponProjectile from "./_baseWeaponProjectile.js";
 
 export default class ShurikanProjectile extends WeaponProjectile {
-    constructor(scene, x, y, player, weapon, chainCount = 0, initialDamage = 1, maxTargets = 1) {
+    constructor(scene, x, y, player, weapon, chainCount = 0, initialDamage = 1, maxTargets = 1, visualOnly = false) {
         super(scene, x, y, 'shurikan', player, weapon);
 
         this.baseDamage = initialDamage;
         this.maxTargets = maxTargets;
         this.chainCount = chainCount;
         this.destroyOnHit = false;
+        this.visualOnly = visualOnly;
         this.shrinkCollision(this, this.width/1.6, this.height/1.6)
 
         
@@ -30,13 +31,14 @@ export default class ShurikanProjectile extends WeaponProjectile {
 
     }
 
-    enemyHit(enemy, stagger = true) {
+    enemyHit(enemy, stunDuration = 300) {
+        if(this.visualOnly) return;
         if (!this.canHit(enemy)) return;
 
         const velocity = this.body.velocity;
 
-        if (enemy.TakeDamage(this.player, this.damage(), stagger? velocity : null)) {
-            playHitSound(this.scene, this.hitSoundId)
+        if (enemy.TakeDamage(velocity.x, velocity.y, this.damage(), stunDuration)) {
+            playHitSound(this.scene, this.hitSoundId);
         }
 
         if ((this.chainCount > 0)) {

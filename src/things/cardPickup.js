@@ -84,11 +84,11 @@ function getCard(cardType) {
     const cardTypes = [
         { type: 'CardDaily', rarity: 1, weight: 0, min: 1, max: 50, sound: 'pickup' },
         { type: 'CardSapling', rarity: 1, weight: 3500, min: 1, max: 50, sound: 'pickup' },
-        { type: 'CardTorch', rarity: 2, weight: 2500, min: 50, max: 100, sound: 'pickup' },
-        { type: 'CardCrystal', rarity: 3, weight: 1000, min: 100, max: 200, sound: 'pickup' },
-        { type: 'CardFireball', rarity: 4, weight: 750, min: 200, max: 500, sound: 'pickup' },
-        { type: 'CardFalcion', rarity: 5, weight: 300, min: 500, max: 1000, sound: 'pickup2' },
-        { type: 'CardPistol', rarity: 6, weight: 100, min: 1000, max: 2000, sound: 'pickup2' },
+        { type: 'CardTorch', rarity: 2, weight: 2500, min: 51, max: 100, sound: 'pickup' },
+        { type: 'CardCrystal', rarity: 3, weight: 1000, min: 101, max: 200, sound: 'pickup' },
+        { type: 'CardFireball', rarity: 4, weight: 750, min: 201, max: 500, sound: 'pickup' },
+        { type: 'CardFalcion', rarity: 5, weight: 300, min: 501, max: 1000, sound: 'pickup2' },
+        { type: 'CardPistol', rarity: 6, weight: 100, min: 1001, max: 2000, sound: 'pickup2' },
         { type: 'CardScytheYang', rarity: 7, weight: 10, min: 11111, max: 33333, sound: 'pickup6' },
         { type: 'CardScythe', rarity: 8, weight: 5, min: 66666, max: 66666, sound: 'pickup7' },
     ];

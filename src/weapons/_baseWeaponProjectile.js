@@ -36,12 +36,12 @@ export default class WeaponProjectile extends Phaser.Physics.Arcade.Sprite {
 
     touchWall() { }
 
-    enemyHit(enemy, stagger = true) {
+    enemyHit(enemy, stunDuration = 300) {
         if (!this.canHit(enemy)) return;
 
         const velocity = this.body.velocity;
 
-        if (enemy.TakeDamage(this.player, this.damage(), stagger ? velocity : null)) {
+        if (enemy.TakeDamage(velocity.x, velocity.y, this.damage(), stunDuration)) {
             playHitSound(this.scene, this.hitSoundId);
             return;
         }

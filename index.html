@@ -171,6 +171,19 @@
       color: white;
       background-color: #333;
     }
+
+    #sortCards-btn {
+      padding: 0.4rem 0.8rem;
+      font-size: 1rem;
+      background-color: rgb(40, 20, 220);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    #sortCards-btn:hover {
+      background-color: rgb(15, 7, 87);
+    }
   </style>
 </head>
 
@@ -184,6 +197,7 @@
     <div id="icon-toolbar">
       <span id="iconToolbar-text">Click to consume Card -- Click and hold to lock card</span>
 
+      <button id="sortCards-btn">Sort Cards</button>
       <button id="clear-cards-btn">Consume unlocked cards</button>
     </div>
     <div id="icon-grid" class="icon-grid"></div>

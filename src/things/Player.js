@@ -1174,18 +1174,20 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.makeScreenFlash();
         playSound(this.scene, this.damageSound);
 
-        this.stunned = true;
-        this.emit('playerstunned');
-        this.stop();
-        this.setFrame(8);
-        this.scene.time.removeEvent(this.stunTimer);
-        this.stunTimer = this.scene.time.addEvent({
-            delay: stunDuration,
-            callback: () => {
-                this.stunned = false;
-                this.setFrame(5);
-            }
-        });
+        if (stunDuration > 0) {
+            this.stunned = true;
+            this.emit('playerstunned');
+            this.stop();
+            this.setFrame(8);
+            this.scene.time.removeEvent(this.stunTimer);
+            this.stunTimer = this.scene.time.addEvent({
+                delay: stunDuration,
+                callback: () => {
+                    this.stunned = false;
+                    this.setFrame(5);
+                }
+            });
+        }
 
         this.setVelocityX(x);
         this.setVelocityY(y);

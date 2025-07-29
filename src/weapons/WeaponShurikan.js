@@ -43,7 +43,6 @@ export default class WeaponShurikan extends WeaponBase {
             this.chainCount, 
             this.baseDamage,
             this.initialTargets, 
-            this.damageScaling()
         );
         projectile.setVelocity(vector.x, vector.y);
 

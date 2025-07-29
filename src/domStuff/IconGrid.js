@@ -105,3 +105,12 @@ export function setupReleaseButton(onClickHandler) {
     });
     return document.getElementById('clear-cards-btn');
 }
+
+export function setupSortButton(onClickHandler) {
+    const button = document.getElementById('sortCards-btn');
+    button.addEventListener('click', ()  => {
+        button.blur();
+        onClickHandler();
+    });
+    return button;
+}

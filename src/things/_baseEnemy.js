@@ -78,7 +78,7 @@ export default class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
         //this.healthBarBg.y = this.y - this.displayHeight / 2 - 6;
     }
 
-    TakeDamage(player, damage = 1, stagger = false, duration = 300) {
+    TakeDamage(x, y, damage = 1, stunDuration = 300) {
         if (this.dead || !this.canDamage) return false;
         if (!this.createdHealthBar) this.createHealthBar();
 
@@ -90,13 +90,14 @@ export default class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
         //     duration,
         // })
 
-        this.applyDamage(player, damage, stagger, duration);
+        this.applyDamage(x, y, damage, stunDuration);
+        console.log(damage);
 
         return true;
 
     }
 
-    applyDamage(player, damage = 1, stagger = false, duration = 300) {
+    applyDamage(x, y, damage = 1, stunDuration = 300) {
         this.health -= damage;
         this.updateHealthBar();
 
@@ -104,20 +105,20 @@ export default class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
             this.alive = false;
             if (!this.scene) return;
             this.scene?.time?.removeEvent(this.hitRecover);
-            this.die(player);
+            this.die(this.player);
         } else {
 
-            if (stagger && (this.staggerDR > .33)) {
+            if ((stunDuration > 0) && (this.staggerDR > .33)) {
                 this.staggerDR /= 1.5;
                 this.stunned = true;
                 if (!this.prevVelocity) {
                     this.prevVelocity = this.body.velocity.clone();
                 }
-                this.setVelocity(stagger.x / 3, stagger.y / 3)
+                this.setVelocity(x / 3, y / 3)
                 this.setTint(0xff0000);
                 this.scene?.time?.removeEvent(this.hitRecover);
                 this.hitRecover = this.scene?.time?.addEvent({
-                    delay: duration * this.staggerDR,
+                    delay: stunDuration * this.staggerDR,
                     callback: () => {
                         if (!this.dead) {
                             this.stunned = false;
