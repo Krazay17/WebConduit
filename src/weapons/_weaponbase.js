@@ -131,6 +131,8 @@ export default class WeaponBase {
 
         groups.forEach(({ group, handler }) => {
             group.getChildren().forEach(target => {
+                console.log(group.name);
+                if (group.name === 'pvpGroup') return;
                 // find end of weapon to target box
                 const bounds = target.getBounds();
                 const closestPoint = getClosestPointOnRect(bounds, data.start);

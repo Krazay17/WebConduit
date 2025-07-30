@@ -41,6 +41,7 @@ export default class SpawnManager {
         this.cardGroup = this.scene.physics.add.group();
         this.staticItemGroup = this.scene.physics.add.group({ allowGravity: false, immovable: true });
         this.pvpGroup = this.scene.physics.add.group({ allowGravity: false, immovable: true });
+        this.pvpGroup.name = 'pvpGroup';
 
         scene.physics.add.collider(this.sunmanGroup, this.sunmanGroup);
     }
