@@ -1,3 +1,4 @@
+import { addButton, setupKeybindWindow } from "../domStuff/KeyBinds.js";
 import GameManager from "../things/GameManager.js";
 
 export default class Preloader extends Phaser.Scene {
@@ -83,7 +84,7 @@ export default class Preloader extends Phaser.Scene {
         this.load.tilemapTiledJSON('tilemap7', 'assets/tilemap7.json')
         this.load.tilemapTiledJSON('tilemapYaya1', 'assets/tilemapYaya1.json')
 
-        
+
         this.load.spritesheet('devilMan', 'assets/DevilMan.png', {
             frameWidth: 1224,
             frameHeight: 1701,
@@ -145,12 +146,22 @@ export default class Preloader extends Phaser.Scene {
     create() {
         GameManager.load();
 
-        window.secretDevMode = function() {
+        window.secretDevMode = function () {
             GameManager.flags.devmode = !GameManager.flags.devmode;
             console.log(GameManager.flags.devmode);
         }
 
-        
+        setupKeybindWindow();
+        addButton('KeyUnpressed', 'KeyW', 'Heal', 1, 2);
+        addButton('KeyUnpressed', 'KeyS', 'Crouch', 2, 2);
+        addButton('KeyUnpressed', 'KeyA', 'Left', 2, 1);
+        addButton('KeyUnpressed', 'KeyD', 'Right', 2, 3);
+        addButton('KeyUnpressed', 'ShiftLeft', 'Dash', 2, 4, '100px', 'Shift');
+        addButton('KeyUnpressed', 'Space', 'Jump', 2, 6, '140px');
+        addButton('KeyUnpressed', 'KeyF', 'Interact', 2, 9);
+        addButton('KeyUnpressed', 'KeyC', 'Inventory', 2, 10);
+        addButton('KeyUnpressed', 'KeyT', 'Home', 1, 10);
+        addButton('KeyUnpressed', 'KeyR', 'Respawn', 1, 9);
 
         this.scene.start(GameManager.area);
     }

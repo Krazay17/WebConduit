@@ -65,7 +65,6 @@ export default class BaseGame extends Phaser.Scene {
     });
 
 
-
     // document.body.addEventListener('click', (event) => {
     //   if (!this.network.voiceChat || !this.network.voiceChat.audioContext) {
     //     return;
@@ -165,7 +164,9 @@ export default class BaseGame extends Phaser.Scene {
 
     const icons = GameManager.cards;
 
+    //phaser making the icongrid
     this.iconGrid = setupIconGrid('icon-grid', icons, clickIcon, this);
+
   }
 
 

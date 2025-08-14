@@ -1,0 +1,56 @@
+#kb-section {
+    position: fixed;
+    bottom: 0;
+    left: 10%;
+    z-index: 1;
+    background: #111111b0;
+    overflow: hidden;
+    height: max-content;
+    width: max-content;
+}
+
+.kb-grid {
+    display: grid;
+    grid-template-columns: repeat(11, 65px);
+    padding-left: 5%;
+}
+
+.kb-button {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 60px;
+    height: 60px;
+    grid-row: auto;
+    grid-column: auto;
+}
+
+.kb-image {
+    width: 100%;
+    height: 50px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.kb-label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -95%);
+    font-weight: bold;
+    font-size: 25px;
+    color: aliceblue;
+    font-style: oblique;
+    text-shadow: black 2px 2px 1px;
+    pointer-events: none;
+}
+
+.kb-info {
+    transform: translate(-5%, -70%);
+    font-weight: bold;
+    font-size: 15px;
+    color: aliceblue;
+    text-shadow: black 2px 2px 1px;
+    text-align: center;
+    pointer-events: none;
+}

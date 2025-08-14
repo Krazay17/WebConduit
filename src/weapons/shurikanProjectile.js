@@ -35,7 +35,7 @@ export default class ShurikanProjectile extends WeaponProjectile {
         if(this.visualOnly) return;
         if (!this.canHit(enemy)) return;
 
-        const velocity = this.body.velocity;
+        const velocity = this.body.velocity.clone().scale(.1);
 
         if (enemy.TakeDamage(velocity.x, velocity.y, this.damage(), stunDuration)) {
             playHitSound(this.scene, this.hitSoundId);

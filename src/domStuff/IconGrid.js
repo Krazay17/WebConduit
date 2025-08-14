@@ -32,6 +32,9 @@ export function addCard(icon, onClickHandler) {
     let holdTimer;
     let justUnlocked = false;
 
+    wrapper.appendChild(img);
+    wrapper.appendChild(label);
+    iconGrid.appendChild(wrapper);
 
     let draggedCard = null;
 
@@ -93,9 +96,6 @@ export function addCard(icon, onClickHandler) {
         clearTimeout(holdTimer);
     });
 
-    wrapper.appendChild(img);
-    wrapper.appendChild(label);
-    iconGrid.appendChild(wrapper);
 }
 
 

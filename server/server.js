@@ -219,9 +219,16 @@ io.on('connection', (socket) => {
       if (targetSocket) {
         targetSocket.emit('pvpDamageUpdate', { id: socket.id, data });
       }
-      console.log('pvpDamageRequest', data);
     }
   });
+  socket.on('pvpKillRequest', (data) => {
+    if(players[socket.id]) {
+      const targetSocket = io.sockets.sockets.get(data.id);
+      if(targetSocket) {
+        targetSocket.emit('pvpKillUpdate', {id: socket.id, data})
+      }
+    }
+  })
 
   socket.on('spawnCardRequest', (cardData) => {
     if (players[socket.id]) {

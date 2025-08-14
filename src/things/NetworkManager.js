@@ -200,10 +200,14 @@ export default class NetworkManager extends Phaser.Events.EventEmitter {
 
     this.socket.on('pvpDamageUpdate', ({id, data}) => {
         const {x, y, damage, stunDuration} = data;
-        this.scene.player.TakeDamage(x, y, damage, stunDuration);
-        console.log('pvpDamageUpdate', data);
+        this.scene.player.TakeDamage(x, y, damage, stunDuration, id);
     });
 
+    this.socket.on('pvpKillUpdate', ({id, data}) => {
+      const {killer, money} = data;
+      this.scene.player.updateMoney(money);
+    })
+    
     this.socket.on('enemyDamageUpdate', (info) => {
       const { id, player, damage, stagger, duration } = info;
       if (this.otherEnemies[id]) {

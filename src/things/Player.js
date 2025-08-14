@@ -101,7 +101,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         };
         this.myPointer = new Phaser.Input.Pointer(this.scene.input.manager, 1)
 
-
         this.scene.input.on('pointerdown', (pointer) => {
             if (GameManager.flags.devmode && pointer.middleButtonDown()) {
                 const worldPos = pointer.positionToCamera(this.scene.cameras.main);
@@ -229,12 +228,17 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.network.socket.emit('updateHealth', this.health, this.healthMax);
     }
 
-    Died() {
+    Died(killer) {
         if (this.alive == false) return;
         this.alive = false;
 
-        this.deathPenalty = Math.floor(-GameManager.power.money / 2);
-        this.updateMoney(this.deathPenalty);
+        const deathPenalty = Math.floor(GameManager.power.money / 2);
+        this.updateMoney(-deathPenalty);
+
+        const data = {id: killer, money: deathPenalty}
+        if(killer) {
+            this.network.socket.emit('pvpKillRequest', data);
+        }
 
         GameManager.stats.health = this.healthMax;
 
@@ -247,7 +251,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.gameOverText = this.scene.add.text(
             this.scene.cameras.main.width / 2,
             this.scene.cameras.main.height / 2,
-            'YOU DIED!\n' + this.deathPenalty + ' Source\n\nR to respawn\nT to go Home', {
+            'YOU DIED!\n' + deathPenalty + ' Source\n\nR to respawn\nT to go Home', {
             fontSize: '64px',
             color: '#ff0000'
         });
@@ -1154,7 +1158,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         return false;
     }
 
-    TakeDamage(x, y, damage = 1, stunDuration = 300) {
+    TakeDamage(x, y, damage = 1, stunDuration = 300, actor) {
         if (this.iFrame) return false;
         if (this.hitCD) return false;
         if (!this.alive) return false;
@@ -1168,7 +1172,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         });
 
         if (this.adjustHealth(-damage) === 0) {
-            this.Died();
+            this.Died(actor);
         }
 
         this.makeScreenFlash();
