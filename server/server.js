@@ -8,6 +8,7 @@ import repl from 'repl';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import fetch from 'node-fetch';
+import cors from 'cors';
 
 // Support __dirname in ESM
 const __filename = fileURLToPath(import.meta.url);
@@ -53,6 +54,12 @@ async function saveHighScores() {
 const app = express();
 const server = http.createServer(app);
 
+app.use(cors({
+  origin: 'https://conduit.bar',
+  methods: ['GET', 'POST'],
+  credentials: true
+}));
+
 const io = new Server(server, {
   cors: {
     origin: [
@@ -65,7 +72,7 @@ const io = new Server(server, {
 });
 
 const players = {};
-const SCORES_FILE = await loadHighScores();
+const SCORES_FILE = loadHighScores();
 //const SCORES_FILE = path.resolve(__dirname, 'highScores.json');
 
 // Load scores from file
