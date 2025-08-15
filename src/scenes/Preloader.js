@@ -75,13 +75,14 @@ export default class Preloader extends Phaser.Scene {
         this.load.audio('shopInteractStart', 'assets/shopInteractStart.wav');
 
         this.load.tilemapTiledJSON('tilemapHome', 'assets/tilemapHome.json');
-        this.load.tilemapTiledJSON('tilemap1', 'assets/tilemap1.json')
-        this.load.tilemapTiledJSON('tilemap2', 'assets/tilemap2.json')
-        this.load.tilemapTiledJSON('tilemap3', 'assets/tilemap3.json')
-        this.load.tilemapTiledJSON('tilemap4', 'assets/tilemap4.json')
-        this.load.tilemapTiledJSON('tilemap5', 'assets/tilemap5.json')
-        this.load.tilemapTiledJSON('tilemap6', 'assets/tilemap6.json')
-        this.load.tilemapTiledJSON('tilemap7', 'assets/tilemap7.json')
+        this.load.tilemapTiledJSON('tilemap1', 'assets/tilemap1.json');
+        this.load.tilemapTiledJSON('tilemap2', 'assets/tilemap2.json');
+        this.load.tilemapTiledJSON('tilemap3', 'assets/tilemap3.json');
+        this.load.tilemapTiledJSON('tilemap4', 'assets/tilemap4.json');
+        this.load.tilemapTiledJSON('tilemap5', 'assets/tilemap5.json');
+        this.load.tilemapTiledJSON('tilemap6', 'assets/tilemap6.json');
+        this.load.tilemapTiledJSON('tilemap7', 'assets/tilemap7.json');
+        this.load.tilemapTiledJSON('tilemap8', 'assets/tilemap8.json');
         this.load.tilemapTiledJSON('tilemapYaya1', 'assets/tilemapYaya1.json')
 
 
@@ -152,16 +153,17 @@ export default class Preloader extends Phaser.Scene {
         }
 
         setupKeybindWindow();
-        addButton('KeyUnpressed', 'KeyW', 'Heal', 1, 2);
-        addButton('KeyUnpressed', 'KeyS', 'Crouch', 2, 2);
-        addButton('KeyUnpressed', 'KeyA', 'Left', 2, 1);
-        addButton('KeyUnpressed', 'KeyD', 'Right', 2, 3);
-        addButton('KeyUnpressed', 'ShiftLeft', 'Dash', 2, 4, '100px', 'Shift');
-        addButton('KeyUnpressed', 'Space', 'Jump', 2, 6, '140px');
-        addButton('KeyUnpressed', 'KeyF', 'Interact', 2, 9);
-        addButton('KeyUnpressed', 'KeyC', 'Inventory', 2, 10);
-        addButton('KeyUnpressed', 'KeyT', 'Home', 1, 10);
-        addButton('KeyUnpressed', 'KeyR', 'Respawn', 1, 9);
+        document.healButton = addButton('KeyUnpressed', 'KeyW', 'Heal', 1, 2);
+        document.crouchButton = addButton('KeyUnpressed', 'KeyS', 'Crouch', 2, 2);
+        document.leftButton = addButton('KeyUnpressed', 'KeyA', 'Left', 2, 1);
+        document.rightButton = addButton('KeyUnpressed', 'KeyD', 'Right', 2, 3);
+        document.dashButton = addButton('KeyUnpressed', 'ShiftLeft', 'Dash', 2, 4, '100px', 'Shift');
+        document.jumpButton = addButton('KeyUnpressed', 'Space', 'Jump', 2, 6, '140px');
+        document.interactButton = addButton('KeyUnpressed', 'KeyF', 'Interact', 2, 9);
+        document.invButton = addButton('KeyUnpressed', 'KeyC', 'Inventory', 2, 10);
+        document.homeButton = addButton('KeyUnpressed', 'KeyT', 'Home', 1, 11);
+        document.respawnButton = addButton('KeyUnpressed', 'KeyR', 'Respawn', 1, 10);
+        document.settingsButton = addButton('KeyUnpressed', 'Escape', 'Settings', 1, 9, '65px', 'Esc');
 
         this.scene.start(GameManager.area);
     }

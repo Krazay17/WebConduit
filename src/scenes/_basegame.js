@@ -50,7 +50,7 @@ export default class BaseGame extends Phaser.Scene {
   //     console.warn('Silent audio play failed:', e);
   //   });
   // }
-  setupWorld(xleft = -1600, ytop = 0, width = 6400, height = 6400) {
+  setupWorld(xleft = 0, ytop = 0, width = 6400, height = 12800) {
     this.physics.world.setBounds(xleft, ytop, width, height);
     this.bounds = this.physics.world.bounds;
     this.cameras.main.setBounds(xleft, ytop, width, height);
@@ -221,16 +221,22 @@ export default class BaseGame extends Phaser.Scene {
       this.invMenu.init({ player: this.player });
     }
 
-
-    this.input.keyboard.on('keydown-C', () => {
+    const openInv = () => {
       this.invMenu.scene.setVisible(true);
       this.invMenu.scene.setActive(true);
       this.invMenu.input.enabled = true;
-    });
-    this.input.keyboard.on('keyup-C', () => {
+    }
+
+    const closeInv = () => {
       this.invMenu.scene.setVisible(false);
       this.invMenu.input.enabled = false;
       this.invMenu.scene.setActive(false);
+    }
+    this.input.keyboard.on('keydown-C', () => {
+      openInv?.();
+    });
+    this.input.keyboard.on('keyup-C', () => {
+      closeInv?.();
     });
 
     if (!this.scene.isActive('PlayerUI')) {
@@ -284,6 +290,7 @@ export default class BaseGame extends Phaser.Scene {
     if (!this.tilemap) return;
 
     this.tileObjects = this.tilemap.getObjectLayer('objects');
+    if (!this.tileObjects) return;
     this.tileObjects.objects.forEach(obj => {
       if (this.spawnManager[obj.name]) {
         this.spawnManager[obj.name]?.(obj.x, obj.y, obj);
@@ -365,7 +372,7 @@ export default class BaseGame extends Phaser.Scene {
 
     this.weaponWalkableCollider = this.physics.add.collider(this.weaponGroup, this.walkableGroup);
 
-    
+
     this.network.refreshScene(this);
   }
 
@@ -418,9 +425,9 @@ export default class BaseGame extends Phaser.Scene {
   setupQuick(x = 0, y = 0) {
     this.setupSky();
     this.setupWorld();
-    this.setupTileMap()
     this.setupPlayer(x, y);
     this.setupGroups();
+    this.setupTileMap()
     this.setupCollisions();
     this.setupMusic();
   }

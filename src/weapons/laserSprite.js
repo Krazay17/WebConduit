@@ -1,5 +1,6 @@
 import { getProperty } from "../myFunctions";
 
+//Properties: int length, bool doesFlicker, int start, int onTime, int offTime
 export default class LaserSprite extends Phaser.GameObjects.TileSprite {
     constructor(scene, x, y, player, obj) {
         super(scene, x, y, 0, 16, 'zap');

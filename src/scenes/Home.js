@@ -112,6 +112,14 @@ export default class Home extends BaseGame {
                 tint: 0x8800FF,
                 targetScene: 'Level7',
             },
+            // Dont know yet New map
+            portal8: {
+                x: 4590,
+                y: 2976,
+                tex: 'portal3',
+                tint: 0xFFFF44,
+                targetScene: 'Level8',
+            },
             // Yaya map
             portalYaya1: {
                 x: 3350,
@@ -178,6 +186,10 @@ export default class Home extends BaseGame {
                 case 'Level7':
                     x = this.portalData['portal7'].x;
                     y = this.portalData['portal7'].y;
+                    break;
+                case 'Level8':
+                    x = this.portalData['portal8'].x;
+                    y = this.portalData['portal8'].y;
                     break;
                 case 'LevelYaya1':
                     x = this.portalData['portalYaya1'].x;

@@ -5,6 +5,15 @@ export function setupIconGrid(containerId, icons, onClickHandler) {
     iconGrid = container;
     if (!container) return console.warn(`Container ${containerId} not found`);
 
+    iconGrid.addEventListener('mousedown', (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+    })
+    iconGrid.addEventListener('mouseup', (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+    })
+
     container.innerHTML = ''; // clear existing content
 
     //const iconsReverse = [...icons].reverse(); // Reverse the icons array
@@ -102,7 +111,9 @@ export function addCard(icon, onClickHandler) {
 
 export function setupReleaseButton(onClickHandler) {
     const button = document.getElementById('clear-cards-btn');
-    button.addEventListener('click', () => {
+    button.addEventListener('mousedown', (e) => {
+        e.stopPropagation();
+        e.preventDefault();
         button.blur();
         onClickHandler();
     });
@@ -111,7 +122,9 @@ export function setupReleaseButton(onClickHandler) {
 
 export function setupSortButton(onClickHandler) {
     const button = document.getElementById('sortCards-btn');
-    button.addEventListener('click', () => {
+    button.addEventListener('mousedown', (e) => {
+        e.stopPropagation();
+        e.preventDefault();
         button.blur();
         onClickHandler();
     });

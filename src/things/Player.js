@@ -97,8 +97,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             left: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A, false),
             right: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D, false),
             dash: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT, false),
-
         };
+
         this.myPointer = new Phaser.Input.Pointer(this.scene.input.manager, 1)
 
         this.scene.input.on('pointerdown', (pointer) => {
@@ -235,8 +235,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         const deathPenalty = Math.floor(GameManager.power.money / 2);
         this.updateMoney(-deathPenalty);
 
-        const data = {id: killer, money: deathPenalty}
-        if(killer) {
+        const data = { id: killer, money: deathPenalty }
+        if (killer) {
             this.network.socket.emit('pvpKillRequest', data);
         }
 
@@ -275,6 +275,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
     spectatePlayer(spectate = false, index = 0) {
         if (!spectate) {
+            this.spectating = false;
             this.scene.cameras.main.startFollow(this, false, .05, .05);
             return;
         }
@@ -282,7 +283,12 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             const numberofPlayers = Object.keys(this.network.otherPlayers).length;
             this.spectateIndex = Phaser.Math.Clamp(this.spectateIndex + index, 0, numberofPlayers);
             const otherPlayer = Object.values(this.network.otherPlayers)[this.spectateIndex] || Object.values(this.network.otherPlayers)[0];
-            otherPlayer ? this.scene.cameras.main.startFollow(otherPlayer, false, .1, .1) : this.spectatePlayer(false);
+            if (otherPlayer) {
+                this.scene.cameras.main.startFollow(otherPlayer, false, .1, .1)
+                this.spectating = true;
+            } else {
+                this.spectatePlayer(false);
+            }
         }
     }
 
@@ -354,6 +360,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         if (!this.stunned && this.alive && !this.chatting) {
 
             const input = this.getInput();
+            if ((input.left || input.right) && this.spectating) {
+                this.spectatePlayer(false);
+            }
             if (input.left && !input.right) {
                 this.flipX = true;
                 this.dir = -1;
@@ -365,7 +374,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             this.decideState(input);       // decide what state to be in based on input
             this.states[this.currentState].update(delta, input, time); // update current state logic
             if ((this.slamCD || this.slidePower < 600) && !this.isSliding && !this.isCrouch) {
-                this.slidePower = Math.min(600, this.slidePower += delta / 2);
+                this.slidePower = Math.min(600, this.slidePower += delta);
                 this.slamCD = Math.max(0, this.slamCD -= delta);
             }
         }
@@ -390,12 +399,12 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
     getInput() {
         return {
-            left: this.controls.left.isDown,
-            right: this.controls.right.isDown,
-            jump: this.controls.jump.isDown,
-            dash: this.controls.dash.isDown,
-            crouch: this.controls.down.isDown,
-            heal: this.controls.up.isDown,
+            left: this.controls.left.isDown || document.leftButton.isClicked,
+            right: this.controls.right.isDown || document.rightButton.isClicked,
+            jump: this.controls.jump.isDown || document.jumpButton.isClicked,
+            dash: this.controls.dash.isDown || document.dashButton.isClicked,
+            crouch: this.controls.down.isDown || document.crouchButton.isClicked,
+            heal: this.controls.up.isDown || document.healButton.isClicked,
             slam: Phaser.Input.Keyboard.JustDown(this.controls.down),
         };
     }
@@ -919,7 +928,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             heal: {
                 enter: () => {
                     this.isHealing = true;
-                    this.setMaxVelocity(100, 100);
+                    this.setMaxVelocity(135, 135);
                     this.tryUncrouch();
                 },
                 update: (delta, input) => {
@@ -1159,6 +1168,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     TakeDamage(x, y, damage = 1, stunDuration = 300, actor) {
+        if (this.scene.physics.isPaused) return false;
         if (this.iFrame) return false;
         if (this.hitCD) return false;
         if (!this.alive) return false;
@@ -1435,6 +1445,5 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         const dirY = this.y - hit.y;
         this.TakeDamage(dirX, dirY, 1, 0);
     }
-
 
 }

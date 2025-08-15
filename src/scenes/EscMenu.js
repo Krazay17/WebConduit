@@ -1,3 +1,4 @@
+import { addSettingsButton } from "../domStuff/KeyBinds.js";
 import { mapRangeClamped } from "../myFunctions.js";
 import GameManager from "../things/GameManager.js";
 import NetworkManager from "../things/NetworkManager.js";
@@ -55,7 +56,7 @@ export default class EscMenu extends Phaser.Scene {
         this.input.setDraggable(handle1);
         handle1.name = 'music';
         this.slider1 = { track1, handle1 };
-        
+
         // Slider track and handle
         const sliderText2 = this.add.text(400, 490, 'voice');
         const track2 = this.add.rectangle(600, 500, 200, 10, 0xffffff).setOrigin(0.5);
@@ -111,7 +112,7 @@ export default class EscMenu extends Phaser.Scene {
 
 
         // ESC key
-        this.input.keyboard.on('keydown-ESC', () => {
+        const toggleSettings = () => {
             this.visible = !this.visible;
 
             if (this.visible) {
@@ -127,7 +128,12 @@ export default class EscMenu extends Phaser.Scene {
                 this.destroyNameInput();
                 this.destroyColorInput();
             }
-        });
+        }
+
+        this.input.keyboard.on('keydown-ESC', () => {
+            toggleSettings();
+        })
+        addSettingsButton(toggleSettings)
 
         // Slider drag logic
         this.input.on('drag', (pointer, gameObject, dragX) => {
@@ -142,18 +148,18 @@ export default class EscMenu extends Phaser.Scene {
             if (gameObject.name === 'music') {
                 GameManager.volume.music = percent
                 GameManager.save();
-                if(!SoundUtil.currentMusic) return;
+                if (!SoundUtil.currentMusic) return;
                 SoundUtil.currentMusic.volume = percent;
-            } else if (gameObject.name === 'master'){
+            } else if (gameObject.name === 'master') {
                 this.sound.volume = percent;
 
                 GameManager.volume.master = percent;
                 GameManager.save();
-            } else if(gameObject.name === 'voice') {
+            } else if (gameObject.name === 'voice') {
                 GameManager.volume.voice = percent;
                 this.network.voiceChat.updateVolumes();
                 GameManager.save();
-            } else if(gameObject.name === 'mic') {
+            } else if (gameObject.name === 'mic') {
                 const value = mapRangeClamped(percent, 0, 1, -3, 3);
                 this.network.voiceChat.setMicVolume(percent);
             }
