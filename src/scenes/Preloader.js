@@ -7,14 +7,22 @@ export default class Preloader extends Phaser.Scene {
     }
 
     preload() {
-        this.loadingBar();
+        this.load.spritesheet('conduitLogo', 'assets/ConduitLogoEdit.png', {
+            frameWidth: 512,
+            frameHeight: 256
+        });
+        this.load.on('filecomplete-spritesheet-conduitLogo', () => {
+            this.loadingLogo();
+        });
+
+        //this.loadingBar();
 
         this.load.image('redsky0', 'assets/RedSky0.webp');
         this.load.image('redsky1', 'assets/RedSky1.webp');
         this.load.image('redsky2', 'assets/RedSky2.webp');
-        this.load.image('bat', 'assets/BatEnemy.png')
+        this.load.image('bat', 'assets/BatEnemy.png');
         this.load.image('purplesky0', 'assets/PurpleSky0.webp');
-        this.load.image('tilesheet', 'assets/tilesheet.png')
+        this.load.image('tilesheet', 'assets/tilesheet.png');
         this.load.image('bullet', 'assets/bullet.png');
         this.load.image('duck', 'assets/DuckFloaty.png');
         this.load.image('door0', 'assets/door0.webp');
@@ -83,7 +91,7 @@ export default class Preloader extends Phaser.Scene {
         this.load.tilemapTiledJSON('tilemap6', 'assets/tilemap6.json');
         this.load.tilemapTiledJSON('tilemap7', 'assets/tilemap7.json');
         this.load.tilemapTiledJSON('tilemap8', 'assets/tilemap8.json');
-        this.load.tilemapTiledJSON('tilemapYaya1', 'assets/tilemapYaya1.json')
+        this.load.tilemapTiledJSON('tilemapYaya1', 'assets/tilemapYaya1.json');
 
 
         this.load.spritesheet('devilMan', 'assets/DevilMan.png', {
@@ -176,6 +184,13 @@ export default class Preloader extends Phaser.Scene {
         const barX = (width - barWidth) / 2;
         const barY = (height - barHeight) / 2;
 
+        this.anims.create({
+            key: 'loading',
+            frames: this.anims.generateFrameNames('conduitLogo', { start: 0, end: 22 })
+        })
+
+        const logo = this.add.image(width / 2, height / 2, 'conduitLogo', 0);
+
         const progressBarBg = this.add.graphics();
         progressBarBg.fillStyle(0x222222, 1);
         progressBarBg.fillRect(barX, barY, barWidth, barHeight);
@@ -194,5 +209,26 @@ export default class Preloader extends Phaser.Scene {
             progressBar.fillStyle(0xffffff, 1);
             progressBar.fillRect(barX, barY, barWidth * value, barHeight);
         });
+    }
+
+    loadingLogo() {
+
+        const { width, height } = this.cameras.main;
+
+        const logo = this.add.sprite(width / 2, height / 2, 'conduitLogo', 0);
+        logo.setOrigin(.5, .5);
+
+        const text = this.add.text(width/2, height/1.5, 'Loading..', {
+            color:'white',
+            fontSize: '24px'
+        });
+
+        const lerp = (a, b, c) => {
+            return Math.trunc(a + (b - a) * c);
+        }
+        this.load.on('progress', (v) => {
+            logo.setFrame(lerp(0, 12, v));
+            text.text = Math.trunc(v * 100) + '%';
+        })
     }
 }
