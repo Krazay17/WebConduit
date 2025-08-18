@@ -228,6 +228,7 @@ io.on('connection', (socket) => {
       }
     }
   });
+
   socket.on('pvpKillRequest', (data) => {
     if(players[socket.id]) {
       const targetSocket = io.sockets.sockets.get(data.id);
@@ -235,11 +236,17 @@ io.on('connection', (socket) => {
         targetSocket.emit('pvpKillUpdate', {id: socket.id, data})
       }
     }
-  })
+  });
 
   socket.on('spawnCardRequest', (cardData) => {
     if (players[socket.id]) {
       socket.broadcast.emit('spawnCardUpdate', { id: socket.id, cardData });
+    }
+  });
+
+  socket.on('globalChatMessageRequest', (data) => {
+    if(players[socket.id]) {
+      socket.broadcast.emit('globalChatMessageUpdate', {id: socket.id, data});
     }
   });
 

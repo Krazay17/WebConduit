@@ -62,30 +62,30 @@ export default class PlayerUI extends Phaser.Scene {
 
         this.scale.on('resize', this.resizeUI, this);
 
-        this.input.keyboard.on('keydown-ENTER', () => {
-            if (this.chatting) {
-                const input = this.textBox?.node?.querySelector('#textchat');
-                if (input) {
-                    this.closeTextChat(input.value);
-                }
-                return;
-            }
+        // this.input.keyboard.on('keydown-ENTER', () => {
+        //     if (this.chatting) {
+        //         const input = this.textBox?.node?.querySelector('#textchat');
+        //         if (input) {
+        //             this.closeTextChat(input.value);
+        //         }
+        //         return;
+        //     }
 
-            if (this.inputFocused) {
-                // You're typing in a different input (e.g. name field), do nothing
-                return;
-            }
+        //     if (this.inputFocused) {
+        //         // You're typing in a different input (e.g. name field), do nothing
+        //         return;
+        //     }
 
-            // Open chat if none of the above is true
-            this.openTextChat();
-        });
+        //     // Open chat if none of the above is true
+        //     this.openTextChat();
+        // });
 
 
-        this.input.keyboard.on('keydown-ESC', () => {
-            if (this.chatting) {
-                this.closeTextChat('');
-            }
-        });
+        // this.input.keyboard.on('keydown-ESC', () => {
+        //     if (this.chatting) {
+        //         this.closeTextChat('');
+        //     }
+        // });
 
         this.time.addEvent({
             delay: 1000,

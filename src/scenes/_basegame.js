@@ -6,6 +6,7 @@ import WeaponGroup from '../weapons/WeaponGroup.js';
 import SoundUtil from '../things/soundUtils.js';
 import ScoreBoard from '../things/scoreBoard.js';
 import { setupIconGrid, setupReleaseButton, setupSortButton } from '../domStuff/IconGrid.js';
+import setupChat, { chatNetwork, setScene } from '../domStuff/Chat.js';
 
 export default class BaseGame extends Phaser.Scene {
   constructor(key) {
@@ -64,6 +65,11 @@ export default class BaseGame extends Phaser.Scene {
       }
     });
 
+
+    this.network.refreshScene(this);
+
+    chatNetwork();
+    setScene(this);
 
     // document.body.addEventListener('click', (event) => {
     //   if (!this.network.voiceChat || !this.network.voiceChat.audioContext) {
@@ -373,7 +379,6 @@ export default class BaseGame extends Phaser.Scene {
     this.weaponWalkableCollider = this.physics.add.collider(this.weaponGroup, this.walkableGroup);
 
 
-    this.network.refreshScene(this);
   }
 
   clearCollisions() {

@@ -4,6 +4,7 @@ import Preloader from './scenes/Preloader.js';
 import EscMenu from './scenes/EscMenu.js';
 import Inventory from './scenes/Inventory.js';
 import PlayerUI from './scenes/playerUI.js';
+import './domStuff/Style.css';
 import Home from './scenes/Home.js';
 import Level1 from './scenes/Level1.js';
 import Level2 from './scenes/Level2.js';
@@ -14,6 +15,8 @@ import Level6 from './scenes/Level6.js';
 import LevelYaya1 from './scenes/LevelYaya1.js';
 import Level7 from './scenes/Level7.js';
 import Level8 from './scenes/Level8.js';
+import { setupDiscordWindow } from './domStuff/DiscordStuff.js';
+import setupChat from './domStuff/Chat.js';
 
 /// <reference path="../types/phaser.d.ts" />
 
@@ -49,8 +52,8 @@ const config = {
     createContainer: true,
   },
 
-  scene: [Boot, Preloader, Home, 
-    Level1, Level2, Level3, Level4, Level5, Level6, Level7, Level8, 
+  scene: [Boot, Preloader, Home,
+    Level1, Level2, Level3, Level4, Level5, Level6, Level7, Level8,
     LevelYaya1,
     PlayerUI, Inventory, EscMenu],
 };
@@ -83,3 +86,7 @@ window.addEventListener('keydown', function (e) {
     e.preventDefault(); // Prevent page from scrolling
   }
 });
+
+setupDiscordWindow();
+
+setupChat();

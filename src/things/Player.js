@@ -5,6 +5,7 @@ import { createWeapon } from "../weapons/WeaponManager.js"
 import ChatBubble from "./chatBubble.js";
 import PlayerContainer from "./playerContainer.js";
 import SoundUtil, { playSound } from "./soundUtils.js";
+import { getChatting } from "../domStuff/Chat.js";
 
 export default class Player extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y) {
@@ -112,12 +113,12 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             }
         });
         this.scene.input.keyboard.on('keydown-G', () => {
-            if (GameManager.flags.devmode && !this.chatting) {
+            if (GameManager.flags.devmode && !this.chatting && !getChatting()) {
                 this.updateMoney(500000);
             }
         });
         this.scene.input.keyboard.on('keydown-F', () => {
-            if (this.chatting || !this.scene || !this.alive) return;
+            if (this.chatting || !this.scene || !this.alive || getChatting()) return;
             if (!this.scene.interactGroup) return;
             this.scene.interactGroup.forEach((interact) => {
                 if (interact && interact.isInteractable && Phaser.Math.Distance.Between(this.x, this.y, interact.x, interact.y) < 150) {
@@ -167,6 +168,12 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             this.spawnBuffer = false;
         })
 
+        window.addEventListener('focusout', () => {
+            this.windowFocused = false;
+        })
+        window.addEventListener('focusin', () => {
+            this.windowFocused = true;
+        })
 
         this.setupStates();
         this.resetJump();
@@ -359,7 +366,11 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
         if (!this.stunned && this.alive && !this.chatting) {
 
-            const input = this.getInput();
+            let input = this.getInput();
+
+            if (getChatting()) {
+                input = {};
+            }
             if ((input.left || input.right) && this.spectating) {
                 this.spectatePlayer(false);
             }
@@ -1168,6 +1179,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     TakeDamage(x, y, damage = 1, stunDuration = 300, actor) {
+        if (!this.windowFocused) return false;
         if (this.scene.physics.isPaused) return false;
         if (this.iFrame) return false;
         if (this.hitCD) return false;

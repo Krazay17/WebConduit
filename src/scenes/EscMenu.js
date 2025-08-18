@@ -1,3 +1,4 @@
+import { getChatting } from "../domStuff/Chat.js";
 import { addSettingsButton } from "../domStuff/KeyBinds.js";
 import { mapRangeClamped } from "../myFunctions.js";
 import GameManager from "../things/GameManager.js";
@@ -131,6 +132,7 @@ export default class EscMenu extends Phaser.Scene {
         }
 
         this.input.keyboard.on('keydown-ESC', () => {
+            if(getChatting()) return;
             toggleSettings();
         })
         addSettingsButton(toggleSettings)
