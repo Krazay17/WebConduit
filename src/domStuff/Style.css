@@ -1,18 +1,16 @@
 #discord-section {
     background-color: rgba(0, 0, 0, 0);
     display: flex;
+    position:absolute;
+    top: 100px;
     gap: 2px;
-    position: absolute;
     z-index: 4;
-    top: 0;
-    right: 0;
-    transform-origin: 100%;
-    transform: translateX(75%);
+    transform: translateX(calc(100% - 410px));
     transition: transform 0.5s ease;
 }
 
 #discord-section.hidden {
-    transform: translateX(96.4%);
+    transform: translateX(calc(100% - 60px));
 }
 
 #discordHideButton {

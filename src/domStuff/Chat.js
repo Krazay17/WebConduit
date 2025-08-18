@@ -43,6 +43,16 @@ export default function setupChat() {
         scene.input.keyboard.enabled = true;
     });
 
+    document.addEventListener('mousedown', (e) => {
+        textInput.blur();
+    })
+    textInput.addEventListener('mousedown', (e) => {
+        e.stopPropagation();
+    })
+    textInput.addEventListener('mouseup', (e) => {
+        e.stopPropagation();
+    })
+
     window.addEventListener('keydown', (e) => {
         if (isChatting) {
             console.log(e.code);
