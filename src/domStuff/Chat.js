@@ -45,8 +45,11 @@ export default function setupChat() {
 
     window.addEventListener('keydown', (e) => {
         if (isChatting) {
-            if (e.code === 'Escape') textInput.blur();
-            e.stopPropagation();
+            console.log(e.code);
+            if (e.code === 'Escape') {
+                e.preventDefault();
+                textInput.blur();
+            }
         }
 
         if (e.code === 'Enter') {
