@@ -58,6 +58,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.iFrame = false;
         this.hitCD = false;
         this.spawnBuffer = true;
+        this.meditateTimer = 0;
 
         // this.playerUI;
         // if (!this.scene.scene.isActive('EscMenu')) {
@@ -168,12 +169,14 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             this.spawnBuffer = false;
         })
 
-        window.addEventListener('focusout', () => {
-            this.windowFocused = false;
-        })
-        window.addEventListener('focusin', () => {
-            this.windowFocused = true;
-        })
+        // window.addEventListener('blur', () => {
+        //     this.windowFocused = false;
+        //     console.log('focusOut')
+        // })
+        // window.addEventListener('focus', () => {
+        //     this.windowFocused = true;
+        //     console.log('focusIn')
+        // })
 
         this.setupStates();
         this.resetJump();
@@ -382,7 +385,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                 this.dir = 1;
             }
 
-            this.decideState(input);       // decide what state to be in based on input
+            this.decideState(input, delta);       // decide what state to be in based on input
             this.states[this.currentState].update(delta, input, time); // update current state logic
             if ((this.slamCD || this.slidePower < 600) && !this.isSliding && !this.isCrouch) {
                 this.slidePower = Math.min(600, this.slidePower += delta);
@@ -393,7 +396,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.animChooser(delta);
     }
 
-    decideState(input) {
+    decideState(input, delta) {
         const { left, right, jump, dash, crouch, heal, slam } = input;
 
         if (dash && this.canDash && !this.isDashing) return this.setState('dash', input);
@@ -405,6 +408,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         if (this.wallSlide) return this.setState('wallSlide', input);
         if (!this.body.blocked.down) return this.setState('fall', input);
         if (left || right) return this.setState('walk', input);
+        this.meditateTimer += delta/1000;
+        if (this.meditateTimer > 5) return this.setState('meditate');
         return this.setState('idle', input);
     }
 
@@ -473,6 +478,26 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                     this.setVelocityX(this.walkLerp(delta, 0));
                 },
                 exit: () => { },
+            },
+
+            meditate: {
+                enter: () => {
+                    this.isMeditating = 1;
+                },
+                update: (delta) => {
+                    this.setVelocityX(this.walkLerp(delta, 0))
+                    this.healCD += delta / 500;
+
+                    if (this.healCD >= 1) {
+                        if (this.health >= this.healthMax) return;
+                        this.healCD = 0;
+                        this.updateHealth(1);
+                    }
+                },
+                exit: () => {
+                    this.isMeditating = 0;
+                    this.meditateTimer = 0;
+                },
             },
 
             walk: {
@@ -951,11 +976,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                     if (this.healCD >= 1) {
                         if (this.health >= this.healthMax) return;
                         this.healCD = 0;
-                        this.health++;
-                        GameManager.stats.health = this.health;
+                        this.updateHealth(1);
                         this.updateMoney(-1);
-                        this.emit('updateHealth', this.health, this.healthMax);
-                        this.network.socket.emit('updateHealth', this.health, this.healthMax);
                     }
                 },
                 exit: () => {
@@ -964,6 +986,15 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                 },
             },
         }
+    }
+
+
+    updateHealth(value) {
+        if (this.health >= this.healthMax) return;
+        this.health += value;
+        GameManager.stats.health = this.health;
+        this.emit('updateHealth', this.health, this.healthMax);
+        this.network.socket.emit('updateHealth', this.health, this.healthMax);
     }
 
     resetJump(dash = true) {
@@ -1050,12 +1081,14 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             ws: this.wallSlide ? 1 : 0,
             slam: this.isSlamming > (this.scene.time.now - 550) ? 1 : 0,
             m: this.isMantling > (this.scene.time.now - 200) ? 1 : 0,
+            med: this.isMeditating ? 1 : 0,
             dead: !this.alive ? 1 : 0,
 
         };
         this.syncGhost(delta, state);
 
-        const { x, y, f, a, c, j, jp, s, h, t, d, w, wj, wr, ws, slam, m, dead } = state;
+        const { x, y, f, a, c, j, jp, s, h, t, d, w, wj, wr, ws, slam, m, med, dead } = state;
+
 
         if (dead) {
             this.stop();
@@ -1132,6 +1165,12 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             return;
         }
 
+        if (med) {
+            this.stop();
+            this.setFrame(23);
+            return;
+        }
+
         if (w) {
             this.play('dudewalk', true);
         } else {
@@ -1179,7 +1218,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     TakeDamage(x, y, damage = 1, stunDuration = 300, actor) {
-        if (!this.windowFocused) return false;
         if (this.scene.physics.isPaused) return false;
         if (this.iFrame) return false;
         if (this.hitCD) return false;

@@ -32,12 +32,12 @@ export default class GhostPlayer extends Phaser.GameObjects.Container {
     // Add the container itself to the scene's display list
     scene.add.existing(this);
 
-    if(scene.spawnManager.pvpGroup) {
+    if (scene.spawnManager.pvpGroup) {
       scene.spawnManager.pvpGroup.add(this);
     }
 
     changeCollision(this, 40, 90, 0, 0);
-    
+
     this.setDepth(8);
 
     this.createVisuals();
@@ -97,7 +97,7 @@ export default class GhostPlayer extends Phaser.GameObjects.Container {
 
   TakeDamage(x, y, damage = 1, stunDuration = 300) {
     const id = this.id;
-    const data = {x, y, damage, stunDuration, id};
+    const data = { x, y, damage, stunDuration, id };
     this.scene.network.socket.emit('pvpDamageRequest', (data));
     console.log(data);
   }
@@ -118,7 +118,7 @@ export default class GhostPlayer extends Phaser.GameObjects.Container {
 
   setGhostState(state) {
     if (!this.sprite) return;
-    const { x, y, f, a, c, j, jp, s, h, t, d, w, wj, wr, ws, slam, m, dead } = state;
+    const { x, y, f, a, c, j, jp, s, h, t, d, w, wj, wr, ws, slam, m, med, dead } = state;
     if (this.prevX === undefined) {
       this.prevX = x;
       this.prevY = y;
@@ -220,6 +220,12 @@ export default class GhostPlayer extends Phaser.GameObjects.Container {
     if (j) {
       this.sprite.stop();
       this.sprite.setFrame(5);
+      return;
+    }
+
+    if (med) {
+      this.sprite.stop();
+      this.sprite.setFrame(23);
       return;
     }
 

@@ -1,7 +1,7 @@
 #discord-section {
     background-color: rgba(0, 0, 0, 0);
     display: flex;
-    position:absolute;
+    position: absolute;
     top: 100px;
     gap: 2px;
     z-index: 4;
@@ -14,16 +14,16 @@
 }
 
 #discordHideButton {
-    background-image: image-set(url(https://cdn.prod.website-files.com/6257adef93867e50d84d30e2/66e278299a53f5bf88615e90_Symbol.svg) 1x);
-    background-size: cover;
+    background-image: url(../../public/assets/DiscordToggle.png);
+    background-size:cover;
     width: 60px;
     height: 50px;
-    background-color: blue;
-    cursor: grab;
+    background-color: black;
+    cursor: move;
 }
 
 #discordHideButton:hover {
-    background-color: black;
+    background-color: white;
 }
 
 #chat-section {
