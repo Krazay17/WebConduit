@@ -486,6 +486,15 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             meditate: {
                 enter: () => {
                     this.isMeditating = 1;
+                    // Create particle manager
+                    this.meditateEmitter = this.scene.add.particles(this.x, this.y, 'greenFlame', {
+                        speed: 100,
+                        lifespan: 500,
+                        alpha: .35,
+                        scale: {start: 1, end: 0},
+                        blendMode: 'ADD',
+                    });
+
                 },
                 update: (delta) => {
                     this.setVelocityX(this.walkLerp(delta, 0))
@@ -498,6 +507,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                     }
                 },
                 exit: () => {
+                    this.meditateEmitter.stop();
                     this.isMeditating = 0;
                     this.meditateTimer = 0;
                 },
@@ -1250,8 +1260,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.makeScreenFlash();
         playSound(this.scene, this.damageSound);
 
-        if(this.currentState === 'meditate') return true;
-        
+        if (this.currentState === 'meditate') return true;
+
         if (stunDuration > 0) {
             this.stunned = true;
             this.emit('playerstunned');

@@ -15,6 +15,7 @@ export default class Level3 extends BaseGame {
         this.setupTileMap('tilemap3');
         this.setupCollisions();
         this.setupMusic();
+        this.setupNet();
 
     }
 }

@@ -20,6 +20,7 @@ export default class Level1 extends BaseGame {
         this.setupCollisions();
         this.setupMusic('music2');
         this.enemyTimers();
+        this.setupNet();
 
 
     }

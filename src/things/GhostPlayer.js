@@ -226,7 +226,22 @@ export default class GhostPlayer extends Phaser.GameObjects.Container {
     if (med) {
       this.sprite.stop();
       this.sprite.setFrame(23);
+      if(!this.meditateEmitter){
+      this.meditateEmitter = this.scene.add.particles(this.x, this.y, 'greenFlame', {
+        speed: 100,
+        lifespan: 500,
+        alpha: .2,
+        scale: { start: 1, end: 0 },
+        blendMode: 'ADD',
+      });
+      this.meditateEmitter.setDepth(7);
+    } else {
+      this.meditateEmitter.setPosition(this.x, this.y)
+      this.meditateEmitter.start();
+    }
       return;
+    } else {
+      this.meditateEmitter?.stop();
     }
 
     if (w) {
@@ -376,12 +391,12 @@ export default class GhostPlayer extends Phaser.GameObjects.Container {
   }
 
 
-  // destroy() {
-  //     // When destroying the container, all its children are automatically destroyed
-  //     // if they were added using this.add() and not directly to the scene.
-  //     this.removeAll(true); // Ensures children are destroyed
-  //     super.destroy(); // Destroys the container itself
-  // }
+  destroy() {
+
+    this.meditateEmitter?.stop();
+    this.meditateEmitter.destroy();
+    super.destroy();
+  }
 
   ghostShurikan(shotInfo) {
     const { start, direction } = shotInfo;

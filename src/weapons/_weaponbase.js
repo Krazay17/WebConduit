@@ -131,7 +131,6 @@ export default class WeaponBase {
 
         groups.forEach(({ group, handler }) => {
             group.getChildren().forEach(target => {
-                console.log(group.name);
                 if (group.name === 'pvpGroup') return;
                 // find end of weapon to target box
                 const bounds = target.getBounds();
@@ -191,11 +190,13 @@ export default class WeaponBase {
     platformHit(plat) {
     }
 
-    enemyHit(target, stunDuration = 300) {
+    enemyHit(target, stunDuration = 300, hit) {
         if (!this.canHit(target)) return;
 
         if (target.TakeDamage(this.getKnockBack(target).x, this.getKnockBack(target).y, this.damage(), stunDuration)) {
             playHitSound(this.scene, this.hitSoundId);
+            //this.scene.add.particles()
+            console.log(hit);
         }
     }
 

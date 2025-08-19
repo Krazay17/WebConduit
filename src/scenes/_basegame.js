@@ -66,11 +66,6 @@ export default class BaseGame extends Phaser.Scene {
     });
 
 
-    this.network.refreshScene(this);
-
-    chatNetwork();
-    setScene(this);
-
     // document.body.addEventListener('click', (event) => {
     //   if (!this.network.voiceChat || !this.network.voiceChat.audioContext) {
     //     return;
@@ -135,6 +130,13 @@ export default class BaseGame extends Phaser.Scene {
     // window.addEventListener('blur', () => {
     //   this.sound.mute = true;
     // });
+  }
+
+  setupNet() {
+
+    this.network.refreshScene(this);
+    chatNetwork();
+    setScene(this);
   }
 
   setupSky({ sky1 = 'purplesky0', sky2 = true, sky3 = true } = {}) {

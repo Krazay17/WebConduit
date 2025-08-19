@@ -14,5 +14,6 @@ export default class LevelYaya1 extends BaseGame {
         this.setupTileMap('tilemapYaya1');
         this.setupCollisions();
         this.setupMusic();
+        this.setupNet();
     }
 }

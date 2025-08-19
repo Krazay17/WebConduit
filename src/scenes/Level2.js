@@ -13,6 +13,7 @@ export default class Level2 extends BaseGame {
         this.setupTileMap('tilemap2');
         this.setupCollisions();
         this.setupMusic('music0');
+        this.setupNet();
 
     }
 }

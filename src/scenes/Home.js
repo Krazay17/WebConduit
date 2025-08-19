@@ -16,6 +16,7 @@ export default class Home extends BaseGame {
         this.setupTileMap('tilemapHome');
         this.setupCollisions();
         this.setupMusic();
+        this.setupNet();
 
         // const boxPos = [[-200, 200], [-500, 400], [-400, 200], [-200, 400], [100, 450], [400, 400], [200, 300]];
         // boxPos.forEach(pos => this.walkableGroup.add(new Breakable(this, pos[0], pos[1], 'boxsheet', 2)));

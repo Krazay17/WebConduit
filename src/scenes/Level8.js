@@ -13,5 +13,6 @@ export default class Level8 extends BaseGame {
         this.setupTileMap('tilemap8');
         this.setupCollisions();
         this.setupMusic();
+        this.setupNet();
     }
 }
