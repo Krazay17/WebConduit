@@ -58,6 +58,7 @@ export default class ShurikanProjectile extends WeaponProjectile {
     }
 
     bulletHit(target) {
+        if(this.visualOnly) return;
         super.bulletHit(target);
 
         if (this.chainCount > 0) {
@@ -69,6 +70,7 @@ export default class ShurikanProjectile extends WeaponProjectile {
     }
 
     itemHit(item) {
+        if(this.visualOnly) return;
         super.itemHit(item);
     }
 

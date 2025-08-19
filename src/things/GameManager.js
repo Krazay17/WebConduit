@@ -5,7 +5,7 @@ export default {
     name: { text: 'Hunter', color: '#FFFFFF' },
     location: { x: 0, y: 0 },
     area: 'Home',
-    power: { money: 0, spent: 0, auraLevel: 1, },
+    power: { money: 0, spent: 0, auraLevel: 1, vault: 0},
     upgrades: {},
     stats: { healthMax: 25, health: 25 },
     weapons: { left: 'shurikan', right: 'sword', aura: 'zap' },
@@ -65,7 +65,7 @@ export default {
             this.location = parsed.location ?? { x: 0, y: 0 };
             this.name = parsed.name ?? { text: 'Hunter', color: '#FFFFFF' };
             this.area = parsed.area ?? 'Home';
-            this.power = parsed.power ?? { money: 0, spent: 0, auraLevel: 1, };
+            this.power = parsed.power ?? { money: 0, spent: 0, auraLevel: 1, vault: 0};
             this.upgrades = parsed.upgrades ?? {};
             this.stats = parsed.stats ?? { healthMax: 25, health: 25 };
             this.weapons = parsed.weapons ?? { left: 'shurikan', right: 'sword', aura: 'zap' };
@@ -83,7 +83,7 @@ export default {
         this.name = keep.name ?? { text: 'Hunter', color: '#FFFFFF' };
         this.location = { x: 0, y: 0 };
         this.area = keep.area ?? 'Home';
-        this.power = keep.power ?? { money: 0, spent: 0, auraLevel: 1, };
+        this.power = keep.power ?? { money: 0, spent: 0, auraLevel: 1, vault: 0};
         this.upgrades = keep.upgrades ?? {};
         this.money = keep.money ?? 0;
         this.stats = keep.stats ?? { healthMax: 25, health: 25 };

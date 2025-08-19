@@ -1320,6 +1320,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         GameManager.save();
         this.playerUI.scoreText.text = 'Source: ' + GameManager.power.money + '\n' + this.rankSystem.getRank(GameManager.power.money);
         this.network.socket.emit('playerLevel', GameManager.power);
+        this.emit('moneyChanged', intMoney);
     }
 
     getMoney() {

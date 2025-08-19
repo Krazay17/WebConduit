@@ -15,6 +15,7 @@ import CardPickup from "./cardPickup.js";
 export default class SpawnManager {
     static instance;
     constructor(scene, player) {
+        SpawnManager.instance = this;
         this.scene = scene;
         this.player = player;
         this.sceneKey = scene.scene.key;

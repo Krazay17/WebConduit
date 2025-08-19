@@ -35,20 +35,25 @@ export default class WeaponBase {
     damageScaling() {
         const money = GameManager.power.money;
         if (!money) return 1;
-
-        if (money < 1000) {
-            return 1 + money / 1000;
-        } else if (money < 2000) {
-            return 2 + money / 2000;
-        } else if (money < 4000) {
-            return 3 + money / 4000;
-        } else if (money < 8000) {
-            return 4 + money / 8000;
-        } else if (money < 16000) {
-            return 5 + money / 16000;
+        if (money < 100000) {
+            return 1 + money / 100000;
         } else {
-            return 6 + money / 500000
+            return 2 + money / 500000;
         }
+
+        // if (money < 1000) {
+        //     return 1 + money / 1000;
+        // } else if (money < 2000) {
+        //     return 2 + money / 2000;
+        // } else if (money < 4000) {
+        //     return 3 + money / 4000;
+        // } else if (money < 8000) {
+        //     return 4 + money / 8000;
+        // } else if (money < 16000) {
+        //     return 5 + money / 16000;
+        // } else {
+        //     return 6 + money / 500000;
+        // }
     }
 
     update(delta) {
@@ -138,7 +143,7 @@ export default class WeaponBase {
                 const toTarget = closestPoint.clone().subtract(data.start);
                 const distanceToTarget = toTarget.length();
 
-                if(target.dead) return;
+                if (target.dead) return;
 
                 // skip far targets
                 if (distanceToTarget > data.distance + 200) return;

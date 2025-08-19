@@ -21,9 +21,9 @@ export default class WeaponShurikan extends WeaponBase {
             this.chainCount = 1;
         }
         if (GameManager.upgrades.shurikanUpgradeB) {
-            this.baseDamage = 2;
+            this.baseDamage = 4;
         } else {
-            this.baseDamage = 1;
+            this.baseDamage = 3;
         }
         if (GameManager.upgrades.shurikanUpgradeC) {
             this.initialTargets = 3;

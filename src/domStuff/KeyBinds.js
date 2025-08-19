@@ -99,7 +99,7 @@ export function addButton(imgSrc, key, action = 'Interact', row = 1, col = 1, wi
     return button;
 }
 
-export function addSettingsButton(callbackActive, callbackInActive, texture = 'assets/SettingsButton', col = 13, row = 2) {
+export function addSettingsButton(callbackActive, callbackInActive, texture = 'SettingsButton', col = 13, row = 2) {
     const button = document.createElement('div');
     button.className = 'kb-button';
 
@@ -108,18 +108,18 @@ export function addSettingsButton(callbackActive, callbackInActive, texture = 'a
 
     const img = document.createElement('img');
     img.className = 'kb-settingsimage';
-    img.src = texture + '.png';
+    img.src = 'assets/' + texture + '.png';
 
     button.appendChild(img);
     kbGrid.appendChild(button);
 
     const active = () => {
-        img.src = texture + 'Press' + '.png';
+        img.src = 'assets/' + texture + 'Press' + '.png';
         callbackActive?.();
     }
 
     const inActive = () => {
-        img.src = texture + '.png';
+        img.src = 'assets/' + texture + '.png';
         callbackInActive?.();
     }
 

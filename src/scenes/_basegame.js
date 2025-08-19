@@ -12,9 +12,7 @@ import { addSettingsButton } from '../domStuff/KeyBinds.js';
 export default class BaseGame extends Phaser.Scene {
   constructor(key) {
     super(key);
-
     this.key = key;
-
   }
 
   preload() {
@@ -58,14 +56,14 @@ export default class BaseGame extends Phaser.Scene {
     this.cameras.main.setBounds(xleft, ytop, width, height);
 
     this.network = new NetworkManager(this);
-    this.spawnManager = new SpawnManager(this)
+    this.spawnManager = new SpawnManager(this);
 
     const joinVoiceChat = () => {
       if (!this.network.voiceChat.audioContext) {
         this.network.voiceChat._initMic();
       }
     }
-    addSettingsButton(joinVoiceChat, null, 'assets/VoiceButton', 15);
+    addSettingsButton(joinVoiceChat, null, 'VoiceButton', 15);
 
 
     // document.body.addEventListener('click', (event) => {

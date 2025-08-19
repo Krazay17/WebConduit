@@ -2,6 +2,7 @@ import BaseGame from './_basegame.js'
 import GameManager from '../things/GameManager.js';
 import ScoreBoard from '../things/scoreBoard.js';
 import Shop from '../things/shop.js';
+import Vault from '../things/vault.js';
 
 export default class Home extends BaseGame {
     constructor() {
@@ -36,12 +37,17 @@ export default class Home extends BaseGame {
         this.setupPortals();
         this.setupShop();
         this.spawnBonusCard();
+        this.setupVault();
 
         this.network.socket.emit('highScoreRequest');
     }
 
     update(time, delta) {
         super.update(time, delta);
+    }
+
+    setupVault() {
+        this.vault = new Vault(this, 1956.00, 3310);
     }
 
     setupPortals() {

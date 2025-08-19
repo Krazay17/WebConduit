@@ -40,6 +40,24 @@ export default class Inventory extends Phaser.Scene {
             fontStyle: 'bold',
         }).setOrigin(0.5);
 
+        // Label text
+        this.damageScalingLabel = this.add.text(1200, 25, 'Source Damage multiplier: ', {
+            fontSize: '24px',
+            fontStyle: 'bold',
+            color: '#ffffff', // white label
+        }).setOrigin(1, 0.5); // anchor right side so it hugs the number
+
+        // Number text (different color)
+        this.damageScalingValue = this.add.text(1200, 25, this.player.leftWeapon.damageScaling().toFixed(2), {
+            fontSize: '24px',
+            fontStyle: 'bold',
+            color: '#ff4444', // red number
+        }).setOrigin(0, 0.5); // anchor left side so it sits right after the label
+
+        this.player.on('moneyChanged', () => {
+            this.damageScalingValue.text = this.player.leftWeapon.damageScaling().toFixed(2);
+        })
+
 
         this.auraText2 = this.add.text(1200, 600, '<-Choose->', {
             fontSize: '12px',
@@ -52,7 +70,7 @@ export default class Inventory extends Phaser.Scene {
 
 
 
-        this.resetPowerButton = this.setupButton(1200, 800, { icon: 'auraicondesat', tint: '0xFF0000', cost: 'Half of Source spent refunded',tooltip: '\nReset all power' })
+        this.resetPowerButton = this.setupButton(1200, 800, { icon: 'auraicondesat', tint: '0xFF0000', cost: 'Half of Source spent refunded', tooltip: '\nReset all power' })
             .on('pointerdown', () => {
                 this.resetAllUpgrades();
             });
@@ -82,7 +100,7 @@ export default class Inventory extends Phaser.Scene {
                     ? 0
                     : 1;
                 this.player.equipWeapon(weapon, slot)
-                        this.sound.play('clinksound2');
+                this.sound.play('clinksound2');
             });
 
         return button;

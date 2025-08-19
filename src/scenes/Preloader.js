@@ -51,6 +51,7 @@ export default class Preloader extends Phaser.Scene {
         this.load.image('largeplatform', 'assets/LargePlatform.webp');
         this.load.image('devilTable', 'assets/DevilTable.png');
         this.load.image('potion', 'assets/Potion.png');
+        this.load.image('vault', 'assets/Vault.png');
         this.load.image('greenFlame', 'assets/GreenFlame.png');
         this.load.image('greenSpark', 'assets/GreenSparkParticle.png');
         this.load.image('CardDaily', 'assets/CardDaily.png');
