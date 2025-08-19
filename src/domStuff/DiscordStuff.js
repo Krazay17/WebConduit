@@ -1,11 +1,14 @@
 import GameManager from "../things/GameManager";
 
 
+const sec = document.getElementById("discord-section");
 export function setupDiscordWindow() {
     const moveDiscordButton = document.getElementById("discordHideButton");
+
+    setTimeout(()=>sec.classList.toggle('hidden'), 5000);
+
     moveDiscordButton.addEventListener('mousedown', (e) => {
         e.stopPropagation();
-        const sec = document.getElementById("discord-section");
         sec.classList.toggle('hidden');
     })
 }

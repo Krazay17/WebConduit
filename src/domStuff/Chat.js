@@ -31,16 +31,24 @@ export function setScene(s) {
 }
 
 export default function setupChat() {
+    let fadeTimer;
     textInput.addEventListener('focus', () => {
         isChatting = true;
         scene.input.keyboard.resetKeys();
         scene.input.keyboard.enabled = false;
+        clearTimeout(fadeTimer);
+        messages.classList.add('active');
+        messages.scrollTop = messages.scrollHeight;
     });
 
     textInput.addEventListener('blur', () => {
         isChatting = false;
         scene.input.keyboard.resetKeys();
         scene.input.keyboard.enabled = true;
+        fadeTimer = setTimeout(()=> {
+        messages.classList.remove('active');
+        messages.scrollTop = messages.scrollHeight;
+        },2000);
     });
 
     document.addEventListener('mousedown', (e) => {
@@ -73,7 +81,7 @@ export default function setupChat() {
                     textInput.blur();
                     return;
                 };
-                sendDiscordMessage(message);
+                //sendDiscordMessage(message);
                 message = GameManager.name.text + ": " + textInput.value; // use .value for input/textarea
                 addMessage(message);
                 network?.socket?.emit('globalChatMessageRequest', { player: GameManager.name.text, message });

@@ -15,7 +15,7 @@
 
 #discordHideButton {
     background-image: url(../../public/assets/DiscordToggle.png);
-    background-size:cover;
+    background-size: cover;
     width: 60px;
     height: 50px;
     background-color: black;
@@ -27,9 +27,8 @@
 }
 
 #chat-section {
-    background-color: rgba(0, 0, 0, 0.4);
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
     position: absolute;
     bottom: 150px;
     height: 200px;
@@ -38,9 +37,20 @@
 }
 
 #chatMessages {
-    background-color: rgba(0, 0, 0, 0.4);
-    flex: 1;
     overflow-y: auto;
+    height: 40%;
+    background-color: rgba(0, 0, 0, 0);
+    transition: background-color .5s ease;
+    scrollbar-width: none;
+}
+
+#chatMessages.active {
+    height: 100%;
+    background-color: rgba(0, 0, 0, .4);
+}
+#chatMessages::-webkit-scrollbar {
+    display: none;
+    width: 1px;
 }
 
 .chatMessage {
@@ -52,6 +62,6 @@
     display: flex;
     font-size: large;
     width: 98%;
-    background-color: black;
+    background-color: rgba(0, 0, 0, 0.5);
     color: aliceblue;
 }

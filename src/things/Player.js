@@ -188,11 +188,18 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         if (this.chatBubble) this.chatBubble.setPosition(this.x, this.y - 100);
         if (this.playerContainer) this.playerContainer.setPosition(this.x, this.y);
 
-        if (this.alive && !this.stunned && this.leftWeapon && this.rightWeapon && this.aura) {
+        if (this.alive && !this.stunned) {
+            if (!this.leftWeapon) return;
+            if (!this.rightWeapon) return;
             this.leftWeapon.update?.(delta);
             this.rightWeapon.update?.(delta);
-            this.aura.update?.(delta);
+            if (this.aura) this.aura.update?.(delta);
 
+            if (this.y > this.scene.physics.world.bounds.height + this.body.height + 150 && this.alive && !this.spawnBuffer) {
+                this.Died();
+            }
+
+            if (this.currentState === 'meditate') return;
             const pointer = this.scene.input.activePointer;
 
             if (pointer.leftButtonDown() && !this.inventory.scene.isVisible()) {
@@ -200,10 +207,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             }
             if (pointer.rightButtonDown() && !this.inventory.scene.isVisible()) {
                 this.rightWeapon.fire(pointer);
-            }
-
-            if (this.y > this.scene.physics.world.bounds.height + this.body.height + 150 && this.alive && !this.spawnBuffer) {
-                this.Died();
             }
         }
         if (this.knockbackVelocity) {
@@ -408,7 +411,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         if (this.wallSlide) return this.setState('wallSlide', input);
         if (!this.body.blocked.down) return this.setState('fall', input);
         if (left || right) return this.setState('walk', input);
-        this.meditateTimer += delta/1000;
+        this.meditateTimer += delta / 1000;
         if (this.meditateTimer > 5) return this.setState('meditate');
         return this.setState('idle', input);
     }
@@ -1224,10 +1227,17 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         if (!this.alive) return false;
 
         this.hitCD = true;
+        this.setTint('0xFF0000');
         this.scene.time.addEvent({
             delay: 500,
             callback: () => {
                 this.hitCD = false;
+                if (this.canDash) {
+                    if (!this.alive) return;
+                    this.setTint(this.buffColor);
+                } else {
+                    this.setTint();
+                }
             }
         });
 
@@ -1235,9 +1245,13 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             this.Died(actor);
         }
 
+        this.updateMoney(-damage);
+
         this.makeScreenFlash();
         playSound(this.scene, this.damageSound);
 
+        if(this.currentState === 'meditate') return true;
+        
         if (stunDuration > 0) {
             this.stunned = true;
             this.emit('playerstunned');
@@ -1256,7 +1270,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.setVelocityX(x);
         this.setVelocityY(y);
 
-        this.updateMoney(-damage);
 
         return true;
     }
@@ -1426,7 +1439,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         const cam = this.scene.cameras.main;
         const screenFlash = this.scene.add.image(cam.centerX, cam.centerY, 'damagescreenflash').setScrollFactor(0).setOrigin(.5);
         screenFlash.setDisplaySize(cam.displayWidth, cam.displayHeight);
-        this.setTint('0xFF0000');
 
         this.scene.add.tween({
             targets: screenFlash,
@@ -1435,11 +1447,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
             onComplete: () => {
                 if (!this.alive) return;
                 screenFlash.destroy();
-                if (this.canDash) {
-                    this.setTint(this.buffColor);
-                } else {
-                    this.setTint();
-                }
             },
         })
     }

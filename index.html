@@ -22,6 +22,8 @@
       margin: 0;
       padding: 0;
       height: 100%;
+      width: 100%;
+      overflow-x: hidden;
       overflow-y: scroll;
       background-color: rgba(0, 0, 0, 0);
     }
@@ -207,10 +209,10 @@
   </section>
 
   <section id="chat-section">
+    <input type="text" id="chatInput" placeholder="Chat..." maxlength="200" autocomplete="off">
     <div id="chatMessages">
       <div class="chatMessage"></div>
     </div>
-    <input type="text" id="chatInput" placeholder="Chat..." maxlength="200" autocomplete="off">
   </section>
 
   <section type="module" id="kb-section"></section>
