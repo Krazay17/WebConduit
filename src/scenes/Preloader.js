@@ -54,6 +54,7 @@ export default class Preloader extends Phaser.Scene {
         this.load.image('vault', 'assets/Vault.png');
         this.load.image('greenFlame', 'assets/GreenFlame.png');
         this.load.image('greenSpark', 'assets/GreenSparkParticle.png');
+        this.load.image('sourceOrb', 'assets/SourceOrb.png');
         this.load.image('CardDaily', 'assets/CardDaily.png');
         this.load.image('CardSapling', 'assets/CardSapling.png');
         this.load.image('CardCrystal', 'assets/CardCrystal.png');

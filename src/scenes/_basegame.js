@@ -51,6 +51,7 @@ export default class BaseGame extends Phaser.Scene {
   //   });
   // }
   setupWorld(xleft = 0, ytop = 0, width = 6400, height = 12800) {
+    GameManager.load();
     this.physics.world.setBounds(xleft, ytop, width, height);
     this.bounds = this.physics.world.bounds;
     this.cameras.main.setBounds(xleft, ytop, width, height);
@@ -64,6 +65,9 @@ export default class BaseGame extends Phaser.Scene {
       }
     }
     addSettingsButton(joinVoiceChat, null, 'VoiceButton', 15);
+    addSettingsButton(()=> {
+      console.log(this.game.scene.getScenes())
+    }, undefined, undefined, 17, 2)
 
 
     // document.body.addEventListener('click', (event) => {

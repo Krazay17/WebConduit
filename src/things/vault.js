@@ -12,31 +12,42 @@ export default class Vault extends Phaser.GameObjects.Sprite {
         this.spawnMng.itemGroup.add(this);
         this.isInteractable = true;
         this.depositRamp = 1;
+        this.vaultPos = new Phaser.Math.Vector2(this.x, this.y);
 
-        this.amountText = scene.add.text(this.x - 50, this.y -100, GameManager.power.vault, {
+        this.amountText = scene.add.text(this.x - 50, this.y -100, GameManager.power.vault || "0", {
             fontSize: '24px',
         }).setOrigin(0, 0);
     }
 
-    interact() {
-        console.log(GameManager.power.vault);
+    interact(player) {
         if (GameManager.power.money >= this.depositRamp) {
             GameManager.power.vault += this.depositRamp;
             this.scene.player.updateMoney(-this.depositRamp)
-            this.amountText.text = GameManager.power.vault;
+            this.amountText.text = GameManager.power.vault || "0";
             this.depositRamp += 10;
             clearTimeout(this.depositRampTimer);
             this.depositRampTimer = setTimeout(()=> {
                 this.depositRamp = 1;
             }, 500);
         }
+
+        // const visual = () => {
+        //     this.scene.add.particles(player.x, player.y, 'sourceOrb', {
+        //         blendMode: 'ADD',
+        //         lifespan: 1000,
+        //         scale: {start: 1, end: 0},
+        //         moveToX: this.vaultPos.x,
+        //         moveToY: this.vaultPos.y,
+        //     })
+        // }
+        // visual();
     }
 
     hit() {
-        if (GameManager.power.vault >= 1) {
-            const intMoney = Math.trunc(GameManager.power.vault / 2)
+        if (GameManager.power.vault > 0) {
+            const intMoney = Math.round(GameManager.power.vault / 2)
             GameManager.power.vault -= intMoney;
-            this.scene.player.updateMoney(intMoney)
+            this.scene.player.updateMoney(intMoney);
             this.amountText.text = GameManager.power.vault;
         }
     }

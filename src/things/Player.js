@@ -1,6 +1,5 @@
 import GameManager from "./GameManager.js";
 import NetworkManager from "./NetworkManager.js";
-import RankSystem from "./RankSystem.js";
 import { createWeapon } from "../weapons/WeaponManager.js"
 import ChatBubble from "./chatBubble.js";
 import PlayerContainer from "./playerContainer.js";
@@ -89,9 +88,6 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.test = 0;
         this.buffColor = 0x66ff33;
 
-        this.rankSystem = new RankSystem();
-
-
         this.controls = {
             up: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W, false),
             jump: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE, false),
@@ -178,6 +174,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         //     console.log('focusIn')
         // })
 
+        this.updateMoney();
         this.setupStates();
         this.resetJump();
         this.setStats();
@@ -494,7 +491,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                         speed: 100,
                         lifespan: 500,
                         alpha: .35,
-                        scale: {start: 1, end: 0},
+                        scale: { start: 1, end: 0 },
                         blendMode: 'ADD',
                     });
 
@@ -1313,12 +1310,11 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         }
     }
 
-    updateMoney(money) {
+    updateMoney(money = 0) {
         const intMoney = Math.floor(money);
         const prevMoney = GameManager.power.money;
         GameManager.power.money = Math.max(0, GameManager.power.money + intMoney);
         GameManager.save();
-        this.playerUI.scoreText.text = 'Source: ' + GameManager.power.money + '\n' + this.rankSystem.getRank(GameManager.power.money);
         this.network.socket.emit('playerLevel', GameManager.power);
         this.emit('moneyChanged', intMoney);
     }

@@ -95,6 +95,7 @@ export default {
             seenIntro: false,
             devmode: false,
         };
+        this.useLastLocation = false;
 
         this.save();
     },

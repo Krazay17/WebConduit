@@ -1,5 +1,6 @@
 import GameManager from "../things/GameManager.js";
 import NetworkManager from "../things/NetworkManager.js";
+import { getRank } from "../things/RankSystem.js";
 
 export default class PlayerUI extends Phaser.Scene {
     constructor() {
@@ -51,11 +52,17 @@ export default class PlayerUI extends Phaser.Scene {
             }
         });
 
-        this.scoreText = this.add.text(10, 50, 'Source: ' + GameManager.power.money + '\n' + this.player.rankSystem.getRank(GameManager.power.money), {
+        this.scoreText = this.add.text(10, 50, 'Source: ' + GameManager.power.money + '\n' + getRank(GameManager.power.money), {
             fontSize: '32px',
             color: '#4fffff'
         });
         this.scoreText.setScrollFactor(0);
+
+        this.player.on('moneyChanged', () => {
+            const money = GameManager.power.money
+            this.scoreText.text =
+                'Source: ' + (money) + '\n' + getRank(money);
+        })
 
         this.textBoxX = this.scale.width / 2
         this.textBoxY = this.scale.height / 2 + 100;

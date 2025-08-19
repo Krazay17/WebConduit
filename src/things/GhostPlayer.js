@@ -1,8 +1,8 @@
 import { changeCollision } from "../myFunctions.js";
 import AuraSprite from "../weapons/auraSprite.js";
 import ShurikanProjectile from "../weapons/shurikanProjectile.js";
-import RankSystem from "./RankSystem.js";
 import ChatBubble from "./chatBubble.js";
+import { getRank } from "./RankSystem.js";
 
 export default class GhostPlayer extends Phaser.GameObjects.Container {
   constructor(scene, id, data = {
@@ -26,8 +26,6 @@ export default class GhostPlayer extends Phaser.GameObjects.Container {
     this.targetPos = new Phaser.Math.Vector2(location.x, location.y);
     this.lerpTimer = 0;
     this.lerpDuration = 15;
-
-    this.ranks = new RankSystem();
 
     // Add the container itself to the scene's display list
     scene.add.existing(this);
@@ -67,7 +65,7 @@ export default class GhostPlayer extends Phaser.GameObjects.Container {
     const spriteHeight = this.sprite.displayHeight;
 
     // Add moneyText as a child of the container
-    this.moneyText = this.scene.add.text(0, -spriteHeight, this.ranks.getRank(this.money) + '\n' + this.money, {
+    this.moneyText = this.scene.add.text(0, -spriteHeight, getRank(this.money) + '\n' + this.money, {
       fontSize: '12px',
       align: 'center',
       fill: '#00FFFF'
