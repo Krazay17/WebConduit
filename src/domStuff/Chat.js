@@ -81,7 +81,7 @@ export default function setupChat() {
                     textInput.blur();
                     return;
                 };
-                //sendDiscordMessage(message);
+                sendDiscordMessage(message);
                 message = GameManager.name.text + ": " + textInput.value; // use .value for input/textarea
                 addMessage(message);
                 network?.socket?.emit('globalChatMessageRequest', { player: GameManager.name.text, message });
