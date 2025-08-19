@@ -7,6 +7,7 @@ import SoundUtil from '../things/soundUtils.js';
 import ScoreBoard from '../things/scoreBoard.js';
 import { setupIconGrid, setupReleaseButton, setupSortButton } from '../domStuff/IconGrid.js';
 import setupChat, { chatNetwork, setScene } from '../domStuff/Chat.js';
+import { addSettingsButton } from '../domStuff/KeyBinds.js';
 
 export default class BaseGame extends Phaser.Scene {
   constructor(key) {
@@ -59,11 +60,12 @@ export default class BaseGame extends Phaser.Scene {
     this.network = new NetworkManager(this);
     this.spawnManager = new SpawnManager(this)
 
-    this.input.once('pointerdown', () => {
+    const joinVoiceChat = () => {
       if (!this.network.voiceChat.audioContext) {
         this.network.voiceChat._initMic();
       }
-    });
+    }
+    addSettingsButton(joinVoiceChat, null, 'assets/VoiceButton', 15);
 
 
     // document.body.addEventListener('click', (event) => {

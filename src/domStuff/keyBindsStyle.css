@@ -13,7 +13,7 @@
 
 .kb-grid {
     display: grid;
-    grid-template-columns: repeat(16, 65px);
+    grid-template-columns: repeat(17, 65px);
     padding-left: 5%;
 }
 

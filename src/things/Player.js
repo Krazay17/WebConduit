@@ -204,9 +204,11 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
             if (pointer.leftButtonDown() && !this.inventory.scene.isVisible()) {
                 this.leftWeapon.fire(pointer);
+                this.meditateTimer = 0;
             }
             if (pointer.rightButtonDown() && !this.inventory.scene.isVisible()) {
                 this.rightWeapon.fire(pointer);
+                this.meditateTimer = 0;
             }
         }
         if (this.knockbackVelocity) {
@@ -412,7 +414,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         if (!this.body.blocked.down) return this.setState('fall', input);
         if (left || right) return this.setState('walk', input);
         this.meditateTimer += delta / 1000;
-        if (this.meditateTimer > 5) return this.setState('meditate');
+        if (this.meditateTimer > 3) return this.setState('meditate');
         return this.setState('idle', input);
     }
 
@@ -476,6 +478,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
                     this.resetJump();
                     this.tryUncrouch();
                     this.isSlamming = 0;
+                    this.meditateTimer = 0;
                 },
                 update: (delta) => {
                     this.setVelocityX(this.walkLerp(delta, 0));
