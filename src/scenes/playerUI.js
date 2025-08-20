@@ -17,6 +17,11 @@ export default class PlayerUI extends Phaser.Scene {
         this.player.on('updateHealth', (health, max) => {
             this.healthBoxUpdate(health, max)
         });
+        this.player.on('moneyChanged', (v) => {
+            const money = GameManager.power.money
+            console.log(money);
+            this.scoreText.text = 'Source: ' + (money) + '\n' + getRank(money);
+        })
     }
 
     create() {
@@ -58,12 +63,6 @@ export default class PlayerUI extends Phaser.Scene {
         });
         this.scoreText.setScrollFactor(0);
 
-        this.player.on('moneyChanged', (v) => {
-            console.log('return value: ' + v);
-            const money = GameManager.power.money
-            console.log(money);
-            this.scoreText.text = 'Source: ' + (money) + '\n' + getRank(money);
-        })
 
         this.textBoxX = this.scale.width / 2
         this.textBoxY = this.scale.height / 2 + 100;

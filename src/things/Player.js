@@ -247,8 +247,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         const deathPenalty = Math.floor(GameManager.power.money);
         this.updateMoney(-deathPenalty);
 
-        const data = { id: killer, money: deathPenalty }
         if (killer) {
+            const data = { killer, money: deathPenalty }
             this.network.socket.emit('pvpKillRequest', data);
         }
 

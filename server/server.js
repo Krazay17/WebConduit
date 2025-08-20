@@ -230,10 +230,10 @@ io.on('connection', (socket) => {
   });
 
   socket.on('pvpKillRequest', (data) => {
-    if(players[socket.id]) {
-      const targetSocket = io.sockets.sockets.get(data.id);
-      if(targetSocket) {
-        targetSocket.emit('pvpKillUpdate', {id: socket.id, data})
+    if (players[socket.id]) {
+      const targetSocket = io.sockets.sockets.get(data.killer);
+      if (targetSocket) {
+        targetSocket.emit('pvpKillUpdate', data)
       }
     }
   });
@@ -245,8 +245,8 @@ io.on('connection', (socket) => {
   });
 
   socket.on('globalChatMessageRequest', (data) => {
-    if(players[socket.id]) {
-      socket.broadcast.emit('globalChatMessageUpdate', {id: socket.id, data});
+    if (players[socket.id]) {
+      socket.broadcast.emit('globalChatMessageUpdate', { id: socket.id, data });
     }
   });
 

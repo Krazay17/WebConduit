@@ -97,7 +97,6 @@ export default class GhostPlayer extends Phaser.GameObjects.Container {
     const id = this.id;
     const data = { x, y, damage, stunDuration, id };
     this.scene.network.socket.emit('pvpDamageRequest', (data));
-    console.log(data);
   }
 
   lerpPosition(delta) {

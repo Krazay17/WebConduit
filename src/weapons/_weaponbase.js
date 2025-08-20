@@ -201,7 +201,6 @@ export default class WeaponBase {
         if (target.TakeDamage(this.getKnockBack(target).x, this.getKnockBack(target).y, this.damage(), stunDuration)) {
             playHitSound(this.scene, this.hitSoundId);
             //this.scene.add.particles()
-            console.log(hit);
         }
     }
 
