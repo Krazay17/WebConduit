@@ -47,7 +47,7 @@ export default class Home extends BaseGame {
     }
 
     setupVault() {
-        this.vault = new Vault(this, 1956.00, 3310);
+        this.vault = new Vault(this, 1956, 3310);
     }
 
     setupPortals() {

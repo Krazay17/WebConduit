@@ -244,7 +244,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         if (this.alive == false) return;
         this.alive = false;
 
-        const deathPenalty = Math.floor(GameManager.power.money / 2);
+        const deathPenalty = Math.floor(GameManager.power.money);
         this.updateMoney(-deathPenalty);
 
         const data = { id: killer, money: deathPenalty }
