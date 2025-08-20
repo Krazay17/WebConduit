@@ -58,10 +58,11 @@ export default class PlayerUI extends Phaser.Scene {
         });
         this.scoreText.setScrollFactor(0);
 
-        this.player.on('moneyChanged', () => {
+        this.player.on('moneyChanged', (v) => {
+            console.log('return value: ' + v);
             const money = GameManager.power.money
-            this.scoreText.text =
-                'Source: ' + (money) + '\n' + getRank(money);
+            console.log(money);
+            this.scoreText.text = 'Source: ' + (money) + '\n' + getRank(money);
         })
 
         this.textBoxX = this.scale.width / 2

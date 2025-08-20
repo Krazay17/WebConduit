@@ -366,7 +366,7 @@ export default class GhostPlayer extends Phaser.GameObjects.Container {
     this.money = money;
     this.auraLevel = auraLevel;
     this.auraSprite.setAuraLevel(this.auraLevel);
-    this.moneyText.setText(this.ranks.getRank(this.money) + '\n' + this.money);
+    this.moneyText.setText(getRank(this.money) + '\n' + this.money);
   }
 
   syncAll(data) {
